@@ -1,2 +1,5 @@
-def hello() -> None:
-    print("Hello from doiget!")
+
+import doiget.config
+import doiget.log
+
+doiget.log.setup_logging()
