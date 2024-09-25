@@ -5,7 +5,6 @@ import pathlib
 import logging
 import typing
 import datetime
-import socket
 
 import pydantic
 import pydantic_settings

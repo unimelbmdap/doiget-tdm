@@ -38,6 +38,13 @@ dev-dependencies = [
     "types-pysftp>=0.2.17.20240106",
 ]
 
+# until uv gets a task runner
+[tool.poe.tasks]
+test = "pytest --cov --cov-report term-missing"
+typecheck = "mypy ."
+lint = "ruff check"
+style = "black ."
+
 [tool.black]
 line-length = 88
 preview = false
@@ -46,9 +53,7 @@ skip-string-normalization = false
 skip-magic-trailing-comma = false
 
 [tool.ruff]
-src = ["src"]
 exclude = ["docs"]
-target-version = "py310"
 lint.select = [
   "E",  # error
   "F",  # pyflakes
@@ -108,6 +113,7 @@ ignore = [
   "RTD",  # not using readthedocs
   "RF102",  # not a fan of isort
   "PC", "PY006",  # not using pre-commit
+  "PY007",  # poe not recognised as a task runner
 ]
 
 [tool.pytest.ini_options]
