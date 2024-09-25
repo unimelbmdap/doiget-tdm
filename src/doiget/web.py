@@ -7,7 +7,7 @@ import collections.abc
 import requests
 import requests_ratelimiter
 import pyrate_limiter
-import retryhttp
+import retryhttp  # type: ignore[import-untyped]
 
 
 DEFAULT_LIMITER = pyrate_limiter.Limiter(
@@ -17,6 +17,7 @@ DEFAULT_LIMITER = pyrate_limiter.Limiter(
     ),
 )
 
+
 class WebRequester:
 
     def __init__(
@@ -24,8 +25,9 @@ class WebRequester:
         limiter: pyrate_limiter.Limiter = DEFAULT_LIMITER,
         headers: dict[str, object] | None = None,
         max_delay_s: float | None = 60 * 60,
-        per_host: bool = True,
+        per_host: bool = False,
         limit_statuses: collections.abc.Iterable[int] = (429, 500),
+        max_retry_attempts: int = 10,
     ) -> None:
 
         self._session = requests_ratelimiter.LimiterSession(
@@ -36,6 +38,15 @@ class WebRequester:
             headers=headers,
         )
 
-    @retryhttp.retry(max_attempt_number=10)  # type: ignore[misc]
+        self.max_retry_attempts = max_retry_attempts
+
+        self.retry_wrapper = retryhttp.retry(
+            max_attempt_number=self.max_retry_attempts
+        )
+
     def get(self, url: str) -> requests.Response:
-        return self._session.get(url=url)
+
+        retry_get = self.retry_wrapper(self._session.get)
+        response: requests.Response = retry_get(url=url)
+
+        return response

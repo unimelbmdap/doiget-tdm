@@ -130,3 +130,6 @@ xfail_strict = true
 filterwarnings = ["error"]
 log_cli_level = "info"
 testpaths = ["tests"]
+
+[tool.coverage.run]
+omit = ["tests/*"]
