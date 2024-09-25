@@ -5,12 +5,16 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
+    "limiter>=0.5.0",
     "platformdirs>=4.3.6",
     "puremagic>=1.27",
     "pydantic-settings>=2.5.2",
     "pydantic[email]>=2.9.2",
     "pysftp>=0.2.9",
     "pysimdjson>=6.0.2",
+    "requests>=2.32.3",
+    "requests-ratelimiter>=0.7.0",
+    "retryhttp[requests]>=1.1.0",
     "tzdata>=2024.1",
 ]
 
@@ -36,6 +40,7 @@ dev-dependencies = [
     "ruff>=0.6.7",
     "sp-repo-review[cli]>=2024.8.19",
     "types-pysftp>=0.2.17.20240106",
+    "types-requests>=2.32.0.20240914",
 ]
 
 # until uv gets a task runner
@@ -44,6 +49,8 @@ test = "pytest --cov --cov-report term-missing"
 typecheck = "mypy ."
 lint = "ruff check"
 style = "black ."
+repo-review = "repo-review"
+ipython = "uv run --extra interactive ipython"
 
 [tool.black]
 line-length = 88
