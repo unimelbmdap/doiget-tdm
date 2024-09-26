@@ -23,7 +23,7 @@ class WebRequester:
     def __init__(
         self,
         limiter: pyrate_limiter.Limiter = DEFAULT_LIMITER,
-        headers: dict[str, object] | None = None,
+        headers: dict[str, str] | None = None,
         max_delay_s: float | None = 60 * 60,
         per_host: bool = False,
         limit_statuses: collections.abc.Iterable[int] = (429, 500),
@@ -35,7 +35,6 @@ class WebRequester:
             max_delay=max_delay_s,
             per_host=per_host,
             limit_statuses=limit_statuses,
-            headers=headers,
         )
 
         self.max_retry_attempts = max_retry_attempts
@@ -43,6 +42,9 @@ class WebRequester:
         self.retry_wrapper = retryhttp.retry(
             max_attempt_number=self.max_retry_attempts
         )
+
+        if headers is not None:
+            self._session.headers = {**self._session.headers, **headers}
 
     def get(self, url: str) -> requests.Response:
 

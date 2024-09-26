@@ -108,7 +108,7 @@ enable_error_code = [
 plugins = [
   "pydantic.mypy"
 ]
-exclude = ["docs"]
+exclude = ["docs", "tests"]
 
 [[tool.mypy.overrides]]
 module = []

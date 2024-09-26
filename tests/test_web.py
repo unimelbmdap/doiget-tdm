@@ -49,7 +49,7 @@ def _test_retry_after_timeout(monkeypatch) -> None:
 
     n_attempts = 0
 
-    def mock_get_ok_after_timeout(*args, **kwargs) -> None:
+    def mock_get_ok_after_timeout(*args, **kwargs) -> requests.Response:
 
         nonlocal n_attempts
 
