@@ -46,6 +46,8 @@ class Settings(pydantic_settings.BaseSettings):
 
     quiet: bool = False
 
+    crossref_lmdb_path: pathlib.Path | None = None
+
     model_config = pydantic_settings.SettingsConfigDict(
         env_file=".env",
         env_prefix=f"{NAME.upper()}_",

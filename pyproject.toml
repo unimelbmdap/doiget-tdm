@@ -25,6 +25,9 @@ hello = "doiget:hello"
 interactive = [
     "ipython>=8.27.0",
 ]
+lmdb = [
+    "lmdb>=1.5.1",
+]
 
 [build-system]
 requires = ["hatchling"]

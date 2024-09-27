@@ -381,6 +381,9 @@ dependencies = [
 interactive = [
     { name = "ipython" },
 ]
+lmdb = [
+    { name = "lmdb" },
+]
 
 [package.dev-dependencies]
 dev = [
@@ -399,6 +402,7 @@ dev = [
 requires-dist = [
     { name = "ipython", marker = "extra == 'interactive'", specifier = ">=8.27.0" },
     { name = "limiter", specifier = ">=0.5.0" },
+    { name = "lmdb", marker = "extra == 'lmdb'", specifier = ">=1.5.1" },
     { name = "platformdirs", specifier = ">=4.3.6" },
     { name = "puremagic", specifier = ">=1.27" },
     { name = "pydantic", extras = ["email"], specifier = ">=2.9.2" },
@@ -556,6 +560,25 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/5f/76/3fcdddbac1a64a65630a0fc54b7b372d61b67da1fadf55649f8ca3d7d61e/limiter-0.5.0.tar.gz", hash = "sha256:71b9e972e04f1dcf3fa9b541ca3a16dcc1be6ce0d6a12407b25a0888a57e612f", size = 10212 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/11/3a/6a9b416113254840870d8db98fb7018957b1324898e65874cb1844f69dea/limiter-0.5.0-py2.py3-none-any.whl", hash = "sha256:920ee7587596b6421690ee2009a755a9970b743001567ae1005310d9b654985c", size = 10120 },
+]
+
+[[package]]
+name = "lmdb"
+version = "1.5.1"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/67/2c/0cc9375341121ca1f4b31a2137f955dc24550e095d733c9b42ea94113ba1/lmdb-1.5.1.tar.gz", hash = "sha256:717c255827d331e02f7242b44051aa06466c90f6d732ecb07b31edfb1e06c67a", size = 881246 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/8d/42/935f8645e4a42cd1439c6c72225a6ac6ff2c25e43b92a27fdf09820950d2/lmdb-1.5.1-cp310-cp310-macosx_10_9_universal2.whl", hash = "sha256:0b8c6a9d4ecdb186ff010bd96c1d67e27399cfe5e8a70029b8fba056538a29d1", size = 166403 },
+    { url = "https://files.pythonhosted.org/packages/2d/39/24b71e2b10edf46a1bc0c46eaca5c5253bbc7fea059c0626628c0754223c/lmdb-1.5.1-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:8f5796c4ad57bce495395af7a24fd5f7f307b2ac30f91caa6c8046e90d40edba", size = 294919 },
+    { url = "https://files.pythonhosted.org/packages/64/ca/5e8ed72930c410eedd25d801c8abfd6cbf65bac0461128fbdd03358b279e/lmdb-1.5.1-cp310-cp310-win_amd64.whl", hash = "sha256:96258cc9384963fdded53bf6bc815284dd25a65491e0915cc5d3e0c5cf59cdf8", size = 100275 },
+    { url = "https://files.pythonhosted.org/packages/f7/70/1076802d5d74f0cc248f6f8f5ae93695c78f05f393a1b1bd40e96fa935be/lmdb-1.5.1-cp311-cp311-macosx_10_9_universal2.whl", hash = "sha256:9f32d007610068c50c981d731b08f94ac9c7dead9e9f4248dd0a5797dba44493", size = 166449 },
+    { url = "https://files.pythonhosted.org/packages/29/a5/848894736c402fe592b827587d804ba0d2fb2248f50f354f0eab34aff121/lmdb-1.5.1-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:726f98836c0e5370fc9de579b8d2bcd957d03dd06f946fae05fe8048e20ad7ea", size = 297901 },
+    { url = "https://files.pythonhosted.org/packages/73/ae/33cc51aa29dda5c99dbf900ff8fe8fb6a0f46d6db9f60f1d896273b9c991/lmdb-1.5.1-cp311-cp311-win_amd64.whl", hash = "sha256:9abfe57eec2ed684401a9296280e1767d09098127fbf22aacd12e9005eeaa225", size = 100246 },
+    { url = "https://files.pythonhosted.org/packages/be/bd/2ed4ae3858a9bfcdff5822b12000476987d57c80d8fca29909311fc8eb0c/lmdb-1.5.1-cp312-cp312-macosx_10_9_universal2.whl", hash = "sha256:03a1fec597b10c300247f45c701a5098331aa2de738c12e149649684d84a449f", size = 166662 },
+    { url = "https://files.pythonhosted.org/packages/fa/f1/d6cd26ca50ed37c9535867af764abd3e3e727ff52899530907b6f0acd934/lmdb-1.5.1-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:0d9a8a21b715e5dc417469de97d6c36d4f95b5d17a1a22fd091a9823b9864a37", size = 301082 },
+    { url = "https://files.pythonhosted.org/packages/bb/14/087787e751f3f816604776ec416c4b4a7887f5bc5484fa603eb5444a1226/lmdb-1.5.1-cp312-cp312-win_amd64.whl", hash = "sha256:eb60acb7b0abe63790ef88ca3e186871f90c27629291ed6b5effee80bb45643f", size = 100130 },
+    { url = "https://files.pythonhosted.org/packages/c2/bd/7de56370ce188449a77a3f6b99def118f72f404087d4cbbab5061b36b024/lmdb-1.5.1-pp310-pypy310_pp73-macosx_11_0_arm64.whl", hash = "sha256:95ec4ec7c685577ac042b4f3ccc60d0ae574be4ab193d8f67cedce6ca92da35d", size = 78624 },
+    { url = "https://files.pythonhosted.org/packages/58/8b/174915cccea26d837ba0820627207200f5647e5b6a86dca501ca0c963e53/lmdb-1.5.1-pp310-pypy310_pp73-win_amd64.whl", hash = "sha256:2bec71fc9ad1a98a8b0176be1fd2952254a65e60bcbe63c0ac010f61e11f06d7", size = 82666 },
 ]
 
 [[package]]
