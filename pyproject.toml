@@ -60,7 +60,7 @@ skip-string-normalization = false
 skip-magic-trailing-comma = false
 
 [tool.ruff]
-exclude = ["docs"]
+exclude = ["docs", "tests"]
 lint.select = [
   "E",  # error
   "F",  # pyflakes

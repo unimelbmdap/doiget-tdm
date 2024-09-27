@@ -44,6 +44,8 @@ class Settings(pydantic_settings.BaseSettings):
         / (NAME + "_{time}.log")
     )
 
+    quiet: bool = False
+
     model_config = pydantic_settings.SettingsConfigDict(
         env_file=".env",
         env_prefix=f"{NAME.upper()}_",

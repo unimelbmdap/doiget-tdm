@@ -1,6 +1,7 @@
 import pytest
 
 import doiget.doi
+import doiget.config
 
 
 EXAMPLE_VALID_DOI = "10.3758/s13414-023-02718-0"
@@ -13,6 +14,26 @@ def test_doi() -> None:
     doi_from_quoted = doiget.doi.DOI(doi=EXAMPLE_VALID_DOI_QUOTED)
 
     assert doi == doi_from_quoted
+
+
+def test_doi_group():
+
+    doiget.config.SETTINGS.data_dir_n_groups = 5000
+
+    doi = doiget.doi.DOI(doi=EXAMPLE_VALID_DOI)
+
+    assert doi.group == "3652"
+
+    doi_from_quoted = doiget.doi.DOI(doi=EXAMPLE_VALID_DOI_QUOTED)
+
+    assert doi_from_quoted.group == "3652"
+
+    doiget.config.SETTINGS.data_dir_n_groups = None
+
+    doi = doiget.doi.DOI(doi=EXAMPLE_VALID_DOI)
+
+    assert doi.group == ""
+
 
 
 def test_doi_from_url() -> None:

@@ -29,7 +29,6 @@ class CrossRefWebAPI:
             )
         )
 
-
     @property
     def user_agent(self) -> str:
 
