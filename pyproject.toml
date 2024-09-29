@@ -16,6 +16,7 @@ dependencies = [
     "requests-ratelimiter>=0.7.0",
     "retryhttp[requests]>=1.1.0",
     "tzdata>=2024.1",
+    "universal-pathlib>=0.2.5",
 ]
 
 [project.scripts]

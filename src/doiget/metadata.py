@@ -155,6 +155,9 @@ class Metadata:
 
         self._raw: simdjson.Object | None = None
 
+        self._member_id: str | None = None
+        self._publisher_name: str | None = None
+
     @property
     def has_metadata(self) -> bool:
         return self.path.exists()
@@ -165,6 +168,32 @@ class Metadata:
             if self._raw is None:
                 self.load()
         return self._raw
+
+    @property
+    def member_id(self) -> str | None:
+        if not self.has_metadata or self.raw is None:
+            return None
+        if self._member_id is None:
+            raw_member_id = self.raw["member"]
+            if not isinstance(raw_member_id, str):
+                raise ValueError(f"Unexpected member id {raw_member_id}")
+            self._member_id = raw_member_id
+        return self._member_id
+
+    @property
+    def publisher_name(self) -> str | None:
+        if (
+            not self.has_metadata
+            or self.raw is None
+            or "publisher" not in self.raw
+        ):
+            return None
+        if self._publisher_name is None:
+            raw_publisher_name = self.raw["publisher"]
+            if not isinstance(raw_publisher_name, str):
+                raise ValueError(f"Unexpected publisher: {raw_publisher_name}")
+            self._publisher_name = raw_publisher_name
+        return self._publisher_name
 
     def load(self) -> None:
         raw = simdjson.Parser().load(path=self.path)
