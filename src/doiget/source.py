@@ -12,3 +12,4 @@ SourceLink: typing.TypeAlias = upath.UPath | typing.Sequence[upath.UPath]
 class Source:
     acq_method: typing.Callable[[SourceLink], bytes]
     link: SourceLink
+    encrypt: bool = False

@@ -17,6 +17,7 @@ dependencies = [
     "retryhttp[requests]>=1.1.0",
     "tzdata>=2024.1",
     "universal-pathlib>=0.2.5",
+    "pyrage>=1.2.1",
 ]
 
 [project.scripts]
@@ -45,11 +46,12 @@ dev-dependencies = [
     "sp-repo-review[cli]>=2024.8.19",
     "types-pysftp>=0.2.17.20240106",
     "types-requests>=2.32.0.20240914",
+    "pyrage-stubs>=1.2.1",
 ]
 
 # until uv gets a task runner
 [tool.poe.tasks]
-test = "pytest --cov --cov-report term-missing"
+test = "uv run --extra lmdb pytest --cov --cov-report term-missing"
 typecheck = "mypy ."
 lint = "ruff check"
 style = "black ."

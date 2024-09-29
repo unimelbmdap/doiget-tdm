@@ -30,6 +30,8 @@ class Settings(pydantic_settings.BaseSettings):
 
     email_address: pydantic.EmailStr | None = None
 
+    encryption_passphrase: pydantic.SecretStr | None = None
+
     log_level: int | str = logging.WARNING
     file_log_level: int | str = logging.INFO
 

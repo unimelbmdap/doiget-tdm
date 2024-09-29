@@ -3,6 +3,7 @@
 import doiget.doi
 import doiget.metadata
 import doiget.format
+import doiget.publisher
 
 
 class FullText:
@@ -26,7 +27,9 @@ class FullText:
 
     def set_sources(self) -> None:
 
-        if not self.metadata.has_metadata or self.metadata.member_id is None:
+        if not self.metadata.exists or self.metadata.member_id is None:
             return
 
+        publisher = doiget.publisher.registry["member_id"][self.metadata.member_id]
 
+        publisher.set_sources(fulltext=self)
