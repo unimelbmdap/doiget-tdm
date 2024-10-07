@@ -5,19 +5,19 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
-    "limiter>=0.5.0",
-    "platformdirs>=4.3.6",
-    "puremagic>=1.27",
-    "pydantic-settings>=2.5.2",
-    "pydantic[email]>=2.9.2",
-    "pysftp>=0.2.9",
-    "pysimdjson>=6.0.2",
-    "requests>=2.32.3",
-    "requests-ratelimiter>=0.7.0",
-    "retryhttp[requests]>=1.1.0",
-    "tzdata>=2024.1",
-    "universal-pathlib>=0.2.5",
-    "pyrage>=1.2.1",
+  "limiter>=0.5.0",
+  "platformdirs>=4.3.6",
+  "puremagic>=1.27",
+  "pydantic-settings>=2.5.2",
+  "pydantic[email]>=2.9.2",
+  "pysftp>=0.2.9",
+  "pysimdjson>=6.0.2",
+  "requests>=2.32.3",
+  "requests-ratelimiter>=0.7.0",
+  "retryhttp[requests]>=1.1.0",
+  "tzdata>=2024.1",
+  "universal-pathlib>=0.2.5",
+  "pyrage>=1.2.1",
 ]
 
 [project.scripts]
@@ -25,10 +25,17 @@ hello = "doiget:hello"
 
 [project.optional-dependencies]
 interactive = [
-    "ipython>=8.27.0",
+  "ipython>=8.27.0",
 ]
 lmdb = [
-    "lmdb>=1.5.1",
+  "lmdb>=1.5.1",
+]
+docs = [
+    "furo>=2024.8.6",
+    "sphinx>=8.0.2",
+    "sphinx-argparse>=0.5.2",
+    "sphinx-argparse-cli>=1.18.2",
+    "sphinx-autodoc-typehints>=2.4.4",
 ]
 
 [build-system]
@@ -37,16 +44,16 @@ build-backend = "hatchling.build"
 
 [tool.uv]
 dev-dependencies = [
-    "black>=24.8.0",
-    "mypy>=1.11.2",
-    "pytest>=8.3.3",
-    "pytest-cov>=5.0.0",
-    "repo-review>=0.11.2",
-    "ruff>=0.6.7",
-    "sp-repo-review[cli]>=2024.8.19",
-    "types-pysftp>=0.2.17.20240106",
-    "types-requests>=2.32.0.20240914",
-    "pyrage-stubs>=1.2.1",
+  "black>=24.8.0",
+  "mypy>=1.11.2",
+  "pytest>=8.3.3",
+  "pytest-cov>=5.0.0",
+  "repo-review>=0.11.2",
+  "ruff>=0.6.7",
+  "sp-repo-review[cli]>=2024.8.19",
+  "types-pysftp>=0.2.17.20240106",
+  "types-requests>=2.32.0.20240914",
+  "pyrage-stubs>=1.2.1",
 ]
 
 # until uv gets a task runner
@@ -57,6 +64,7 @@ lint = "ruff check"
 style = "black ."
 repo-review = "repo-review"
 ipython = "uv run --extra interactive ipython"
+docs = "uv run --extra docs sphinx-build docs gh-pages"
 
 [tool.black]
 line-length = 88
