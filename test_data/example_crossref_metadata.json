@@ -1,0 +1,650 @@
+{
+  "status": "ok",
+  "message-type": "work",
+  "message-version": "1.0.0",
+  "message": {
+    "indexed": {
+      "date-parts": [
+        [
+          2024,
+          8,
+          4
+        ]
+      ],
+      "date-time": "2024-08-04T05:12:43Z",
+      "timestamp": 1722748363964
+    },
+    "reference-count": 46,
+    "publisher": "PeerJ",
+    "content-domain": {
+      "domain": [],
+      "crossmark-restriction": false
+    },
+    "short-container-title": [],
+    "DOI": "10.7717/peerj.1038",
+    "type": "journal-article",
+    "created": {
+      "date-parts": [
+        [
+          2015,
+          6,
+          23
+        ]
+      ],
+      "date-time": "2015-06-23T07:32:34Z",
+      "timestamp": 1435044754000
+    },
+    "page": "e1038",
+    "source": "Crossref",
+    "is-referenced-by-count": 11,
+    "title": [
+      "Sensitivity to the visual field origin of natural image patches in human low-level visual cortex"
+    ],
+    "prefix": "10.7717",
+    "volume": "3",
+    "author": [
+      {
+        "given": "Damien J.",
+        "family": "Mannion",
+        "sequence": "first",
+        "affiliation": [
+          {
+            "name": "School of Psychology, UNSW Australia, Australia"
+          }
+        ]
+      }
+    ],
+    "member": "4443",
+    "published-online": {
+      "date-parts": [
+        [
+          2015,
+          6,
+          23
+        ]
+      ]
+    },
+    "reference": [
+      {
+        "issue": "11",
+        "key": "10.7717/peerj.1038/ref-1",
+        "doi-asserted-by": "publisher",
+        "first-page": "1275",
+        "DOI": "10.1097/OPX.0b013e31822f4d6a",
+        "article-title": "Inferior field loss increases rate of falls in older adults with glaucoma",
+        "volume": "88",
+        "author": "Black",
+        "year": "2011",
+        "journal-title": "Optometry and Vision Science"
+      },
+      {
+        "issue": "3",
+        "key": "10.7717/peerj.1038/ref-2",
+        "doi-asserted-by": "publisher",
+        "first-page": "283",
+        "DOI": "10.1111/j.1475-1313.2010.00811.x",
+        "article-title": "Inferior visual field reductions are associated with poorer functional status among older adults with glaucoma",
+        "volume": "31",
+        "author": "Black",
+        "year": "2011",
+        "journal-title": "Ophthalmic and Physiological Optics"
+      },
+      {
+        "key": "10.7717/peerj.1038/ref-3",
+        "first-page": "563",
+        "article-title": "Cone contrast and opponent modulation color spaces",
+        "volume-title": "Human color vision",
+        "author": "Brainard",
+        "year": "1996",
+        "edition": "2"
+      },
+      {
+        "issue": "4",
+        "key": "10.7717/peerj.1038/ref-4",
+        "doi-asserted-by": "publisher",
+        "first-page": "343",
+        "DOI": "10.1080/09548980701642277",
+        "article-title": "Local statistics of retinal optic flow for self-motion through natural sceneries",
+        "volume": "18",
+        "author": "Calow",
+        "year": "2007",
+        "journal-title": "Network"
+      },
+      {
+        "issue": "21",
+        "key": "10.7717/peerj.1038/ref-5",
+        "doi-asserted-by": "publisher",
+        "first-page": "2207",
+        "DOI": "10.1016/S0042-6989(03)00359-6",
+        "article-title": "Temporal characteristics of binocular rivalry: visual field asymmetries",
+        "volume": "43",
+        "author": "Chen",
+        "year": "2003",
+        "journal-title": "Vision Research"
+      },
+      {
+        "issue": "1",
+        "key": "10.7717/peerj.1038/ref-6",
+        "doi-asserted-by": "publisher",
+        "first-page": "39",
+        "DOI": "10.1023/B:BRAT.0000047335.00110.6a",
+        "article-title": "A study on asymmetry of spatial visual field by analysis of the fMRI BOLD response",
+        "volume": "17",
+        "author": "Chen",
+        "year": "2004",
+        "journal-title": "Brain Topography"
+      },
+      {
+        "issue": "3",
+        "key": "10.7717/peerj.1038/ref-7",
+        "doi-asserted-by": "publisher",
+        "first-page": "162",
+        "DOI": "10.1006/cbmr.1996.0014",
+        "article-title": "AFNI: software for analysis and visualization of functional magnetic resonance neuroimages",
+        "volume": "29",
+        "author": "Cox",
+        "year": "1996",
+        "journal-title": "Computers and Biomedical Research"
+      },
+      {
+        "issue": "2",
+        "key": "10.7717/peerj.1038/ref-8",
+        "doi-asserted-by": "publisher",
+        "first-page": "179",
+        "DOI": "10.1006/nimg.1998.0395",
+        "article-title": "Cortical surface-based analysis. I: Segmentation and surface reconstruction",
+        "volume": "9",
+        "author": "Dale",
+        "year": "1999",
+        "journal-title": "NeuroImage"
+      },
+      {
+        "issue": "3–4",
+        "key": "10.7717/peerj.1038/ref-9",
+        "doi-asserted-by": "publisher",
+        "first-page": "303",
+        "DOI": "10.1007/s002210000653",
+        "article-title": "Superior performance for visually guided pointing in the lower visual field",
+        "volume": "137",
+        "author": "Danckert",
+        "year": "2001",
+        "journal-title": "Experimental Brain Research"
+      },
+      {
+        "key": "10.7717/peerj.1038/ref-10",
+        "doi-asserted-by": "crossref",
+        "first-page": "29",
+        "DOI": "10.7551/mitpress/6614.003.0004",
+        "article-title": "Ups and downs in the visual control of action",
+        "volume-title": "Taking action: cognitive neuroscience perspectives on intentional acts",
+        "author": "Danckert",
+        "year": "2003"
+      },
+      {
+        "issue": "7",
+        "key": "10.7717/peerj.1038/ref-11",
+        "doi-asserted-by": "publisher",
+        "first-page": "1160",
+        "DOI": "10.1364/JOSAA.2.001160",
+        "article-title": "Uncertainty relation for resolution in space, spatial frequency, and orientation optimized by two-dimensional visual cortical filters",
+        "volume": "2",
+        "author": "Daugman",
+        "year": "1985",
+        "journal-title": "Journal of the Optical Society of America. Part A, Optics and Image Science"
+      },
+      {
+        "key": "10.7717/peerj.1038/ref-12",
+        "doi-asserted-by": "publisher",
+        "first-page": "241",
+        "DOI": "10.1113/jphysiol.1984.sp015499",
+        "article-title": "Chromatic mechanisms in lateral geniculate nucleus of macaque",
+        "volume": "357",
+        "author": "Derrington",
+        "year": "1984",
+        "journal-title": "Journal of Physiology"
+      },
+      {
+        "issue": "6",
+        "key": "10.7717/peerj.1038/ref-13",
+        "doi-asserted-by": "publisher",
+        "first-page": "2382",
+        "DOI": "10.1073/pnas.93.6.2382",
+        "article-title": "Mapping striate and extrastriate visual areas in human cerebral cortex",
+        "volume": "93",
+        "author": "DeYoe",
+        "year": "1996",
+        "journal-title": "Proceedings of the National Academy of Sciences of the United States of America"
+      },
+      {
+        "issue": "11",
+        "key": "10.7717/peerj.1038/ref-14",
+        "doi-asserted-by": "publisher",
+        "first-page": "2637",
+        "DOI": "10.1093/cercor/bhn024",
+        "article-title": "Organizational principles of human visual cortex revealed by receptor mapping",
+        "volume": "18",
+        "author": "Eickhoff",
+        "year": "2008",
+        "journal-title": "Cerebral Cortex"
+      },
+      {
+        "issue": "2",
+        "key": "10.7717/peerj.1038/ref-15",
+        "doi-asserted-by": "publisher",
+        "first-page": "1195",
+        "DOI": "10.1016/j.neuroimage.2011.09.059",
+        "article-title": "The development and use of phase-encoded functional MRI designs",
+        "volume": "62",
+        "author": "Engel",
+        "year": "2012",
+        "journal-title": "NeuroImage"
+      },
+      {
+        "issue": "2",
+        "key": "10.7717/peerj.1038/ref-16",
+        "doi-asserted-by": "publisher",
+        "first-page": "181",
+        "DOI": "10.1093/cercor/7.2.181",
+        "article-title": "Retinotopic organization in human visual cortex and the spatial precision of functional MRI",
+        "volume": "7",
+        "author": "Engel",
+        "year": "1997",
+        "journal-title": "Cerebral Cortex"
+      },
+      {
+        "issue": "2",
+        "key": "10.7717/peerj.1038/ref-17",
+        "doi-asserted-by": "publisher",
+        "first-page": "195",
+        "DOI": "10.1006/nimg.1998.0396",
+        "article-title": "Cortical surface-based analysis. II: inflation, flattening, and a surface-based coordinate system",
+        "volume": "9",
+        "author": "Fischl",
+        "year": "1999",
+        "journal-title": "NeuroImage"
+      },
+      {
+        "issue": "26",
+        "key": "10.7717/peerj.1038/ref-18",
+        "first-page": "429",
+        "article-title": "Theory of communication",
+        "volume": "93",
+        "author": "Gabor",
+        "year": "1946",
+        "journal-title": "Proceedings of the Institution of Electrical Engineers"
+      },
+      {
+        "key": "10.7717/peerj.1038/ref-19",
+        "volume-title": "The perception of the visual world",
+        "author": "Gibson",
+        "year": "1950"
+      },
+      {
+        "issue": "14",
+        "key": "10.7717/peerj.1038/ref-20",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1167/14.14.13",
+        "article-title": "Visual field asymmetries in visual evoked responses",
+        "volume": "14",
+        "author": "Hagler",
+        "year": "2014",
+        "journal-title": "Journal of Vision"
+      },
+      {
+        "issue": "44",
+        "key": "10.7717/peerj.1038/ref-21",
+        "doi-asserted-by": "publisher",
+        "first-page": "11896",
+        "DOI": "10.1523/JNEUROSCI.2991-07.2007",
+        "article-title": "Topographic organization in and near human visual area V4",
+        "volume": "27",
+        "author": "Hansen",
+        "year": "2007",
+        "journal-title": "Journal of Neuroscience"
+      },
+      {
+        "issue": "6598",
+        "key": "10.7717/peerj.1038/ref-22",
+        "doi-asserted-by": "publisher",
+        "first-page": "334",
+        "DOI": "10.1038/383334a0",
+        "article-title": "Attentional resolution and the locus of visual awareness",
+        "volume": "383",
+        "author": "He",
+        "year": "1996",
+        "journal-title": "Nature"
+      },
+      {
+        "key": "10.7717/peerj.1038/ref-23",
+        "doi-asserted-by": "publisher",
+        "first-page": "103",
+        "DOI": "10.2478/v10053-008-0080-6",
+        "article-title": "The what and why of perceptual asymmetries in the visual domain",
+        "volume": "6",
+        "author": "Karim",
+        "year": "2010",
+        "journal-title": "Advances in Cognitive Psychology"
+      },
+      {
+        "key": "10.7717/peerj.1038/ref-24",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.3389/neuro.06.004.2008",
+        "article-title": "Representational similarity analysis—connecting the branches of systems neuroscience",
+        "volume": "2",
+        "author": "Kriegeskorte",
+        "year": "2008",
+        "journal-title": "Frontiers in Systems Neuroscience"
+      },
+      {
+        "issue": "51",
+        "key": "10.7717/peerj.1038/ref-25",
+        "doi-asserted-by": "publisher",
+        "first-page": "13128",
+        "DOI": "10.1523/JNEUROSCI.1657-06.2006",
+        "article-title": "Two retinotopic visual areas in human lateral occipital cortex",
+        "volume": "26",
+        "author": "Larsson",
+        "year": "2006",
+        "journal-title": "Journal of Neuroscience"
+      },
+      {
+        "issue": "11",
+        "key": "10.7717/peerj.1038/ref-26",
+        "doi-asserted-by": "publisher",
+        "first-page": "1294",
+        "DOI": "10.1167/6.11.12",
+        "article-title": "Neural correlates of the visual vertical meridian asymmetry",
+        "volume": "6",
+        "author": "Liu",
+        "year": "2006",
+        "journal-title": "Journal of Vision"
+      },
+      {
+        "key": "10.7717/peerj.1038/ref-27",
+        "volume-title": "Visual psychophysics. From laboratory to theory",
+        "author": "Lu",
+        "year": "2014"
+      },
+      {
+        "key": "10.7717/peerj.1038/ref-28",
+        "doi-asserted-by": "publisher",
+        "first-page": "152",
+        "DOI": "10.1016/j.neuroimage.2013.04.036",
+        "article-title": "Consequences of polar form coherence for fMRI responses in human visual cortex",
+        "volume": "78",
+        "author": "Mannion",
+        "year": "2013",
+        "journal-title": "NeuroImage"
+      },
+      {
+        "issue": "6",
+        "key": "10.7717/peerj.1038/ref-29",
+        "doi-asserted-by": "publisher",
+        "first-page": "3465",
+        "DOI": "10.1152/jn.00190.2010",
+        "article-title": "Orientation anisotropies in human visual cortex",
+        "volume": "103",
+        "author": "Mannion",
+        "year": "2010",
+        "journal-title": "Journal of Neurophysiology"
+      },
+      {
+        "issue": "11",
+        "key": "10.7717/peerj.1038/ref-30",
+        "doi-asserted-by": "publisher",
+        "first-page": "1297",
+        "DOI": "10.1364/JOSA.70.001297",
+        "article-title": "Mathematical description of the responses of simple cortical cells",
+        "volume": "70",
+        "author": "Marčelja",
+        "year": "1980",
+        "journal-title": "Journal of the Optical Society of America"
+      },
+      {
+        "key": "10.7717/peerj.1038/ref-31",
+        "doi-asserted-by": "publisher",
+        "first-page": "8",
+        "DOI": "10.1016/j.jneumeth.2006.11.017",
+        "article-title": "PsychoPy–psychophysics software in Python",
+        "volume": "162",
+        "author": "Peirce",
+        "year": "2007",
+        "journal-title": "Journal of Neuroscience Methods"
+      },
+      {
+        "key": "10.7717/peerj.1038/ref-32",
+        "doi-asserted-by": "publisher",
+        "first-page": "519",
+        "DOI": "10.1017/S0140525X00080018",
+        "article-title": "Functional specialization in the lower and upper visual fields in humans: its ecological origins and neurophysiological implications",
+        "volume": "13",
+        "author": "Previc",
+        "year": "1990",
+        "journal-title": "Behavioral and Brain Sciences"
+      },
+      {
+        "issue": "3",
+        "key": "10.7717/peerj.1038/ref-33",
+        "doi-asserted-by": "publisher",
+        "first-page": "839",
+        "DOI": "10.1016/j.neuroimage.2008.09.037",
+        "article-title": "A new method for improving functional-to-structural MRI alignment using local Pearson correlation",
+        "volume": "44",
+        "author": "Saad",
+        "year": "2009",
+        "journal-title": "NeuroImage"
+      },
+      {
+        "key": "10.7717/peerj.1038/ref-34",
+        "first-page": "1510",
+        "article-title": "SUMA: an interface for surface-based intra- and inter-subject analysis with AFNI",
+        "author": "Saad",
+        "year": "2004"
+      },
+      {
+        "issue": "5",
+        "key": "10.7717/peerj.1038/ref-35",
+        "doi-asserted-by": "publisher",
+        "first-page": "661",
+        "DOI": "10.1016/j.neuron.2006.07.021",
+        "article-title": "The radial bias: a different slant on visual orientation sensitivity in human and nonhuman primates",
+        "volume": "51",
+        "author": "Sasaki",
+        "year": "2006",
+        "journal-title": "Neuron"
+      },
+      {
+        "issue": "28",
+        "key": "10.7717/peerj.1038/ref-36",
+        "doi-asserted-by": "publisher",
+        "first-page": "9050",
+        "DOI": "10.1523/JNEUROSCI.1760-09.2009",
+        "article-title": "The foveal confluence in human visual cortex",
+        "volume": "29",
+        "author": "Schira",
+        "year": "2009",
+        "journal-title": "Journal of Neuroscience"
+      },
+      {
+        "issue": "6",
+        "key": "10.7717/peerj.1038/ref-37",
+        "doi-asserted-by": "publisher",
+        "first-page": "4284",
+        "DOI": "10.1152/jn.00972.2006",
+        "article-title": "Two-dimensional mapping of the central and parafoveal visual field to human visual cortex",
+        "volume": "97",
+        "author": "Schira",
+        "year": "2007",
+        "journal-title": "Journal of Neurophysiology"
+      },
+      {
+        "issue": "14:12",
+        "key": "10.7717/peerj.1038/ref-38",
+        "doi-asserted-by": "publisher",
+        "first-page": "1",
+        "DOI": "10.1167/8.14.12",
+        "article-title": "Salient features in gaze-aligned recordings of human visual input during free exploration of natural environments",
+        "volume": "8",
+        "author": "Schumann",
+        "year": "2008",
+        "journal-title": "Journal of Vision"
+      },
+      {
+        "issue": "5212",
+        "key": "10.7717/peerj.1038/ref-39",
+        "doi-asserted-by": "publisher",
+        "first-page": "889",
+        "DOI": "10.1126/science.7754376",
+        "article-title": "Borders of multiple visual areas in humans revealed by functional magnetic resonance imaging",
+        "volume": "268",
+        "author": "Sereno",
+        "year": "1995",
+        "journal-title": "Science"
+      },
+      {
+        "key": "10.7717/peerj.1038/ref-40",
+        "doi-asserted-by": "crossref",
+        "first-page": "1",
+        "DOI": "10.1007/978-3-642-71060-5_1",
+        "article-title": "The upper and lower visual field of man: electrophysiological and functional differences",
+        "volume-title": "Progress in sensory physiology",
+        "volume": "vol. 8",
+        "author": "Skrandies",
+        "year": "1987"
+      },
+      {
+        "issue": "Supplement 1",
+        "key": "10.7717/peerj.1038/ref-41",
+        "doi-asserted-by": "publisher",
+        "first-page": "S208",
+        "DOI": "10.1016/j.neuroimage.2004.07.051",
+        "article-title": "Advances in functional and structural MR image analysis and implementation as FSL",
+        "volume": "23",
+        "author": "Smith",
+        "year": "2004",
+        "journal-title": "NeuroImage"
+      },
+      {
+        "issue": "5",
+        "key": "10.7717/peerj.1038/ref-42",
+        "doi-asserted-by": "crossref",
+        "first-page": "1531",
+        "DOI": "10.1523/JNEUROSCI.08-05-01531.1988",
+        "article-title": "Functional anatomy of macaque striate cortex. II. Retinotopic organization",
+        "volume": "8",
+        "author": "Tootell",
+        "year": "1988",
+        "journal-title": "Journal of Neuroscience"
+      },
+      {
+        "issue": "3",
+        "key": "10.7717/peerj.1038/ref-43",
+        "doi-asserted-by": "publisher",
+        "first-page": "391",
+        "DOI": "10.1088/0954-898X/14/3/302",
+        "article-title": "Statistics of natural image categories",
+        "volume": "14",
+        "author": "Torralba",
+        "year": "2003",
+        "journal-title": "Network"
+      },
+      {
+        "key": "10.7717/peerj.1038/ref-44",
+        "volume-title": "Treatise on physiological optics",
+        "volume": "vol III",
+        "author": "Von Helmholtz",
+        "year": "19101925"
+      },
+      {
+        "issue": "3",
+        "key": "10.7717/peerj.1038/ref-45",
+        "doi-asserted-by": "publisher",
+        "first-page": "558",
+        "DOI": "10.1017/S0140525X00080201",
+        "article-title": "Only half way up",
+        "volume": "13",
+        "author": "Young",
+        "year": "1990",
+        "journal-title": "Behavioral and Brain Sciences"
+      },
+      {
+        "issue": "4",
+        "key": "10.7717/peerj.1038/ref-46",
+        "doi-asserted-by": "publisher",
+        "first-page": "357",
+        "DOI": "10.1080/09548980500497758",
+        "article-title": "Movement-induced motion signal distributions in outdoor scenes",
+        "volume": "16",
+        "author": "Zanker",
+        "year": "2005",
+        "journal-title": "Network"
+      }
+    ],
+    "container-title": [
+      "PeerJ"
+    ],
+    "original-title": [],
+    "language": "en",
+    "link": [
+      {
+        "URL": "https://peerj.com/articles/1038.pdf",
+        "content-type": "unspecified",
+        "content-version": "vor",
+        "intended-application": "similarity-checking"
+      }
+    ],
+    "deposited": {
+      "date-parts": [
+        [
+          2024,
+          6,
+          9
+        ]
+      ],
+      "date-time": "2024-06-09T17:23:19Z",
+      "timestamp": 1717953799000
+    },
+    "score": 1,
+    "resource": {
+      "primary": {
+        "URL": "https://peerj.com/articles/1038"
+      }
+    },
+    "subtitle": [],
+    "short-title": [],
+    "issued": {
+      "date-parts": [
+        [
+          2015,
+          6,
+          23
+        ]
+      ]
+    },
+    "references-count": 46,
+    "alternative-id": [
+      "10.7717/peerj.1038"
+    ],
+    "URL": "http://dx.doi.org/10.7717/peerj.1038",
+    "relation": {},
+    "ISSN": [
+      "2167-8359"
+    ],
+    "issn-type": [
+      {
+        "value": "2167-8359",
+        "type": "electronic"
+      }
+    ],
+    "subject": [],
+    "published": {
+      "date-parts": [
+        [
+          2015,
+          6,
+          23
+        ]
+      ]
+    }
+  }
+}

@@ -50,7 +50,7 @@ class CrossRefWebAPIClient:
             or "message" not in json_data
             or len(json_data["message"]) == 0
         ):
-            msg = f"Unexpected status of metadata response: {json}"
+            msg = f"Unexpected status of metadata response: {json_data}"
             LOGGER.error(msg)
             raise ValueError(msg)
 
