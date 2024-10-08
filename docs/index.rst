@@ -7,15 +7,15 @@ Documentation
     :hidden:
 
     workflow
-    concepts
-    publishers
     configuration
+    publishers
+    concepts
     using_the_api
     development
     reference/cmd
     reference/api
 
-This is a command-line application and Python library for obtaining the metadata and full-text of published journal articles.
+``doiget`` is a command-line application and Python library for obtaining the metadata and full-text of published journal articles.
 
 Features
 --------
@@ -40,8 +40,8 @@ The package can be installed using ``pip``:
 Quickstart
 ----------
 
+Download the full-text (XML) of the journal article with |DOI| `10.1371/journal.pbio.1002611 <https://doi.org/10.1371/journal.pbio.1002611>`_ to the `default directory`:
 
+.. code-block:: bash
 
-
-
-
+    doiget acquire 10.1371/journal.pbio.1002611

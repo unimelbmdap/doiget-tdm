@@ -10,6 +10,7 @@ extensions = [
     "sphinx_autodoc_typehints",
     # "sphinx_argparse_cli",
     "sphinxarg.ext",
+    "sphinxcontrib.autodoc_pydantic",
 ]
 
 templates_path = ["_templates"]
@@ -31,6 +32,10 @@ autodoc_preserve_defaults = True
 autoclass_content = "init"
 
 typehints_use_signature = True
+typehints_fully_qualified = True
+typehints_always_use_bars_union = True
+typehints_defaults = "braces"
+
 
 
 def setup(app):

@@ -36,6 +36,8 @@ docs = [
     "sphinx-argparse>=0.5.2",
     "sphinx-argparse-cli>=1.18.2",
     "sphinx-autodoc-typehints>=2.4.4",
+    "sphinx-autobuild>=2024.10.3",
+    "autodoc-pydantic>=2.2.0",
 ]
 
 [build-system]
@@ -65,6 +67,7 @@ style = "black ."
 repo-review = "repo-review"
 ipython = "uv run --extra interactive ipython"
 docs = "uv run --extra docs sphinx-build docs gh-pages"
+docs-watch = "uv run --extra docs sphinx-autobuild docs gh-pages"
 
 [tool.black]
 line-length = 88
