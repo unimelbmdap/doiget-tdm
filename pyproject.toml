@@ -38,6 +38,7 @@ docs = [
     "sphinx-autodoc-typehints>=2.4.4",
     "sphinx-autobuild>=2024.10.3",
     "autodoc-pydantic>=2.2.0",
+    "sphinx-toolbox>=3.8.0",
 ]
 
 [build-system]
@@ -150,3 +151,17 @@ testpaths = ["tests"]
 
 [tool.coverage.run]
 omit = ["tests/*"]
+
+[tool.coverage.report]
+exclude_also = [
+  "def __repr__",
+  "if self.debug:",
+  "if settings.DEBUG",
+  "raise AssertionError",
+  "raise NotImplementedError",
+  "if 0:",
+  "if __name__ == .__main__.:",
+  "if TYPE_CHECKING:",
+  "class .*\\bProtocol\\):",
+  "@(abc\\.)?abstractmethod",
+]

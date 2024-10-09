@@ -13,7 +13,7 @@ Documentation
     using_the_api
     development
     reference/cmd
-    reference/api
+    reference/index
 
 ``doiget`` is a command-line application and Python library for obtaining the metadata and full-text of published journal articles.
 

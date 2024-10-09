@@ -31,9 +31,13 @@ class Format:
 
         self.sources: list[doiget.source.Source] | None = None
 
+        group = self.doi.get_group(
+            n_groups=doiget.config.SETTINGS.data_dir_n_groups
+        )
+
         self.local_path = (
             doiget.config.SETTINGS.data_dir
-            / self.doi.group
+            / group
             / self.doi.quoted
             / f"{self.doi.quoted}.{self.name.value}"
         )

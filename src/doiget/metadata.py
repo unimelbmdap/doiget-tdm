@@ -146,9 +146,13 @@ class Metadata:
 
         self._doi = doi
 
+        group = self._doi.get_group(
+            n_groups=doiget.config.SETTINGS.data_dir_n_groups
+        )
+
         self.path = (
             doiget.config.SETTINGS.data_dir
-            / self._doi.group
+            / group
             / self._doi.quoted
             / f"{self._doi.quoted}_metadata.json"
         )

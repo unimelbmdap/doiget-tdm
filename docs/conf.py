@@ -5,6 +5,11 @@ version = "0.1.0"
 release = version
 
 extensions = [
+    "sphinx_toolbox.more_autodoc",
+    "sphinx_toolbox.github",
+    "sphinx_toolbox.more_autodoc.genericalias",
+    "sphinx_toolbox.more_autodoc.sourcelink",
+    "sphinx.ext.intersphinx",
     "sphinx.ext.autodoc",
     "sphinx.ext.napoleon",
     "sphinx_autodoc_typehints",
@@ -36,7 +41,9 @@ typehints_fully_qualified = True
 typehints_always_use_bars_union = True
 typehints_defaults = "braces"
 
-
+github_username = "unimelbmdap"
+github_repository = "doiget"
+autodoc_show_sourcelink = True
 
 def setup(app):
     app.add_css_file("types_fix.css")

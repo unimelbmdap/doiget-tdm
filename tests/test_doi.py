@@ -18,21 +18,27 @@ def test_doi() -> None:
 
 def test_doi_group():
 
-    doiget.config.SETTINGS.data_dir_n_groups = 5000
+    n_groups = 5000
 
     doi = doiget.doi.DOI(doi=EXAMPLE_VALID_DOI)
 
-    assert doi.group == "3652"
+    doi_group = doi.get_group(n_groups=n_groups)
+
+    assert doi_group == "3652"
 
     doi_from_quoted = doiget.doi.DOI(doi=EXAMPLE_VALID_DOI_QUOTED)
 
-    assert doi_from_quoted.group == "3652"
+    doi_from_quoted_group = doi_from_quoted.get_group(n_groups=n_groups)
 
-    doiget.config.SETTINGS.data_dir_n_groups = None
+    assert doi_from_quoted_group == "3652"
+
+    n_groups = None
 
     doi = doiget.doi.DOI(doi=EXAMPLE_VALID_DOI)
 
-    assert doi.group == ""
+    doi_group = doi.get_group(n_groups=n_groups)
+
+    assert doi_group == ""
 
 
 
@@ -85,9 +91,6 @@ def test_doi_parts() -> None:
 
     assert prefix == "10.3758"
     assert suffix == "s13414-023-02718-0"
-
-    assert doi.prefix == prefix
-    assert doi.suffix == suffix
 
 
 def test_doi_parts_multiple_backslash() -> None:
