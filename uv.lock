@@ -500,6 +500,7 @@ version = "0.1.0"
 source = { editable = "." }
 dependencies = [
     { name = "limiter" },
+    { name = "more-itertools" },
     { name = "platformdirs" },
     { name = "puremagic" },
     { name = "pydantic", extra = ["email"] },
@@ -553,6 +554,7 @@ requires-dist = [
     { name = "ipython", marker = "extra == 'interactive'", specifier = ">=8.27.0" },
     { name = "limiter", specifier = ">=0.5.0" },
     { name = "lmdb", marker = "extra == 'lmdb'", specifier = ">=1.5.1" },
+    { name = "more-itertools", specifier = ">=10.5.0" },
     { name = "platformdirs", specifier = ">=4.3.6" },
     { name = "puremagic", specifier = ">=1.27" },
     { name = "pydantic", extras = ["email"], specifier = ">=2.9.2" },

@@ -2,7 +2,7 @@ Command-line reference
 ======================
 
 .. argparse::
-  :module: pypubtext.cli
+  :module: doiget.cli
   :func: setup_parser
-  :prog: pypubtext
+  :prog: doiget
 

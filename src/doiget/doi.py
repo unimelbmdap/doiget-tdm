@@ -1,10 +1,22 @@
+"""
+Represent Digital Object Identifiers (DOIs) and their creation from input.
+"""
+
+
 from __future__ import annotations
 
 import urllib.parse
 import re
 import hashlib
 import typing
+import logging
+import pathlib
+import csv
 
+import more_itertools
+
+LOGGER = logging.getLogger(__name__)
+LOGGER.addHandler(logging.NullHandler())
 
 # https://www.crossref.org/blog/dois-and-matching-regular-expressions/
 DOI_MATCHER = re.compile(r"(?i)10.\d{4,9}/[-._;()/:A-Z0-9]+$")
@@ -47,6 +59,18 @@ class DOI:
         """
 
         self._doi = str(doi)
+
+        if self._doi.startswith("http"):
+            raise ValueError(
+                f"The string {self._doi} looks to be a URL; "
+                + "use the `.from_url` constructor."
+            )
+
+        if not self._doi.startswith("10."):
+            raise ValueError(
+                f"The string {self._doi} does not appear to be a DOI."
+            )
+
         if unquote:
             self._doi = urllib.parse.unquote(string=self._doi)
 
@@ -91,7 +115,7 @@ class DOI:
         )
 
     @staticmethod
-    def from_url(url: str) -> DOI:
+    def from_url(url: str, unquote: bool = True) -> DOI:
         """
         Create a DOI object from a URL containing a DOI.
 
@@ -99,6 +123,9 @@ class DOI:
         ----------
         url
             The URL containing the DOI.
+        unquote
+            Converts special characters in ``doi`` from 'quoted' form (e.g., where the
+            '/' character is represented by '%2F') into 'unquoted'.
 
         Returns
         -------
@@ -115,7 +142,7 @@ class DOI:
         except ValueError as err:
             raise ValueError(f"No suitable DOI found in {url}") from err
 
-        return DOI(doi=match)
+        return DOI(doi=match, unquote=unquote)
 
     def get_group(
         self,
@@ -149,3 +176,110 @@ class DOI:
         group = str(hash_value % n_groups)
 
         return group
+
+
+def form_dois_from_input(
+    raw_input: typing.Sequence[str],
+    unquote: bool = True,
+) -> list[DOI]:
+    """
+    Form a list of DOI objects from a sequence of strings or a path
+    to a file containing DOIs as strings.
+
+    Parameters
+    ----------
+    raw_input
+        Sequence of either strings containing DOIs or a path to a file
+        containing DOIs as strings.
+    unquote
+        Converts special characters in ``doi`` from 'quoted' form (e.g., where the
+        '/' character is represented by '%2F') into 'unquoted'.
+
+    Returns
+    -------
+        A list of DOI objects, with any duplicate entries removed.
+    """
+
+    LOGGER.debug(f"Creating DOIs from the input: {raw_input}")
+
+    raw_dois: list[str] = []
+
+    is_single_input = len(raw_input) == 1
+
+    if is_single_input:
+
+        (raw_item,) = raw_input
+
+        # try it as a path
+        raw_path = pathlib.Path(raw_item)
+
+        is_path = raw_path.exists() and raw_path.is_file()
+
+        if is_path:
+            raw_dois_from_file = form_raw_dois_from_path(path=raw_path)
+            raw_dois.extend(raw_dois_from_file)
+        else:
+            raw_dois.append(raw_item)
+
+    else:
+        raw_dois.extend(raw_input)
+
+    dois: list[DOI] = []
+
+    for raw_item in raw_dois:
+
+        constructor = DOI.from_url if raw_item.startswith("http") else DOI
+
+        try:
+            doi = constructor(raw_item, unquote=unquote)
+        except ValueError:
+            LOGGER.error(f"No valid DOI could be interpreted from {raw_item}")
+            continue
+        else:
+            dois.append(doi)
+
+    # remove duplicates
+    dois = list(more_itertools.unique_everseen(dois))
+
+    return dois
+
+
+def form_raw_dois_from_path(path: pathlib.Path) -> list[str]:
+    """
+    Reads DOI strings from a file.
+
+    Parameters
+    ----------
+    path
+        Path to the file containing the DOIs. The DOIs can either be each on a
+        single line in the file or they can be in a column named 'DOI' or 'doi'
+        in a CSV format.
+
+    Returns
+    -------
+        A list of raw DOI strings.
+    """
+
+    raw_dois: list[str] = []
+
+    with path.open(newline="") as handle:
+
+        reader = csv.DictReader(handle)
+
+        doi_key = (
+            None
+            if reader.fieldnames is None
+            else (
+                "doi"
+                if "doi" in reader.fieldnames
+                else "DOI" if "DOI" in reader.fieldnames else None
+            )
+        )
+
+        if doi_key is not None:
+            raw_dois.extend([row[doi_key] for row in reader])
+        else:
+            handle.seek(0)
+            raw_dois.extend(handle.read().splitlines())
+
+    return raw_dois

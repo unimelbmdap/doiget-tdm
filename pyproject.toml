@@ -18,10 +18,11 @@ dependencies = [
   "tzdata>=2024.1",
   "universal-pathlib>=0.2.5",
   "pyrage>=1.2.1",
+  "more-itertools>=10.5.0",
 ]
 
 [project.scripts]
-hello = "doiget:hello"
+doiget = "doiget.cli:main"
 
 [project.optional-dependencies]
 interactive = [
@@ -111,7 +112,7 @@ disallow_incomplete_defs = true
 check_untyped_defs = true
 disallow_untyped_decorators = true
 warn_redundant_casts = true
-warn_unused_ignores = true
+warn_unused_ignores = false
 warn_return_any = true
 no_implicit_reexport = true
 strict_equality = true

@@ -7,6 +7,7 @@ import doiget.config
 EXAMPLE_VALID_DOI = "10.3758/s13414-023-02718-0"
 EXAMPLE_VALID_DOI_QUOTED = "10.3758%2Fs13414-023-02718-0"
 EXAMPLE_VALID_DOI_2 = "10.1163/22134808-bja10082"
+EXAMPLE_INVALID_DOI = "http://null"
 
 
 def test_doi() -> None:
@@ -41,9 +42,13 @@ def test_doi_group():
     assert doi_group == ""
 
 
-
 def test_doi_from_url() -> None:
-    doiget.doi.DOI.from_url(url="https://doi.org/10.3758/s13414-023-02718-0")
+    url = "https://doi.org/10.3758/s13414-023-02718-0"
+
+    doiget.doi.DOI.from_url(url=url)
+
+    with pytest.raises(ValueError):
+        doiget.doi.DOI(doi=url)
 
 
 def test_doi_from_url_error() -> None:
@@ -61,6 +66,12 @@ def test_doi_equality() -> None:
     another_doi = doiget.doi.DOI(doi=EXAMPLE_VALID_DOI_2)
 
     assert doi != another_doi
+
+
+def test_invalid() -> None:
+
+    with pytest.raises(ValueError):
+        doiget.doi.DOI(doi="123.456/789abc")
 
 
 def test_doi_sorting() -> None:
@@ -110,3 +121,87 @@ def test_quoted() -> None:
     doi = doiget.doi.DOI(doi=EXAMPLE_VALID_DOI)
 
     assert doi.quoted == EXAMPLE_VALID_DOI_QUOTED
+
+
+
+
+def test_from_input(tmp_path) -> None:
+
+    test_dois = [
+        EXAMPLE_VALID_DOI,
+        EXAMPLE_VALID_DOI_2,
+    ]
+
+    tmp_path_lined = tmp_path / "lined.txt"
+    tmp_path_lined.write_text("\n".join(test_dois))
+
+    tmp_path_csv_lower = tmp_path / "lower.txt"
+    csv_lower_txt_parts = [
+        ["a", "doi", "b"],
+        ["afw", EXAMPLE_VALID_DOI, "ggeag"],
+        ["sgts", EXAMPLE_VALID_DOI_2, "sgeg"],
+    ]
+    csv_lower_txt = "\n".join(
+        [
+            ",".join(row)
+            for row in csv_lower_txt_parts
+        ]
+    )
+    tmp_path_csv_lower.write_text(csv_lower_txt)
+
+    tmp_path_csv_upper = tmp_path / "upper.txt"
+    csv_upper_txt_parts = [
+        ["a", "DOI", "b"],
+        ["afw", EXAMPLE_VALID_DOI, "ggeag"],
+        ["sgts", EXAMPLE_VALID_DOI_2, "sgeg"],
+    ]
+    csv_upper_txt = "\n".join(
+        [
+            ",".join(row)
+            for row in csv_upper_txt_parts
+        ]
+    )
+    tmp_path_csv_upper.write_text(csv_upper_txt)
+
+    for unquote in [False, True]:
+
+        assert (
+            doiget.doi.form_dois_from_input(
+                raw_input=[EXAMPLE_VALID_DOI],
+                unquote=unquote,
+            )
+            == [EXAMPLE_VALID_DOI]
+        )
+
+        assert doiget.doi.form_dois_from_input(
+            raw_input=test_dois,
+            unquote=unquote,
+        ) == test_dois
+
+        assert doiget.doi.form_dois_from_input(
+            raw_input=test_dois + test_dois,
+            unquote=unquote,
+        ) == test_dois
+
+        assert doiget.doi.form_dois_from_input(
+            raw_input=[tmp_path_lined],
+            unquote=unquote,
+        ) == test_dois
+
+        assert doiget.doi.form_dois_from_input(
+            raw_input=[tmp_path_csv_lower],
+            unquote=unquote,
+        ) == test_dois
+
+        assert doiget.doi.form_dois_from_input(
+            raw_input=[tmp_path_csv_upper],
+            unquote=unquote,
+        ) == test_dois
+
+        assert (
+            doiget.doi.form_dois_from_input(
+                raw_input=[EXAMPLE_VALID_DOI, EXAMPLE_INVALID_DOI],
+                unquote=unquote,
+            )
+            == [EXAMPLE_VALID_DOI]
+        )
