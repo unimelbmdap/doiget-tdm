@@ -9,6 +9,7 @@ Documentation
     configuration
     concepts
     publishers
+    workflow
     using_the_api
     development
     reference/cmd
