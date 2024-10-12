@@ -1,6 +1,8 @@
 Publishers
 ==========
 
+.. _defining_a_new_publisher:
+
 Defining a new publisher
 ------------------------
 

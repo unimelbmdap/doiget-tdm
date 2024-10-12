@@ -10,6 +10,7 @@ import logging
 import sys
 
 import doiget
+import doiget.acquire
 
 
 LOGGER = logging.getLogger(__name__)
@@ -55,14 +56,11 @@ def setup_parser() -> argparse.ArgumentParser:
         help="Path to a query specification (in JSON format)",
     )
 
-    metadata_parser = subparsers.add_parser(
-        "metadata",
-        help="Download the metadata from CrossRef for the DOIs",
-    )
-
-    fulltext_parser = subparsers.add_parser(
-        "fulltext",
-        help="Download the fulltext for the DOIs",
+    get_dois_parser.add_argument(
+        "--output-path",
+        type=pathlib.Path,
+        required=True,
+        help="Path to write the output",
     )
 
     acquire_parser = subparsers.add_parser(
@@ -70,31 +68,26 @@ def setup_parser() -> argparse.ArgumentParser:
         help="Download the metadata and fulltext for the DOIs",
     )
 
-    for subparser in [metadata_parser, fulltext_parser, acquire_parser]:
+    acquire_parser.add_argument(
+        "--only-metadata",
+        help="Only acquire the metadata and not the fulltext",
+        default=False,
+        action=argparse.BooleanOptionalAction,
+    )
 
-        subparser.add_argument(
-            "--start-from",
-            help="Begin processing the provided DOIs from this number",
-            required=False,
-            default=1,
-            type=int,
-        )
+    acquire_parser.add_argument(
+        "--start-from",
+        help="Begin processing the provided DOIs from this number",
+        required=False,
+        default=1,
+        type=int,
+    )
 
-    for subparser in [metadata_parser, fulltext_parser, acquire_parser]:
-
-        subparser.add_argument(
-            "dois",
-            nargs="*",
-            help="Either a sequence of DOIs or the path to a file containing DOIs",
-        )
-
-    for subparser in [get_dois_parser]:
-        subparser.add_argument(
-            "--output-path",
-            type=pathlib.Path,
-            required=True,
-            help="Path to write the output",
-        )
+    acquire_parser.add_argument(
+        "dois",
+        nargs="*",
+        help="Either a sequence of DOIs or the path to a file containing DOIs",
+    )
 
     return parser
 
@@ -114,12 +107,12 @@ def run(args: argparse.Namespace) -> None:
     elif args.command == "get-dois":
         pass
 
-    elif args.command in [
-        "metadata",
-        "fulltext",
-        "acquire",
-    ]:
-        pass
+    elif args.command == "acquire":
+        doiget.acquire.run(
+            raw_dois=args.dois,
+            only_metadata=args.only_metadata,
+            start_from=args.start_from,
+        )
 
     else:
         raise ValueError(f"Unexpected command: {args.command}")

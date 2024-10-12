@@ -6,10 +6,9 @@ Documentation
 .. toctree::
     :hidden:
 
-    workflow
     configuration
-    publishers
     concepts
+    publishers
     using_the_api
     development
     reference/cmd

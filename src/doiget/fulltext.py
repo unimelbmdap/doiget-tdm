@@ -33,3 +33,6 @@ class FullText:
         publisher = doiget.publisher.registry["member_id"][self.metadata.member_id]
 
         publisher.set_sources(fulltext=self)
+
+    def acquire(self) -> None:
+        pass
