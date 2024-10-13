@@ -22,13 +22,6 @@ LOGGER.addHandler(logging.NullHandler())
 DOI_MATCHER = re.compile(r"(?i)10.\d{4,9}/[-._;()/:A-Z0-9]+$")
 
 
-class Stringable(typing.Protocol):
-    """
-    A protocol for an object with a `__str__` method.
-    """
-    def __str__(self) -> str:
-        ...
-
 class DOIParts(typing.NamedTuple):
     """
     Parts (prefix and suffix) of a DOI.
@@ -43,7 +36,7 @@ class DOI:
 
     def __init__(
         self,
-        doi: Stringable,
+        doi: object,
         unquote: bool = True,
     ) -> None:
         """
