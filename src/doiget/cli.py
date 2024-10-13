@@ -69,6 +69,13 @@ def setup_parser() -> argparse.ArgumentParser:
     )
 
     acquire_parser.add_argument(
+        "--only-member_id",
+        help="Only acquire from DOIs with this member ID",
+        required=False,
+        default=None,
+    )
+
+    acquire_parser.add_argument(
         "--only-metadata",
         help="Only acquire the metadata and not the fulltext",
         default=False,
@@ -85,7 +92,7 @@ def setup_parser() -> argparse.ArgumentParser:
 
     acquire_parser.add_argument(
         "dois",
-        nargs="*",
+        nargs="+",
         help="Either a sequence of DOIs or the path to a file containing DOIs",
     )
 
@@ -102,17 +109,39 @@ def run(args: argparse.Namespace) -> None:
     LOGGER.debug(f"Running command with arguments: {args}")
 
     if args.command == "show-config":
-        doiget.SETTINGS.print()
+        run_show_config(args=args)
 
     elif args.command == "get-dois":
-        pass
+        run_get_dois(args=args)
 
     elif args.command == "acquire":
-        doiget.acquire.run(
-            raw_dois=args.dois,
-            only_metadata=args.only_metadata,
-            start_from=args.start_from,
-        )
+        run_acquire(args=args)
 
     else:
         raise ValueError(f"Unexpected command: {args.command}")
+
+
+def run_show_config(args: argparse.Namespace) -> None:
+    doiget.SETTINGS.print()
+
+
+def run_get_dois(args: argparse.Namespace) -> None:
+    pass
+
+
+def run_acquire(args: argparse.Namespace) -> None:
+
+    dois = doiget.doi.form_dois_from_input(raw_input=args.dois)
+
+    only_member_id = (
+        doiget.metadata.MemberID(id_=args.only_member_id)
+        if args.only_member_id is not None
+        else None
+    )
+
+    doiget.acquire.run(
+        dois=dois,
+        only_metadata=args.only_metadata,
+        start_from=args.start_from,
+        only_member_id=only_member_id,
+    )

@@ -13,6 +13,7 @@ import platformdirs
 
 import rich
 
+import doiget.format
 
 NAME = "doiget"
 
@@ -49,6 +50,10 @@ class Settings(pydantic_settings.BaseSettings):
     quiet: bool = False
 
     crossref_lmdb_path: pathlib.Path | None = None
+
+    format_preference_order: tuple[doiget.format.FormatName, ...] = (
+        tuple(doiget.format.FormatName)
+    )
 
     model_config = pydantic_settings.SettingsConfigDict(
         env_file=".env",

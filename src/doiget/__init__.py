@@ -1,5 +1,12 @@
 
-import doiget.config
+import sys
+
+try:
+    import doiget.config
+except Exception as err:
+    print(err)
+    sys.exit(1)
+
 import doiget.log
 
 __version__ = "0.1"

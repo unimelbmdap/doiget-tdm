@@ -70,6 +70,7 @@ repo-review = "repo-review"
 ipython = "uv run --extra interactive ipython"
 docs = "uv run --extra docs sphinx-build docs gh-pages"
 docs-watch = "uv run --extra docs sphinx-autobuild docs gh-pages"
+doiget = "uv run doiget"
 
 [tool.black]
 line-length = 88

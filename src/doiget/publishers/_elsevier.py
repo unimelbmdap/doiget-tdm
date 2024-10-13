@@ -7,6 +7,7 @@ import pydantic_settings
 
 import doiget.config
 import doiget.publisher
+import doiget.metadata
 
 LOGGER = logging.getLogger(__name__)
 LOGGER.addHandler(logging.NullHandler())
@@ -27,13 +28,7 @@ class Settings(pydantic_settings.BaseSettings):
 @doiget.publisher.add_publisher
 class Elsevier(doiget.publisher.Publisher):
 
-    member_id = "78"
-    names = (
-        "Elsevier BV",
-        "els",
-    )
-    domains = ("api.elsevier.com",)
-    valid_hostname = None
+    member_id = doiget.metadata.MemberID(id_="78")
 
     def __init__(self) -> None:
 

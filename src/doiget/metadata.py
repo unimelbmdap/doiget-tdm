@@ -32,6 +32,29 @@ if not HAS_LMDB:
     )
 
 
+class MemberID:
+
+    __slots__ = ("_id",)
+
+    def __init__(self, id_: object) -> None:
+        self._id = str(id_)
+
+        if not self._id.isnumeric():
+            msg = f"Provided member ID ({id_}) is not a number"
+            raise ValueError(msg)
+
+    def __repr__(self) -> str:
+        return f'MemberID(id_="{self._id}")'
+
+    def __str__(self) -> str:
+        return self._id
+
+    def __eq__(self, other: object) -> bool:
+        if not isinstance(other, MemberID):
+            raise ValueError("Can only compare member IDs")
+        return str(self) == str(other)
+
+
 class CrossRefWebAPIClient:
 
     def __init__(self) -> None:
@@ -159,7 +182,7 @@ class Metadata:
 
         self._raw: simdjson.Object | None = None
 
-        self._member_id: str | None = None
+        self._member_id: MemberID | None = None
         self._publisher_name: str | None = None
 
     @property
@@ -174,14 +197,14 @@ class Metadata:
         return self._raw
 
     @property
-    def member_id(self) -> str | None:
+    def member_id(self) -> MemberID | None:
         if not self.exists or self.raw is None:
             return None
         if self._member_id is None:
             raw_member_id = self.raw["member"]
             if not isinstance(raw_member_id, str):
                 raise ValueError(f"Unexpected member id {raw_member_id}")
-            self._member_id = raw_member_id
+            self._member_id = MemberID(id_=raw_member_id)
         return self._member_id
 
     @property
