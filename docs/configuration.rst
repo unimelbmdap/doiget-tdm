@@ -8,9 +8,17 @@ Options
     The directory to store the acquired metadata and full-text content.
 
     The default is platform-dependent and is determined using the ``platformdirs`` `package <https://github.com/tox-dev/platformdirs>`_.
+    Typical directories are:
 
     Linux
-        Test
+        ``~/.local/share/doiget/``
+
+    Mac
+        ``~/Library/Application Support/doiget/data/``
+
+    Windows
+        ``~\AppData\Local\doiget\data``
+
 
 ``data_dir_n_groups``
     The acquired data is stored on the filesystem (within ``data_dir``) with one directory per DOI.
