@@ -55,15 +55,19 @@ DEFAULT_DATA_DIR_SUFFIX = (
     else ""
 )
 
+DEFAULT_DATA_DIR = (
+    platformdirs.user_data_path(
+        appname=NAME,
+        ensure_exists=True,
+    )
+    / DEFAULT_DATA_DIR_SUFFIX
+)
+
+DEFAULT_DATA_DIR.mkdir(exist_ok=True, parents=True)
+
 class Settings(pydantic_settings.BaseSettings):
 
-    data_dir: pydantic.DirectoryPath = (
-        platformdirs.user_data_path(
-            appname=NAME,
-            ensure_exists=True,
-        )
-        / DEFAULT_DATA_DIR_SUFFIX
-    )
+    data_dir: pydantic.DirectoryPath = DEFAULT_DATA_DIR
 
     data_dir_n_groups: int | None = None
 
@@ -103,8 +107,6 @@ class Settings(pydantic_settings.BaseSettings):
     )
 
     def model_post_init(self, __context: typing.Any) -> None:  # noqa: ANN401
-
-        self.data_dir.mkdir(exist_ok=True, parents=True)
 
         if self.data_dir_n_groups == 0:
             self.data_dir_n_groups = None
