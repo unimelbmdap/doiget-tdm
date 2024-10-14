@@ -1,6 +1,9 @@
 Configuration
 =============
 
+In addition to runtime options when executing ``doiget``, as documented in :doc:`/reference/cmd`, there are configuration options for ``doiget``.
+There are also per-publisher configuration options that are described in :doc:`/publishers`.
+
 Options
 -------
 
@@ -86,3 +89,19 @@ Mac
 
 Windows
     ``~\AppData\Local\doiget\doiget\config``
+
+A configuration option can be set by creating a file inside the config directory with a name that has the form ``doiget_${OPTION}`` and the contents are the option setting.
+For example, the ``log_level`` option can be set to ``WARNING`` by creating a file called ``doiget_log_level`` that contains the text ``WARNING``.
+
+Within a ``.env`` file
+~~~~~~~~~~~~~~~~~~~~~~
+
+Configuration settings can be read from a file named ``.env`` that is contained in the directory in which ``doiget`` is executed.
+This file contains one option per line, in the form ``DOIGET_${OPTION}=${VALUE}``.
+For example, the ``log_level`` option can be set to ``WARNING`` by having a line in ``.env`` that is ``DOIGET_LOG_LEVEL=INFO``.
+
+Using environment variables
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Configuration options can be set by using system environment variables.
+These follow the same convention as options set using the ``.env`` file approach.
