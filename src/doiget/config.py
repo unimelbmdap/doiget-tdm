@@ -104,6 +104,8 @@ class Settings(pydantic_settings.BaseSettings):
 
     def model_post_init(self, __context: typing.Any) -> None:  # noqa: ANN401
 
+        self.data_dir.mkdir(exist_ok=True, parents=True)
+
         if self.data_dir_n_groups == 0:
             self.data_dir_n_groups = None
 
