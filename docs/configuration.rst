@@ -85,4 +85,4 @@ Mac
     ``~/Library/Application Support/doiget/config/``
 
 Windows
-    ``~\AppData\Local\doiget\config``
+    ``~\AppData\Local\doiget\doiget\config``

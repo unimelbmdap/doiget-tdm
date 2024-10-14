@@ -43,18 +43,26 @@ BASE_CONFIG_DIR_SUFFIX = (
 )
 
 BASE_CONFIG_DIR = (
-    platformdirs.user_config_path(NAME, ensure_exists=True)
+    platformdirs.user_config_path(appname=NAME, ensure_exists=True)
     / BASE_CONFIG_DIR_SUFFIX
 )
 
 BASE_CONFIG_DIR.mkdir(exist_ok=True, parents=True)
 
+DEFAULT_DATA_DIR_SUFFIX = (
+    "data"
+    if PLATFORM in (Platform.WINDOWS, Platform.MAC)
+    else ""
+)
 
 class Settings(pydantic_settings.BaseSettings):
 
-    data_dir: pydantic.DirectoryPath = platformdirs.user_data_path(
-        appname=NAME,
-        ensure_exists=True,
+    data_dir: pydantic.DirectoryPath = (
+        platformdirs.user_data_path(
+            appname=NAME,
+            ensure_exists=True,
+        )
+        / DEFAULT_DATA_DIR_SUFFIX
     )
 
     data_dir_n_groups: int | None = None
