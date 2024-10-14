@@ -5,6 +5,8 @@ import enum
 
 import pyrage
 
+import typing_extensions
+
 import doiget.config
 import doiget.doi
 import doiget.source
@@ -16,6 +18,20 @@ class FormatName(enum.Enum):
     HTML = "html"
     TXT = "txt"
     TIFF = "tiff"
+
+    @classmethod
+    def from_content_type(cls, content_type: str) -> typing_extensions.Self:
+
+        lut = {
+            "application/pdf": "pdf",
+            "text/html": "html",
+            "text/plain": "txt",
+            "application/xml": "xml",
+            "text/xml": "xml",
+            "image/tiff": "tiff",
+        }
+
+        return cls(lut[content_type])
 
 
 class Format:

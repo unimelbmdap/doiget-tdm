@@ -5,6 +5,10 @@ import logging
 import abc
 import collections
 
+import simdjson
+
+import upath
+
 import doiget.fulltext
 import doiget.source
 import doiget.metadata
@@ -65,6 +69,78 @@ class Publisher(abc.ABC):
 
         """
         pass
+
+
+def set_sources_from_crossref(
+    fulltext: doiget.fulltext.FullText,
+    acq_method: typing.Callable[[doiget.source.SourceLink], bytes],
+    encrypt: bool = False,
+) -> None:
+    """
+    Assigns information about full-text sources from CrossRef.
+
+    Parameters
+    ----------
+    fulltext
+        Information about the full-text item.
+
+    Notes
+    -----
+    * This method populates the ``sources`` attribute in the ``formats``
+      attribute in the supplied ``fulltext`` instance.
+
+    """
+
+    if not isinstance(fulltext.metadata.raw, simdjson.Object):
+        raise ValueError("Missing metadata")
+
+    try:
+        links = fulltext.metadata.raw["link"]
+    except KeyError:
+        return
+
+    if not isinstance(links, simdjson.Array):
+        raise ValueError("Unexpected JSON structure")
+
+    for link in links:
+
+        if not isinstance(link, simdjson.Object):
+            raise ValueError("Unexpected JSON structure")
+
+        if link["intended-application"] != "text-mining":
+            continue
+
+        content_type = str(link["content-type"])
+
+        if content_type == "unspecified":
+            LOGGER.warning(f"Skipping due to the content-type '{content_type}'")
+            continue
+
+        url = upath.UPath(link["URL"])
+
+        try:
+            format_name = doiget.format.FormatName.from_content_type(
+                content_type=content_type
+            )
+        except KeyError:
+            LOGGER.warning(
+                f"Skipping due to unknown content-type '{content_type}'"
+            )
+            continue
+
+        source = doiget.source.Source(
+            acq_method=acq_method,
+            link=url,
+            format_name=format_name,
+            encrypt=encrypt,
+        )
+
+        sources = fulltext.formats[format_name].sources
+
+        if sources is None:
+            sources = []
+
+        sources.insert(0, source)
 
 
 registry: dict[doiget.metadata.MemberID, Publisher] = {}
