@@ -55,6 +55,8 @@ class Settings(pydantic_settings.BaseSettings):
         tuple(doiget.format.FormatName)
     )
 
+    skip_remaining_formats: bool = True
+
     model_config = pydantic_settings.SettingsConfigDict(
         env_file=".env",
         env_prefix=f"{NAME.upper()}_",
