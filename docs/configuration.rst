@@ -67,3 +67,22 @@ Options
     The default is ``True``.
 
 
+Setting the configuration
+-------------------------
+
+The configuration for ``doiget`` can be set via three ways:
+
+Files in a configuration directory
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The directory in which ``doiget`` will search for configuration settings varies by platform.
+Typical directories are:
+
+Linux
+    ``~/.config/doiget/``
+
+Mac
+    ``~/Library/Application Support/doiget/config/``
+
+Windows
+    ``~\AppData\Local\doiget\config``

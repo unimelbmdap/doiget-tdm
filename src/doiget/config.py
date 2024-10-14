@@ -5,6 +5,8 @@ import pathlib
 import logging
 import typing
 import datetime
+import sys
+import enum
 
 import pydantic
 import pydantic_settings
@@ -17,7 +19,35 @@ import doiget.format
 
 NAME = "doiget"
 
-BASE_CONFIG_DIR = platformdirs.user_config_path(NAME, ensure_exists=True)
+
+class Platform(enum.Enum):
+    WINDOWS = "windows"
+    MAC = "mac"
+    LINUX = "linux"
+
+
+PLATFORM = (
+    Platform.WINDOWS
+    if sys.platform == "win32"
+    else Platform.MAC
+    if sys.platform == "darwin"
+    else Platform.LINUX
+)
+
+# because Windows and Mac have the config directory the same as the
+# data directory, we need to add an extra subdirectory on those platforms
+BASE_CONFIG_DIR_SUFFIX = (
+    "config"
+    if PLATFORM in (Platform.WINDOWS, Platform.MAC)
+    else ""
+)
+
+BASE_CONFIG_DIR = (
+    platformdirs.user_config_path(NAME, ensure_exists=True)
+    / BASE_CONFIG_DIR_SUFFIX
+)
+
+BASE_CONFIG_DIR.mkdir(exist_ok=True, parents=True)
 
 
 class Settings(pydantic_settings.BaseSettings):
