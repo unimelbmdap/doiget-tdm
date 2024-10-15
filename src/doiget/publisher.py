@@ -29,11 +29,6 @@ class Publisher(abc.ABC):
         "CrossRef member ID."
         return self.member_id
 
-    @property
-    def valid_hostname(self) -> str | None:
-        "Local host names that can validly acquire data for this publisher."
-        return None
-
     @abc.abstractmethod
     def set_sources(self, fulltext: doiget.fulltext.FullText) -> None:
         """

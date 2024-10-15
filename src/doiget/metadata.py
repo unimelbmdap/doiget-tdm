@@ -38,6 +38,15 @@ class MemberID:
     __slots__ = ("_id",)
 
     def __init__(self, id_: object) -> None:
+        """
+        Represent a CrossRef member ID.
+
+        Parameters
+        ----------
+        id_
+            The CrossRef member ID.
+        """
+
         self._id = str(id_)
 
         if not self._id.isnumeric():

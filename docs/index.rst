@@ -8,7 +8,7 @@ Documentation
 
     configuration
     concepts
-    publishers
+    publishers/index
     workflow
     using_the_api
     development
