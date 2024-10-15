@@ -13,7 +13,7 @@ SourceLink: typing.TypeAlias = upath.UPath | typing.Sequence[upath.UPath]
 
 @dataclasses.dataclass
 class Source:
-    acq_method: typing.Callable[[SourceLink], bytes]
+    acq_method: typing.Callable[[Source], bytes]
     link: SourceLink
     format_name: doiget.format.FormatName
     encrypt: bool = False

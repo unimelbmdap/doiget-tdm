@@ -56,20 +56,20 @@ class Elsevier(doiget.publisher.Publisher):
 
     def set_sources(self, fulltext: doiget.fulltext.FullText) -> None:
 
-        def link_check_func(link: doiget.source.SourceLink) -> bool:
-            return "api.elsevier.com" in str(link)
+        def source_check_func(source: doiget.source.Source) -> bool:
+            return "api.elsevier.com" in str(source.link)
 
         doiget.publisher.set_sources_from_crossref(
             fulltext=fulltext,
             acq_method=self.acquire,
             encrypt=False,
-            link_check_func=link_check_func,
+            source_check_func=source_check_func,
         )
 
-    def acquire(self, link: doiget.source.SourceLink) -> bytes:
+    def acquire(self, source: doiget.source.Source) -> bytes:
 
-        if isinstance(link, typing.Sequence):
-            raise ValueError(f"Unexpected link: {link}")
+        if isinstance(source.link, typing.Sequence):
+            raise ValueError(f"Unexpected link: {source.link}")
 
         if self.session is None:
             self.initialise()
@@ -77,7 +77,12 @@ class Elsevier(doiget.publisher.Publisher):
         if self.session is None:
             raise ValueError("Error initialising session")
 
-        response = self.session.get(url=str(link))
+        response = self.session.get(url=str(source.link))
+
+        els_status = response.headers.get("X-ELS-Status")
+
+        if els_status is not None and "warning" in els_status.lower():
+            LOGGER.warning(els_status)
 
         if response.status_code == http.HTTPStatus.UNAUTHORIZED:
             error_info = response.json()
@@ -85,10 +90,15 @@ class Elsevier(doiget.publisher.Publisher):
             LOGGER.warning(
                 f"Received the following error from the server: {error_msg}"
             )
-
-        els_status = response.headers.get("X-ELS-Status")
-
-        if els_status is not None and "warning" in els_status.lower():
-            LOGGER.warning(els_status)
+            response.raise_for_status()
 
         return response.content
+
+    @staticmethod
+    def validate_xml(data: bytes) -> bool:
+
+        pass
+
+
+
+

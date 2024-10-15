@@ -48,14 +48,14 @@ class Publisher(abc.ABC):
         pass
 
     @abc.abstractmethod
-    def acquire(self, link: doiget.source.SourceLink) -> bytes:
+    def acquire(self, source: doiget.source.Source) -> bytes:
         """
         Acquires raw full-text data from the provided source.
 
         Parameters
         ----------
-        link
-            Location of the full-text data.
+        source
+            Information on the source of the full-text data.
 
         Returns
         -------
@@ -68,9 +68,9 @@ class Publisher(abc.ABC):
 
 def set_sources_from_crossref(
     fulltext: doiget.fulltext.FullText,
-    acq_method: typing.Callable[[doiget.source.SourceLink], bytes],
+    acq_method: typing.Callable[[doiget.source.Source], bytes],
     encrypt: bool = False,
-    link_check_func: typing.Callable[[doiget.source.SourceLink], bool] | None = None,
+    source_check_func: typing.Callable[[doiget.source.Source], bool] | None = None,
 ) -> None:
     """
     Assigns information about full-text sources from CrossRef.
@@ -83,8 +83,8 @@ def set_sources_from_crossref(
         Function that can acquire the source.
     encrypt
         Whether to encrypt the acquired data.
-    link_check_func
-        Function to check the CrossRef link; if it evaluates to ``False``, then the
+    source_check_func
+        Function to check the CrossRef source; if it evaluates to ``False``, then the
         source is not included.
 
     Notes
@@ -131,21 +131,21 @@ def set_sources_from_crossref(
             )
             continue
 
-        if link_check_func is not None:
-            link_ok = link_check_func(url)
-
-            if not link_ok:
-                LOGGER.warning(
-                    f"Skipping due to a failed link check on {url}"
-                )
-                continue
-
         source = doiget.source.Source(
             acq_method=acq_method,
             link=url,
             format_name=format_name,
             encrypt=encrypt,
         )
+
+        if source_check_func is not None:
+            source_ok = source_check_func(source)
+
+            if not source_ok:
+                LOGGER.warning(
+                    f"Skipping due to a failed source check on {source}"
+                )
+                continue
 
         sources = fulltext.formats[format_name].sources
 

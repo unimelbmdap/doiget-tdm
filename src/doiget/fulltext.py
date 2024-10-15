@@ -47,3 +47,27 @@ class FullText:
             fmt = self.formats[fmt_name]
 
             fmt.acquire()
+
+    def load(
+        self,
+        fmt: doiget.format.FormatName | None = None,
+    ) -> tuple[bytes, doiget.format.FormatName]:
+
+        formats = (
+            doiget.SETTINGS.format_preference_order
+            if fmt is None
+            else [fmt]
+        )
+
+        for curr_fmt in formats:
+            fmt_data = self.formats[curr_fmt]
+
+            if not fmt_data.exists:
+                continue
+
+            data = fmt_data.load()
+
+            return (data, curr_fmt)
+
+        msg = f"No loadable data found for {self}"
+        raise ValueError(msg)

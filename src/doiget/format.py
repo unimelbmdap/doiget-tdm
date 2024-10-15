@@ -79,7 +79,7 @@ class Format:
 
         for source in self.sources:
             try:
-                data = source.acq_method(source.link)
+                data = source.acq_method(source)
             except Exception:
                 pass
             else:
@@ -107,7 +107,7 @@ class Format:
         self.local_path.write_bytes(data)
 
 
-    def read(self) -> bytes:
+    def load(self) -> bytes:
 
         data = self.local_path.read_bytes()
 

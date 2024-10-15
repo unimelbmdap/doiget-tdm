@@ -7,8 +7,8 @@ import doiget.format
 
 
 def validate_data(
-    data_format: doiget.format.FormatName,
     data: bytes,
+    data_format: doiget.format.FormatName,
 ) -> None:
 
     validators = {
