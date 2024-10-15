@@ -70,6 +70,7 @@ def set_sources_from_crossref(
     fulltext: doiget.fulltext.FullText,
     acq_method: typing.Callable[[doiget.source.SourceLink], bytes],
     encrypt: bool = False,
+    link_check_func: typing.Callable[[doiget.source.SourceLink], bool] | None = None,
 ) -> None:
     """
     Assigns information about full-text sources from CrossRef.
@@ -78,6 +79,13 @@ def set_sources_from_crossref(
     ----------
     fulltext
         Information about the full-text item.
+    acq_func
+        Function that can acquire the source.
+    encrypt
+        Whether to encrypt the acquired data.
+    link_check_func
+        Function to check the CrossRef link; if it evaluates to ``False``, then the
+        source is not included.
 
     Notes
     -----
@@ -123,6 +131,15 @@ def set_sources_from_crossref(
             )
             continue
 
+        if link_check_func is not None:
+            link_ok = link_check_func(url)
+
+            if not link_ok:
+                LOGGER.warning(
+                    f"Skipping due to a failed link check on {url}"
+                )
+                continue
+
         source = doiget.source.Source(
             acq_method=acq_method,
             link=url,
@@ -135,7 +152,10 @@ def set_sources_from_crossref(
         if sources is None:
             sources = []
 
-        sources.insert(0, source)
+        if source not in sources:
+            sources.insert(0, source)
+
+        fulltext.formats[format_name].sources = sources
 
 
 registry: dict[doiget.metadata.MemberID, Publisher] = {}

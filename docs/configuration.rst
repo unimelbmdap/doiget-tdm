@@ -2,7 +2,9 @@ Configuration
 =============
 
 In addition to runtime options when executing ``doiget``, as documented in :doc:`/reference/cmd`, there are configuration options for ``doiget``.
-There are also per-publisher configuration options that are described in :doc:`/publishers`.
+There are also per-publisher configuration options that are described in :doc:`/publishers/avail_publishers`.
+
+The active configuration settings can be shown by running ``doiget show-config``.
 
 Options
 -------
@@ -26,7 +28,7 @@ Options
 ``data_dir_n_groups``
     The acquired data is stored on the filesystem (within ``data_dir``) with one directory per DOI.
     This results in a large number of directories, which can become prohibitively large for particular collections or storage systems.
-    This option inserts an additional layer of directories, with each DOI randomly allocated to one of ``data_dir_n_groups`` subdirectories in ``data_dir``.
+    This option inserts an additional layer of directories, with each DOI pseudorandomly allocated to one of ``data_dir_n_groups`` subdirectories in ``data_dir``.
 
     The default is to not have this intermediate grouping layer.
 
@@ -69,6 +71,11 @@ Options
 
     The default is ``True``.
 
+``extra_handlers_path``
+    A directory from which to import additional publisher handlers.
+    This directory needs to contain one or more ``.py`` files, which are imported after the built-in publisher handlers have been imported.
+
+    The default is to not have any additional publisher handlers.
 
 Setting the configuration
 -------------------------

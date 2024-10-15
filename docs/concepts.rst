@@ -6,7 +6,7 @@
 Concepts
 ========
 
-A single item of interest is uniquely identified by its |DOI|.
+A single item of interest is uniquely identified by its Digital Object Identifier (DOI).
 To obtain information about such an item (its *metadata*), we use the `CrossRef database <https://www.crossref.org/>`_.
 We query CrossRef using either its `web API <https://api.crossref.org>`_ or a local `LMDB <https://lmdb.readthedocs.io/>`_ database formed from the `CrossRef public data file <https://www.crossref.org/blog/2024-public-data-file-now-available-featuring-new-experimental-formats/>`_ (the latter is particularly useful when processing large numbers of DOIs as it does not require network calls).
 The resulting metadata is stored locally in JSON format, with the JSON structure described `in the CrossRef API documentation <https://api.crossref.org/swagger-ui/index.html#/Works/get_works__doi_>`_.
@@ -22,11 +22,11 @@ The items are primarily distinguished by their ``intended-application`` (e.g., `
 
 .. note::
 
-    A given |DOI| is immutable after it is registered.
-    However, the steward of a |DOI| can change.
+    A given DOI is immutable after it is registered.
+    However, the steward of a DOI can change.
     For example, the publisher can change due to corporate acquisitions.
-    In such cases, the responsibility for the |DOI| metadata is `with the new publisher <https://www.crossref.org/documentation/register-maintain-records/maintaining-your-metadata/updating-after-title-transfer/>`_.
-    The |DOI| *prefix* remains with the registering publisher, given its immutability, but the new publisher is required to `update the metadata <https://www.crossref.org/documentation/register-maintain-records/maintaining-your-metadata/updating-after-title-transfer/#00623>`_, including any links provided to full-text sources.
+    In such cases, the responsibility for the DOI metadata is `with the new publisher <https://www.crossref.org/documentation/register-maintain-records/maintaining-your-metadata/updating-after-title-transfer/>`_.
+    The DOI *prefix* remains with the registering publisher, given its immutability, but the new publisher is required to `update the metadata <https://www.crossref.org/documentation/register-maintain-records/maintaining-your-metadata/updating-after-title-transfer/#00623>`_, including any links provided to full-text sources.
 
 
 When there is an acquisition request for the full-text of an item (e.g., via ``doiget acquire ${DOI}``), the member ID from the metadata is used to identify a *handler* that is tasked with acquiring the full-text for the item.
@@ -37,4 +37,4 @@ Each handler has three primary responsibilities:
 #. **Acquiring the full-text content.** This could involve performing a web request, or reading from a local zip file, or downloading from an sFTP server, etc. It also involves validating the received content to ensure that it is indeed in the requested format and is indeed the full-text and not an abstract or excerpt.
 
 Because there are not many publishers from whom full-text content can be obtained *without* the use of a handler specific to the publisher, ``doiget`` only supports acquiring full-text content from supported publishers.
-Functionality can be restored for unsupported publishers by :ref:`defining_a_new_publisher`.
+Functionality can be added for unsupported publishers by :doc:`publishers/new_publisher`.

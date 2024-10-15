@@ -3,6 +3,7 @@ import pathlib
 import sys
 import logging
 
+import doiget
 import doiget.publisher  # noqa: F401
 
 
@@ -14,13 +15,23 @@ def _load_handlers() -> None:
 
     module_files = sorted(pathlib.Path(__file__).parent.glob("*.py"))
 
-    for module_file in module_files:
+    extra_files = (
+        sorted(doiget.SETTINGS.extra_handlers_path.glob("*.py"))
+        if doiget.SETTINGS.extra_handlers_path is not None
+        else []
+    )
+
+    file_types = ["base"] * len(module_files) + ["extra"] * len(extra_files)
+
+    all_files = module_files + extra_files
+
+    for (module_file, file_type) in zip(all_files, file_types, strict=True):
 
         # ignore __init__.py and any in-progress modules
         if module_file.name.startswith("__"):
             continue
 
-        LOGGER.debug(f"Loading the handler {module_file.name}")
+        LOGGER.info(f"Loading the handler {module_file.name} ({file_type})")
 
         # recipe from the importlib docs
         module_name = f"doiget.publishers.{module_file.name}"

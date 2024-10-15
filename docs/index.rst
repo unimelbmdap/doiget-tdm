@@ -22,9 +22,8 @@ Features
 
 * Acquire full-text of published articles, with built-in support for multiple publishers and their acquisition methods (e.g., network or local files).
 * Customise acquisition and add additional publishers.
-* Standardise full-text into |TEI| `format <https://tei-c.org/>`_.
 * Retrieve article metadata from `CrossRef <https://crossref.org>`_.
-* Obtain set of article identifiers (|DOIs|) from `CrossRef <https://crossref.org>`_.
+* Obtain set of article identifiers (DOIs) from `CrossRef <https://crossref.org>`_.
 
 
 Installation
@@ -40,8 +39,18 @@ The package can be installed using ``pip``:
 Quickstart
 ----------
 
-Download the full-text (XML) of the journal article with |DOI| `10.1371/journal.pbio.1002611 <https://doi.org/10.1371/journal.pbio.1002611>`_ to the `default directory`:
+Download the full-text (XML) of the journal article with DOI `10.1371/journal.pbio.1002611 <https://doi.org/10.1371/journal.pbio.1002611>`_ to the `default directory`:
 
 .. code-block:: bash
 
-    doiget acquire 10.1371/journal.pbio.1002611
+    doiget acquire '10.1371/journal.pbio.1002611'
+
+
+Documentation guide
+-------------------
+
+:doc:`/configuration`
+    Describes the available configuration options and how they can be specified.
+
+:doc:`/concepts`
+    

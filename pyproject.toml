@@ -63,7 +63,7 @@ dev-dependencies = [
 # until uv gets a task runner
 [tool.poe.tasks]
 test = "uv run --extra lmdb pytest --cov --cov-report term-missing"
-typecheck = "mypy ."
+typecheck = "uv run --extra lmdb mypy ."
 lint = "ruff check"
 style = "black ."
 repo-review = "repo-review"

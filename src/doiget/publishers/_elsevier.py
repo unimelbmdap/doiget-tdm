@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import typing
 import logging
+import http
 
 import pydantic_settings
 
@@ -54,7 +55,16 @@ class Elsevier(doiget.publisher.Publisher):
         self.session = doiget.web.WebRequester(headers=headers)
 
     def set_sources(self, fulltext: doiget.fulltext.FullText) -> None:
-        pass
+
+        def link_check_func(link: doiget.source.SourceLink) -> bool:
+            return "api.elsevier.com" in str(link)
+
+        doiget.publisher.set_sources_from_crossref(
+            fulltext=fulltext,
+            acq_method=self.acquire,
+            encrypt=False,
+            link_check_func=link_check_func,
+        )
 
     def acquire(self, link: doiget.source.SourceLink) -> bytes:
 
@@ -68,6 +78,13 @@ class Elsevier(doiget.publisher.Publisher):
             raise ValueError("Error initialising session")
 
         response = self.session.get(url=str(link))
+
+        if response.status_code == http.HTTPStatus.UNAUTHORIZED:
+            error_info = response.json()
+            error_msg = error_info["error-message"]
+            LOGGER.warning(
+                f"Received the following error from the server: {error_msg}"
+            )
 
         els_status = response.headers.get("X-ELS-Status")
 

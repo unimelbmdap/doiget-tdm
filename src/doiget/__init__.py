@@ -15,3 +15,7 @@ _project_url = "https://github.com/djmannion/doiget"
 doiget.log.setup_logging()
 
 SETTINGS = doiget.config.SETTINGS
+
+from doiget.doi import DOI
+from doiget.work import Work
+import doiget.publishers

@@ -99,6 +99,8 @@ class Settings(pydantic_settings.BaseSettings):
 
     skip_remaining_formats: bool = True
 
+    extra_handlers_path: pydantic.DirectoryPath | None = None
+
     model_config = pydantic_settings.SettingsConfigDict(
         env_file=".env",
         env_prefix=f"{NAME.upper()}_",

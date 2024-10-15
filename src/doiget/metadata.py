@@ -53,6 +53,9 @@ class MemberID:
             msg = f"Provided member ID ({id_}) is not a number"
             raise ValueError(msg)
 
+    def __hash__(self) -> int:
+        return hash(self._id)
+
     def __repr__(self) -> str:
         return f'MemberID(id_="{self._id}")'
 
