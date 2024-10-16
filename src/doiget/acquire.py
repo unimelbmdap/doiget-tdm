@@ -2,6 +2,8 @@ from __future__ import annotations
 
 import typing
 
+import alive_progress
+
 import doiget.doi
 import doiget.work
 import doiget.metadata
@@ -12,20 +14,34 @@ def run(
     only_metadata: bool,
     start_from: int = 1,
     only_member_id: doiget.metadata.MemberID | None = None,
+    show_progress_bar: bool = True,
 ) -> None:
 
     n_dois = len(dois)
 
-    for doi_num, doi in enumerate(dois, 1):
+    progress_bar_disabled = (
+        not show_progress_bar
+        or n_dois == 1
+    )
 
-        if doi_num < start_from:
-            continue
+    with alive_progress.alive_bar(
+        total=n_dois,
+        disable=progress_bar_disabled,
+    ) as progress_bar:
 
-        process_doi(
-            doi=doi,
-            only_metadata=only_metadata,
-            only_member_id=only_member_id,
-        )
+        for doi_num, doi in enumerate(dois, 1):
+
+            if doi_num < start_from:
+                progress_bar()
+                continue
+
+            process_doi(
+                doi=doi,
+                only_metadata=only_metadata,
+                only_member_id=only_member_id,
+            )
+
+            progress_bar()
 
 
 def process_doi(

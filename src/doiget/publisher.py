@@ -3,7 +3,6 @@ from __future__ import annotations
 import typing
 import logging
 import abc
-import collections
 
 import simdjson
 

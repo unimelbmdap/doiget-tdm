@@ -16,6 +16,7 @@ extensions = [
     # "sphinx_argparse_cli",
     "sphinxarg.ext",
     "sphinxcontrib.autodoc_pydantic",
+    "enum_tools.autoenum",
 ]
 
 templates_path = ["_templates"]

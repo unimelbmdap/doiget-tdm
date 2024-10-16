@@ -16,6 +16,12 @@ doiget.log.setup_logging()
 
 SETTINGS = doiget.config.SETTINGS
 
-from doiget.doi import DOI
-from doiget.work import Work
-import doiget.publishers
+from doiget.doi import DOI  # noqa: E402
+from doiget.work import Work  # noqa: E402
+import doiget.publishers  # noqa: E402
+
+__all__ = (
+    "DOI",
+    "Work",
+    "SETTINGS",
+)

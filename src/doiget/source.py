@@ -41,7 +41,22 @@ class Source:
     )
 
     def acquire(self) -> bytes:
+        """
+        Attempt to acquire the full-text content from the source.
+        """
         return self.acq_func(self)
 
     def validate(self, data: bytes) -> bool:
+        """
+        Validate the full-text data.
+
+        Parameters
+        ----------
+        data
+            Raw data.
+
+        Returns
+        -------
+            Whether the data was deemed as valid.
+        """
         return self.validator_func(data, self.format_name)

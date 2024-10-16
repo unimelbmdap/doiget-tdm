@@ -37,7 +37,7 @@ class DOI:
     def __init__(
         self,
         doi: object,
-        unquote: bool = True,
+        unquote: bool = False,
     ) -> None:
         """
         A representation of a Digital Object Identifier (DOI).

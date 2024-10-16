@@ -13,6 +13,9 @@ LOGGER.addHandler(logging.NullHandler())
 class CrossRefWebAPI:
 
     def __init__(self) -> None:
+        """
+        Interface to the CrossRef web API.
+        """
 
         self.polite_pool_warned = False
 
@@ -31,6 +34,9 @@ class CrossRefWebAPI:
 
     @property
     def user_agent(self) -> str:
+        """
+        Value to send as the "User-Agent" header.
+        """
 
         lib_name = f"doiget/{doiget.__version__} ({doiget._project_url}"
 
@@ -52,6 +58,14 @@ class CrossRefWebAPI:
         return lib_name
 
     def get_rate_limit(self) -> pyrate_limiter.Limiter:
+        """
+        Determine the API rate limits by sending a test request and inspecting
+        the response headers.
+
+        Returns
+        -------
+            A limiter with the settings applied.
+        """
 
         default_msg = "Rate limit could not be identified; using defaults"
 
@@ -88,6 +102,18 @@ class CrossRefWebAPI:
         self,
         query: str,
     ) -> requests.Response:
+        """
+        Make a call to the API.
+
+        Parameters
+        ----------
+        query
+            Query string, which is used to form the URL; no leading slash.
+
+        Returns
+        -------
+            The API response.
+        """
 
         url = f"{self.base_url}{query}"
 

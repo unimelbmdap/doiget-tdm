@@ -109,7 +109,7 @@ def run(args: argparse.Namespace) -> None:
     LOGGER.debug(f"Running command with arguments: {args}")
 
     if args.command == "show-config":
-        run_show_config(args=args)
+        run_show_config()
 
     elif args.command == "get-dois":
         run_get_dois(args=args)
@@ -121,7 +121,7 @@ def run(args: argparse.Namespace) -> None:
         raise ValueError(f"Unexpected command: {args.command}")
 
 
-def run_show_config(args: argparse.Namespace) -> None:
+def run_show_config() -> None:
     doiget.SETTINGS.print()
 
 

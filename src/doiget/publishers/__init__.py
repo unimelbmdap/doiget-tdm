@@ -4,7 +4,7 @@ import sys
 import logging
 
 import doiget
-import doiget.publisher  # noqa: F401
+import doiget.publisher
 
 
 LOGGER = logging.getLogger(__name__)

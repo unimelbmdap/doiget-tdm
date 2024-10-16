@@ -6,8 +6,6 @@ import logging
 
 import pyrage
 
-import typing_extensions
-
 import doiget.config
 import doiget.doi
 import doiget.source
@@ -18,6 +16,9 @@ LOGGER.addHandler(logging.NullHandler())
 
 
 class FormatName(enum.Enum):
+    """
+    Possible full-text content formats.
+    """
     XML = "xml"
     PDF = "pdf"
     HTML = "html"
@@ -25,7 +26,19 @@ class FormatName(enum.Enum):
     TIFF = "tiff"
 
     @classmethod
-    def from_content_type(cls, content_type: str) -> typing_extensions.Self:
+    def from_content_type(
+        cls: type[FormatName],
+        content_type: str,
+    ) -> FormatName:
+        """
+        Return the format name from a content type.
+
+        Parameters
+        ----------
+        content_type
+            The MIME type of the content.
+
+        """
 
         lut = {
             "application/pdf": "pdf",
@@ -46,17 +59,31 @@ class Format:
         name: FormatName,
         doi: doiget.doi.DOI,
     ) -> None:
+        """
+        Represents the full-text content data for a particular format.
 
-        self.name = name
-        self.doi = doi
+        Parameters
+        ----------
+        name
+            The type of format.
+        doi
+            The item DOI.
+        """
 
+        #: Format name.
+        self.name: FormatName = name
+        #: Item DOI.
+        self.doi: doiget.doi.DOI = doi
+
+        #: The sources from which the full-text content for this format can be acquired.
         self.sources: list[doiget.source.Source] | None = None
 
         group = self.doi.get_group(
             n_groups=doiget.config.SETTINGS.data_dir_n_groups
         )
 
-        self.local_path = (
+        #: Path to the full-text file for this format in the data directory.
+        self.local_path: pathlib.Path = (
             doiget.config.SETTINGS.data_dir
             / group
             / self.doi.quoted
@@ -65,19 +92,32 @@ class Format:
 
     @property
     def exists(self) -> bool:
+        """
+        Whether a file exists in the data directory for the format.
+        """
         return self.local_path.exists()
 
     @property
     def is_encrypted_sentinel_path(self) -> pathlib.Path:
+        """
+        The path to a sentinel (empty) file that marks that the content
+        is encrypted.
+        """
         return self.local_path.with_suffix(
             self.local_path.suffix + ".encrypted"
         )
 
     @property
     def is_encrypted(self) -> bool:
+        """
+        Whether the full-text content for the format is encrypted.
+        """
         return self.is_encrypted_sentinel_path.exists()
 
     def acquire(self) -> None:
+        """
+        Attempt to acquire the full-text content for the format.
+        """
 
         sources = (
             self.sources
@@ -137,6 +177,10 @@ class Format:
             raise ValueError(f"Could not acquire from any sources for {self}")
 
     def load(self) -> bytes:
+        """
+        Loads the full-text content from a file in the data directory, performing
+        decryption where necessary.
+        """
 
         data = self.local_path.read_bytes()
 

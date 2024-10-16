@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import logging
+import typing
 
 import doiget.doi
 import doiget.metadata
@@ -12,6 +13,14 @@ LOGGER = logging.getLogger(__name__)
 LOGGER.addHandler(logging.NullHandler())
 
 
+class LoadedData(typing.NamedTuple):
+    """
+    Data and its format as loaded from a file.
+    """
+    data: bytes
+    fmt: doiget.format.FormatName
+
+
 class FullText:
 
     def __init__(
@@ -19,11 +28,25 @@ class FullText:
         doi: doiget.doi.DOI,
         metadata: doiget.metadata.Metadata,
     ) -> None:
+        """
+        Full-text content.
 
-        self.doi = doi
-        self.metadata = metadata
+        Parameters
+        ----------
+        doi
+            Item DOI.
+        metadata
+            Item metadata.
 
-        self.formats = {
+        """
+
+        #: Item DOI.
+        self.doi: doiget.doi.DOI = doi
+        #: CrossRef metadata for the DOI.
+        self.metadata: doiget.metadata.Metadata = metadata
+
+        #: Potential full-text formats 
+        self.formats: dict[doiget.format.FormatName, doiget.format.Format] = {
             format_name: doiget.format.Format(
                 name=format_name,
                 doi=doi,
@@ -34,6 +57,9 @@ class FullText:
         self._sources_set = False
 
     def set_sources(self) -> None:
+        """
+        Uses the publisher handler for the item to populate the full-text sources.
+        """
 
         if not self.metadata.exists or self.metadata.member_id is None:
             return
@@ -43,6 +69,9 @@ class FullText:
         publisher.set_sources(fulltext=self)
 
     def acquire(self) -> None:
+        """
+        Attempt to acquire the full-text content.
+        """
 
         if not self._sources_set:
             self.set_sources()
@@ -75,7 +104,20 @@ class FullText:
     def load(
         self,
         fmt: doiget.format.FormatName | None = None,
-    ) -> tuple[bytes, doiget.format.FormatName]:
+    ) -> LoadedData:
+        """
+        Load the full-text content from the data directory.
+
+        Parameters
+        ----------
+        fmt
+            The desired full-text format. If not specified, the data from the first
+            format in the format preference order with full-text content is returned.
+
+        Returns
+        -------
+            A namedtuple with ``data`` and ``fmt`` attributes.
+        """
 
         formats = (
             doiget.SETTINGS.format_preference_order
@@ -91,7 +133,7 @@ class FullText:
 
             data = fmt_data.load()
 
-            return (data, curr_fmt)
+            return LoadedData(data=data, fmt=curr_fmt)
 
         msg = f"No loadable data found for {self}"
         raise ValueError(msg)

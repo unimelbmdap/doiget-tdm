@@ -4,6 +4,6 @@
 .. autoclass:: doiget.format.Format
     :members:
 
-.. autoclass:: doiget.format.FormatName
+.. autoenum:: doiget.format.FormatName
     :members:
 

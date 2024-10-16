@@ -71,10 +71,25 @@ class MemberID:
 class CrossRefWebAPIClient:
 
     def __init__(self) -> None:
+        """
+        Client to the CrossRef web API.
+        """
 
         self._api = doiget.crossref.CrossRefWebAPI()
 
     def get_doi_metadata(self, doi: doiget.doi.DOI) -> bytes:
+        """
+        Get the metadata for a given DOI.
+
+        Parameters
+        ----------
+        doi
+            The item DOI.
+
+        Returns
+        -------
+            The raw metadata.
+        """
 
         response = self._api.call(query=f"works/{doi}")
 
@@ -98,6 +113,14 @@ class CrossRefWebAPIClient:
 class CrossRefLMDBClient:
 
     def __init__(self, db_path: pathlib.Path) -> None:
+        """
+        Client to an LMDB database of the CrossRef public data.
+
+        Parameters
+        ----------
+        db_path
+            Path to the LMDB directory.
+        """
 
         self.db_path = db_path
 
@@ -132,6 +155,18 @@ class CrossRefLMDBClient:
         return env
 
     def get_doi_metadata(self, doi: doiget.doi.DOI) -> bytes:
+        """
+        Get the metadata for a given DOI.
+
+        Parameters
+        ----------
+        doi
+            The item DOI.
+
+        Returns
+        -------
+            The raw metadata.
+        """
 
         if self.env is None:
             self._load()
@@ -179,6 +214,14 @@ metadata_sources = get_metadata_sources()
 class Metadata:
 
     def __init__(self, doi: doiget.doi.DOI) -> None:
+        """
+        CrossRef metadata for a given DOI.
+
+        Parameters
+        ----------
+        doi
+            Item DOI.
+        """
 
         self._doi = doi
 
@@ -186,7 +229,8 @@ class Metadata:
             n_groups=doiget.config.SETTINGS.data_dir_n_groups
         )
 
-        self.path = (
+        #: Path to the raw metadata JSON file in the data directory
+        self.path: pathlib.Path = (
             doiget.config.SETTINGS.data_dir
             / group
             / self._doi.quoted
@@ -200,19 +244,35 @@ class Metadata:
 
     @property
     def exists(self) -> bool:
+        """
+        Whether the metadata exists in the data directory.
+        """
         return self.path.exists()
 
     @property
-    def raw(self) -> simdjson.Object | None:
-        if self.exists:
-            if self._raw is None:
-                self.load()
+    def raw(self) -> simdjson.Object:
+        """
+        The raw CrossRef metadata as a lazy proxy object.
+        """
+
+        if not self.exists:
+            raise ValueError("No metadata available")
+
+        if self._raw is None:
+            self._load()
+
+        if self._raw is None:
+            raise ValueError("Unexpected data form")
+
         return self._raw
 
     @property
-    def member_id(self) -> MemberID | None:
+    def member_id(self) -> MemberID:
+        """
+        The member ID from the metadata ("member").
+        """
         if not self.exists or self.raw is None:
-            return None
+            raise ValueError("No metadata available")
         if self._member_id is None:
             raw_member_id = self.raw["member"]
             if not isinstance(raw_member_id, str):
@@ -221,14 +281,16 @@ class Metadata:
         return self._member_id
 
     @property
-    def publisher_name(self) -> str | None:
+    def publisher_name(self) -> str:
+        """
+        The publisher name from the metadata ("publisher").
+        """
 
         if (
             not self.exists
-            or self.raw is None
             or "publisher" not in self.raw
         ):
-            return None
+            raise ValueError("No metadata available")
 
         if self._publisher_name is None:
             raw_publisher_name = self.raw["publisher"]
@@ -238,7 +300,7 @@ class Metadata:
 
         return self._publisher_name
 
-    def load(self) -> None:
+    def _load(self) -> None:
         raw = simdjson.Parser().load(path=self.path)
 
         if not isinstance(raw, simdjson.Object):
@@ -249,7 +311,15 @@ class Metadata:
     def acquire(
         self,
         metadata_sources: collections.abc.Iterable[MetadataSource] = metadata_sources,
-    ) -> bool:
+    ) -> None:
+        """
+        Attempt to acquire the metadata from CrossRef.
+
+        Parameters
+        ----------
+        metadata_sources
+            The sources from which to attempt to acquire the metadata.
+        """
 
         raw: bytes | None = None
 
@@ -260,22 +330,27 @@ class Metadata:
                 continue
             else:
                 break
-
-        if raw is None:
-            return False
+        else:
+            msg = f"Unable to retrieve metadata for {self}"
+            raise ValueError(msg)
 
         self.path.parent.mkdir(exist_ok=True, parents=True)
 
         self.path.write_bytes(raw)
 
-        if not doiget.config.SETTINGS.quiet:
-            print(f"Wrote metadata to {self.path}")
-
-        return True
+        LOGGER.info(f"Wrote metadata to {self.path}")
 
     def show(self, exclude_references: bool = True) -> None:
+        """
+        Print the metadata to standard output.
 
-        metadata = self.raw.as_dict() if self.raw is not None else "No metadata"
+        Parameters
+        ----------
+        exclude_references
+            Whether to remove the "references" field in the metadata.
+        """
+
+        metadata = self.raw.as_dict() if self.exists else "No metadata"
 
         if (
             exclude_references
@@ -285,4 +360,3 @@ class Metadata:
             del metadata["reference"]
 
         rich.print(metadata)
-

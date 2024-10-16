@@ -3,6 +3,7 @@ Make web requests with rate limiting and retrying.
 """
 
 import collections.abc
+import functools
 
 import requests
 import requests_ratelimiter
@@ -48,7 +49,12 @@ class WebRequester:
 
     def get(self, url: str) -> requests.Response:
 
-        retry_get = self.retry_wrapper(self._session.get)
+        getter = functools.partial(
+            self._session.get,
+            timeout=60,
+        )
+
+        retry_get = self.retry_wrapper(getter)
         response: requests.Response = retry_get(url=url)
 
         return response

@@ -3,6 +3,7 @@ API reference
 
 .. toctree::
 
+    crossref
     doi
     format
     fulltext
