@@ -5,6 +5,29 @@ Additional publishers can be added to ``doiget`` by those with knowledge of the 
 A new publisher is created by describing a class that inherits from the :py:class:`doiget.publisher.Publisher` abstract base class (ABC).
 A directory containing the Python source file(s) is passed to ``doiget`` via the ``extra_handlers_path`` option described in :doc:`/configuration`.
 
+Overview of the full-text acquisition process
+---------------------------------------------
+
+When a request is initiated to acquire the full-text for a given DOI, the first check is whether the metadata (from CrossRef) for the DOI is present in the ``doiget`` data directory.
+If it is not present, the metadata is acquired from CrossRef and stored in the ``doiget`` data directory.
+Because the metadata is necessary for the acquisition of full-text content by ``doiget``, the full-text acquisition request fails if the metadata cannot be acquired.
+
+Using the metadata, ``doiget`` then identifies the publisher of the DOI based on its ``member`` property.
+This member ID is then used to index into ``doiget``'s registry of *handlers*, which are Python classes that specify how full-text content is acquired for a given publisher.
+If there is no handler for the member ID, the full-text acquisition for the DOI fails.
+
+The handler is then tasked with specifying the *source(s)* of full-text content for each applicable *format* (XML, PDF, HTML, TXT, and TIFF).
+When specifying a source, the handler needs to describe a method for its acquisition, its location in a form that the handler can interpret (e.g., a URL), whether it needs to be encrypted, its format, and a method for validating that the acquisition proceeded correctly.
+
+With the sources having been defined, ``doiget`` then iterates through each full-text format (in the configured format preference order).
+If the format already exists as a file in the ``doiget`` data directory, then it is not re-acquired and the format is skipped.
+If it does not exist, ``doiget`` iterates through each full-text source for the format.
+For each source, ``doiget`` attempts to use its specification to acquire the full-text content.
+If the acquisition or the validation of the acquired full-text content fails, ``doiget`` proceeds to the next source; otherwise, ``doiget`` skips any remaining sources.
+If the full-text content was unable to be acquired for the format or if ``doiget`` is configured to attempt to acquire all possible formats, ``doiget`` then proceeds to the next format.
+
+
+
 Overview of a new publisher implementation
 ------------------------------------------
 

@@ -74,15 +74,21 @@ class Format:
 
     def acquire(self) -> None:
 
-        if self.sources is None:
-            return
+        sources = (
+            self.sources
+            if self.sources is not None
+            else []
+        )
 
         for source in self.sources:
             try:
-                data = source.acq_method(source)
+                data = source.acquire()
             except Exception:
                 pass
             else:
+
+                source.validate(data=data)
+
                 if source.encrypt:
                     if doiget.config.SETTINGS.encryption_passphrase is None:
                         raise ValueError(
@@ -105,7 +111,6 @@ class Format:
             raise ValueError()
 
         self.local_path.write_bytes(data)
-
 
     def load(self) -> bytes:
 

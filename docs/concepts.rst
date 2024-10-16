@@ -6,10 +6,47 @@
 Concepts
 ========
 
-A single item of interest is uniquely identified by its Digital Object Identifier (DOI).
-To obtain information about such an item (its *metadata*), we use the `CrossRef database <https://www.crossref.org/>`_.
-We query CrossRef using either its `web API <https://api.crossref.org>`_ or a local `LMDB <https://lmdb.readthedocs.io/>`_ database formed from the `CrossRef public data file <https://www.crossref.org/blog/2024-public-data-file-now-available-featuring-new-experimental-formats/>`_ (the latter is particularly useful when processing large numbers of DOIs as it does not require network calls).
-The resulting metadata is stored locally in JSON format, with the JSON structure described `in the CrossRef API documentation <https://api.crossref.org/swagger-ui/index.html#/Works/get_works__doi_>`_.
+This section provides a conceptual overview of the full-text acquisition process.
+
+When a request is initiated to acquire the full-text for a given Digital Object Identifier (DOI), the first check is whether the metadata (from CrossRef) for the DOI is present in the ``doiget`` data directory.
+If it is not present, the metadata is acquired from CrossRef and stored in the ``doiget`` data directory.
+Because the metadata is necessary for the acquisition of full-text content by ``doiget``, the full-text acquisition request fails if the metadata cannot be acquired.
+
+.. note::
+
+    To obtain the metadata for an item, we use the `CrossRef database <https://www.crossref.org/>`_.
+    We query CrossRef using either its `web API <https://api.crossref.org>`_ or a local `LMDB <https://lmdb.readthedocs.io/>`_ database formed from the `CrossRef public data file <https://www.crossref.org/blog/2024-public-data-file-now-available-featuring-new-experimental-formats/>`_ (the latter is particularly useful when processing large numbers of DOIs as it does not require network calls).
+    The resulting metadata is stored locally in its native JSON format, with the JSON structure described `in the CrossRef API documentation <https://api.crossref.org/swagger-ui/index.html#/Works/get_works__doi_>`_.
+
+
+Using the metadata, ``doiget`` then identifies the publisher of the DOI based on its ``member`` property.
+This member ID is then used to index into ``doiget``'s registry of *handlers*, which are Python classes that specify how full-text content is acquired for a given publisher.
+If there is no handler for the member ID, the full-text acquisition for the DOI fails; because there are not many publishers from whom full-text content can be obtained *without* the use of a handler specific to the publisher, ``doiget`` only supports acquiring full-text content from supported publishers (functionality can be added for unsupported publishers by :doc:`publishers/new_publisher`).
+
+.. note::
+
+    A given DOI is immutable after it is registered.
+    However, the steward of a DOI can change.
+    For example, the publisher can change due to corporate acquisitions.
+    In such cases, the responsibility for the DOI metadata is `with the new publisher <https://www.crossref.org/documentation/register-maintain-records/maintaining-your-metadata/updating-after-title-transfer/>`_.
+    The DOI *prefix* remains with the registering publisher, given its immutability, but the new publisher is required to `update the metadata <https://www.crossref.org/documentation/register-maintain-records/maintaining-your-metadata/updating-after-title-transfer/#00623>`_, including any links provided to full-text sources.
+
+Each handler has three primary responsibilities:
+
+#. **Configuration, initialisation, and maintaining state across full-text requests.** This can include tasks like reading a publisher-specific API key or passphrase, making a connection with a local database containing a full-text corpus, and keeping track of request timings to comply with rate limits.
+#. **Constructing a list of full-text sources.** With access to the CrossRef metadata, the handler is responsible for generating a list of full-text sources (e.g., HTTP URLs, sFTP URLs, local file paths, etc.), each with an identified format (e.g., XML, PDF, etc.) and validation method (used to ensure that it is indeed in the requested format and is indeed the full-text and not an abstract or excerpt).
+#. **Acquiring the full-text content.** This could involve performing a web request, or reading from a local zip file, or downloading from an sFTP server, etc.
+
+The handler is first tasked with specifying the source(s) of full-text content for each applicable *format* (XML, PDF, HTML, TXT, and TIFF).
+When specifying a source, the handler needs to describe a method for its acquisition, its location in a form that the handler can interpret (e.g., a URL), whether it needs to be encrypted, its format, and a method for validating that the acquisition proceeded correctly.
+
+With the sources having been defined, ``doiget`` then iterates through each full-text format (in the configured format preference order).
+If the format already exists as a file in the ``doiget`` data directory, then it is not re-acquired and the format is skipped.
+If it does not exist, ``doiget`` iterates through each full-text source for the format.
+For each source, ``doiget`` attempts to use its specification to acquire the full-text content.
+If the acquisition or the validation of the acquired full-text content fails, ``doiget`` proceeds to the next source; otherwise, ``doiget`` skips any remaining sources.
+If the full-text content was unable to be acquired for the format or if ``doiget`` is configured to attempt to acquire all possible formats, ``doiget`` then proceeds to the next format.
+
 
 The two main uses for the item metadata in ``doiget`` are to identify the publisher of the item and to gather any links to the full-text of the item for text data mining purposes.
 
@@ -20,21 +57,6 @@ Publishers can (optionally) `provide links to full-text content <https://www.cro
 The ``link`` property contains one or more items that specify a link to full-text content.
 The items are primarily distinguished by their ``intended-application`` (e.g., ``"text-mining"``) and ``content-type`` (e.g., ``"application/xml"``).
 
-.. note::
-
-    A given DOI is immutable after it is registered.
-    However, the steward of a DOI can change.
-    For example, the publisher can change due to corporate acquisitions.
-    In such cases, the responsibility for the DOI metadata is `with the new publisher <https://www.crossref.org/documentation/register-maintain-records/maintaining-your-metadata/updating-after-title-transfer/>`_.
-    The DOI *prefix* remains with the registering publisher, given its immutability, but the new publisher is required to `update the metadata <https://www.crossref.org/documentation/register-maintain-records/maintaining-your-metadata/updating-after-title-transfer/#00623>`_, including any links provided to full-text sources.
-
 
 When there is an acquisition request for the full-text of an item (e.g., via ``doiget acquire ${DOI}``), the member ID from the metadata is used to identify a *handler* that is tasked with acquiring the full-text for the item.
-Each handler has three primary responsibilities:
 
-#. **Configuration, initialisation, and maintaining state across full-text requests.** This can include tasks like reading a publisher-specific API key or passphrase, making a connection with a local database containing a full-text corpus, and keeping track of request timings to comply with rate limits.
-#. **Constructing a list of full-text sources.** With access to the CrossRef metadata, the handler is responsible for generating a list of full-text sources (e.g., HTTP URLs, sFTP URLs, local file paths, etc.), each with an identified format (e.g., XML, PDF, etc.).
-#. **Acquiring the full-text content.** This could involve performing a web request, or reading from a local zip file, or downloading from an sFTP server, etc. It also involves validating the received content to ensure that it is indeed in the requested format and is indeed the full-text and not an abstract or excerpt.
-
-Because there are not many publishers from whom full-text content can be obtained *without* the use of a handler specific to the publisher, ``doiget`` only supports acquiring full-text content from supported publishers.
-Functionality can be added for unsupported publishers by :doc:`publishers/new_publisher`.

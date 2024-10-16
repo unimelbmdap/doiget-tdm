@@ -61,7 +61,7 @@ class Elsevier(doiget.publisher.Publisher):
 
         doiget.publisher.set_sources_from_crossref(
             fulltext=fulltext,
-            acq_method=self.acquire,
+            acq_func=self.acquire,
             encrypt=False,
             source_check_func=source_check_func,
         )

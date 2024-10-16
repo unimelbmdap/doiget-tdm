@@ -68,7 +68,7 @@ class Publisher(abc.ABC):
 
 def set_sources_from_crossref(
     fulltext: doiget.fulltext.FullText,
-    acq_method: typing.Callable[[doiget.source.Source], bytes],
+    acq_func: typing.Callable[[doiget.source.Source], bytes],
     encrypt: bool = False,
     source_check_func: typing.Callable[[doiget.source.Source], bool] | None = None,
 ) -> None:
@@ -132,7 +132,7 @@ def set_sources_from_crossref(
             continue
 
         source = doiget.source.Source(
-            acq_method=acq_method,
+            acq_func=acq_func,
             link=url,
             format_name=format_name,
             encrypt=encrypt,

@@ -53,4 +53,4 @@ Documentation guide
     Describes the available configuration options and how they can be specified.
 
 :doc:`/concepts`
-    
+    Describes the conceptual approach taken by ``doiget``. 

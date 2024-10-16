@@ -9,7 +9,7 @@ import doiget.format
 def validate_data(
     data: bytes,
     data_format: doiget.format.FormatName,
-) -> None:
+) -> bool:
 
     validators = {
         doiget.format.FormatName.XML: validate_xml,
@@ -23,8 +23,12 @@ def validate_data(
 
     validator_func(data=data)
 
+    return True
 
-def validate_xml(data: bytes) -> None:
+
+def validate_xml(
+    data: bytes,
+) -> None:
     pass
 
 
