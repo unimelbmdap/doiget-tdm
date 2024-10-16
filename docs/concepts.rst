@@ -20,7 +20,8 @@ Because the metadata is necessary for the acquisition of full-text content by ``
 
 
 Using the metadata, ``doiget`` then identifies the publisher of the DOI based on its ``member`` property.
-This member ID is then used to index into ``doiget``'s registry of *handlers*, which are Python classes that specify how full-text content is acquired for a given publisher.
+This value is a numerical string that identifies the registrant or steward of the DOI (see `this post on the CrossRef forum <https://community.crossref.org/t/how-to-find-all-journals-currently-published-by-a-publisher/3949/2>`_).
+The member ID is then used to index into ``doiget``'s registry of *handlers*, which are Python classes that specify how full-text content is acquired for a given publisher.
 If there is no handler for the member ID, the full-text acquisition for the DOI fails; because there are not many publishers from whom full-text content can be obtained *without* the use of a handler specific to the publisher, ``doiget`` only supports acquiring full-text content from supported publishers (functionality can be added for unsupported publishers by :doc:`publishers/new_publisher`).
 
 .. note::
@@ -38,25 +39,10 @@ Each handler has three primary responsibilities:
 #. **Acquiring the full-text content.** This could involve performing a web request, or reading from a local zip file, or downloading from an sFTP server, etc.
 
 The handler is first tasked with specifying the source(s) of full-text content for each applicable *format* (XML, PDF, HTML, TXT, and TIFF).
-When specifying a source, the handler needs to describe a method for its acquisition, its location in a form that the handler can interpret (e.g., a URL), whether it needs to be encrypted, its format, and a method for validating that the acquisition proceeded correctly.
-
-With the sources having been defined, ``doiget`` then iterates through each full-text format (in the configured format preference order).
+``doiget`` then iterates through each full-text format, in the configured format preference order.
 If the format already exists as a file in the ``doiget`` data directory, then it is not re-acquired and the format is skipped.
 If it does not exist, ``doiget`` iterates through each full-text source for the format.
 For each source, ``doiget`` attempts to use its specification to acquire the full-text content.
 If the acquisition or the validation of the acquired full-text content fails, ``doiget`` proceeds to the next source; otherwise, ``doiget`` skips any remaining sources.
-If the full-text content was unable to be acquired for the format or if ``doiget`` is configured to attempt to acquire all possible formats, ``doiget`` then proceeds to the next format.
-
-
-The two main uses for the item metadata in ``doiget`` are to identify the publisher of the item and to gather any links to the full-text of the item for text data mining purposes.
-
-The primary way that the publisher is identified is by the ``member`` property in the metadata.
-This value is a numerical string that identifies the registrant or steward of the DOI (see `this post on the CrossRef forum <https://community.crossref.org/t/how-to-find-all-journals-currently-published-by-a-publisher/3949/2>`_).
-
-Publishers can (optionally) `provide links to full-text content <https://www.crossref.org/documentation/retrieve-metadata/rest-api/text-and-data-mining-for-members/>`_ via the ``link`` property in the metadata.
-The ``link`` property contains one or more items that specify a link to full-text content.
-The items are primarily distinguished by their ``intended-application`` (e.g., ``"text-mining"``) and ``content-type`` (e.g., ``"application/xml"``).
-
-
-When there is an acquisition request for the full-text of an item (e.g., via ``doiget acquire ${DOI}``), the member ID from the metadata is used to identify a *handler* that is tasked with acquiring the full-text for the item.
+If the full-text content was unable to be acquired for the format or if ``doiget`` is configured to attempt to acquire all possible formats, ``doiget`` then proceeds to the next format; otherwise, the full-text acquisition is complete.
 
