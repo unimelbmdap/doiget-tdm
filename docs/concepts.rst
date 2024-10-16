@@ -21,6 +21,7 @@ Because the metadata is necessary for the acquisition of full-text content by ``
 
 Using the metadata, ``doiget`` then identifies the publisher of the DOI based on its ``member`` property.
 This value is a numerical string that identifies the registrant or steward of the DOI (see `this post on the CrossRef forum <https://community.crossref.org/t/how-to-find-all-journals-currently-published-by-a-publisher/3949/2>`_).
+
 The member ID is then used to index into ``doiget``'s registry of *handlers*, which are Python classes that specify how full-text content is acquired for a given publisher.
 If there is no handler for the member ID, the full-text acquisition for the DOI fails; because there are not many publishers from whom full-text content can be obtained *without* the use of a handler specific to the publisher, ``doiget`` only supports acquiring full-text content from supported publishers (functionality can be added for unsupported publishers by :doc:`publishers/new_publisher`).
 

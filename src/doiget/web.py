@@ -30,6 +30,26 @@ class WebRequester:
         limit_statuses: collections.abc.Iterable[int] = (429, 500),
         max_retry_attempts: int = 10,
     ) -> None:
+        """
+        Interface for making HTTP requests with rate limiting and retrying.
+
+        Parameters
+        ----------
+        limiter
+            Rate limiter settings.
+        headers
+            Any headers to add to the request.
+        max_delay_s
+            Maximum time, in seconds, that a request can be delayed because of
+            the retry algorithm.
+        per_host
+            Whether the limiter is applied to the hostname, rather than to the
+            instance.
+        limit_statuses
+            The status codes that invoke rate limiting beyond the set limits.
+        max_retry_attempts
+            How many attempts at a retry before failure.
+        """
 
         self._session = requests_ratelimiter.LimiterSession(
             limiter=limiter,
@@ -48,6 +68,18 @@ class WebRequester:
             self._session.headers = {**self._session.headers, **headers}
 
     def get(self, url: str) -> requests.Response:
+        """
+        Perform a GET request.
+
+        Parameters
+        ----------
+        url
+            The URL to request.
+
+        Returns
+        -------
+            The request response.
+        """
 
         getter = functools.partial(
             self._session.get,

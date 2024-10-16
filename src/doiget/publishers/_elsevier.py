@@ -98,7 +98,3 @@ class Elsevier(doiget.publisher.Publisher):
     def validate_xml(data: bytes) -> bool:
 
         pass
-
-
-
-

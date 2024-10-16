@@ -10,3 +10,6 @@ API reference
     metadata
     source
     publisher
+    validate
+    web
+    work
