@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import pathlib
 import enum
+import logging
 
 import pyrage
 
@@ -10,6 +11,10 @@ import typing_extensions
 import doiget.config
 import doiget.doi
 import doiget.source
+
+
+LOGGER = logging.getLogger(__name__)
+LOGGER.addHandler(logging.NullHandler())
 
 
 class FormatName(enum.Enum):
@@ -80,37 +85,56 @@ class Format:
             else []
         )
 
-        for source in self.sources:
+        if len(sources) == 0:
+            LOGGER.warning(f"No sources for {self}")
+
+        for source in sources:
+
             try:
                 data = source.acquire()
-            except Exception:
-                pass
-            else:
+            except doiget.errors.ACQ_ERRORS as err:
+                LOGGER.warning(
+                    f"Error when acquiring source {source} ({err})"
+                )
+                continue
 
+            try:
                 source.validate(data=data)
+            except doiget.errors.ValidationError as err:
+                LOGGER.warning(
+                    f"Error when validating data from source {source} ({err})"
+                )
+                continue
 
-                if source.encrypt:
-                    if doiget.config.SETTINGS.encryption_passphrase is None:
-                        raise ValueError(
-                            "Source is specified as requiring encryption but "
-                            + "encryption passphrase configuration setting is missing"
-                        )
-
-                    data = pyrage.passphrase.encrypt(
-                        plaintext=data,
-                        passphrase=(
-                            doiget.config.SETTINGS.encryption_passphrase.get_secret_value()
-                        ),
+            if source.encrypt:
+                if doiget.config.SETTINGS.encryption_passphrase is None:
+                    raise ValueError(
+                        "Source is specified as requiring encryption but "
+                        + "encryption passphrase configuration setting is missing"
                     )
 
-                    self.is_encrypted_sentinel_path.touch()
+                data = pyrage.passphrase.encrypt(
+                    plaintext=data,
+                    passphrase=(
+                        doiget.config.SETTINGS.encryption_passphrase.get_secret_value()
+                    ),
+                )
 
-                break
+                LOGGER.info(
+                    "Writing encryption sentinel file to "
+                    + f"{self.is_encrypted_sentinel_path}"
+                )
+                self.is_encrypted_sentinel_path.touch()
+
+            LOGGER.info(
+                f"Writing full-text content to {self.local_path}"
+            )
+            self.local_path.write_bytes(data)
+
+            break
 
         else:
-            raise ValueError()
-
-        self.local_path.write_bytes(data)
+            raise ValueError(f"Could not acquire from any sources for {self}")
 
     def load(self) -> bytes:
 
