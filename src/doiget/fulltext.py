@@ -83,13 +83,21 @@ class FullText:
 
             fmt = self.formats[fmt_name]
 
-            try:
-                fmt.acquire()
-            except ValueError:
+            if fmt.exists:
                 LOGGER.warning(
-                    f"Could not acquire full-text content for {fmt.name}"
+                    f"Full-text {fmt_name.name} content already exists for {self.doi}; "
+                    + "skipping"
                 )
-                continue
+
+            else:
+
+                try:
+                    fmt.acquire()
+                except ValueError:
+                    LOGGER.warning(
+                        f"Could not acquire full-text content for {fmt.name}"
+                    )
+                    continue
 
             any_success = True
 

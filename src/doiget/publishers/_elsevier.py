@@ -15,6 +15,7 @@ LOGGER.addHandler(logging.NullHandler())
 
 
 class Settings(pydantic_settings.BaseSettings):
+
     api_key: str | None = None
     institution_token: str | None = None
 
@@ -93,8 +94,3 @@ class Elsevier(doiget.publisher.Publisher):
             response.raise_for_status()
 
         return response.content
-
-    @staticmethod
-    def validate_xml(data: bytes) -> bool:
-
-        pass

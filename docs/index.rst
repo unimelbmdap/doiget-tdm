@@ -39,7 +39,13 @@ The package can be installed using ``pip``:
 Quickstart
 ----------
 
-Download the full-text (XML) of the journal article with DOI `10.1371/journal.pbio.1002611 <https://doi.org/10.1371/journal.pbio.1002611>`_ to the `default directory`:
+Show the default configuration settings:
+
+.. code-block:: bash
+
+    doiget show-config
+
+Download the full-text (XML) of the journal article with DOI `10.1371/journal.pbio.1002611 <https://doi.org/10.1371/journal.pbio.1002611>`_ to the default directory:
 
 .. code-block:: bash
 
