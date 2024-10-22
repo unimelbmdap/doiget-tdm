@@ -7,6 +7,7 @@ import typing
 import datetime
 import sys
 import enum
+import socket
 
 import pydantic
 import pydantic_settings
@@ -65,9 +66,15 @@ DEFAULT_DATA_DIR = (
 
 DEFAULT_DATA_DIR.mkdir(exist_ok=True, parents=True)
 
+
 class Settings(pydantic_settings.BaseSettings):
 
     data_dir: pydantic.DirectoryPath = DEFAULT_DATA_DIR
+
+    cache_dir: pydantic.DirectoryPath = platformdirs.user_cache_path(
+        NAME,
+        ensure_exists=True,
+    )
 
     data_dir_n_groups: int | None = None
 
@@ -100,6 +107,8 @@ class Settings(pydantic_settings.BaseSettings):
     skip_remaining_formats: bool = True
 
     extra_handlers_path: pydantic.DirectoryPath | None = None
+
+    hostname: str = socket.gethostname()
 
     model_config = pydantic_settings.SettingsConfigDict(
         env_file=".env",

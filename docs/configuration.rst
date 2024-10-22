@@ -2,7 +2,10 @@ Configuration
 =============
 
 In addition to runtime options when executing ``doiget``, as documented in :doc:`/reference/cmd`, there are configuration options for ``doiget``.
-There are also per-publisher configuration options that are described in :doc:`/publishers/avail_publishers`.
+
+.. note::
+
+    There are also per-publisher configuration options that are described in :doc:`/publishers/avail_publishers`.
 
 The active configuration settings can be shown by running ``doiget show-config``.
 
@@ -24,6 +27,20 @@ Options
     Windows
         ``~\AppData\Local\doiget\data``
 
+``cache_dir``
+    The directory to store temporary but persistent files, such as full-text data archives that span multiple items.
+
+    The default is platform-dependent and is determined using the ``platformdirs`` `package <https://github.com/tox-dev/platformdirs>`_.
+    Typical directories are:
+
+    Linux
+        ``~/.cache/doiget/``
+
+    Mac
+        ``~/Library/Caches/doiget/``
+
+    Windows
+        ``~\AppData\Local\doiget\doiget\Cache``
 
 ``data_dir_n_groups``
     The acquired data is stored on the filesystem (within ``data_dir``) with one directory per DOI.
