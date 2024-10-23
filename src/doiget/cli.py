@@ -11,6 +11,7 @@ import sys
 
 import doiget
 import doiget.acquire
+import doiget.status
 
 
 LOGGER = logging.getLogger(__name__)
@@ -27,6 +28,8 @@ def main() -> None:
         run(args=parsed_args)
     except Exception as err:
         print(err)
+        if parsed_args.debug:
+            raise err
         sys.exit(1)
 
 
@@ -35,6 +38,13 @@ def setup_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         description="Download metadata and full-text for articles given their DOIs.",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+    )
+
+    parser.add_argument(
+        "--debug",
+        action="store_true",
+        default=False,
+        help="Print error tracebacks",
     )
 
     subparsers = parser.add_subparsers(dest="command")
@@ -61,6 +71,24 @@ def setup_parser() -> argparse.ArgumentParser:
         type=pathlib.Path,
         required=True,
         help="Path to write the output",
+    )
+
+    status_parser = subparsers.add_parser(
+        "status",
+        help="Show the status of the data directory.",
+    )
+
+    status_parser.add_argument(
+        "--output-path",
+        type=pathlib.Path,
+        required=False,
+        help="Path to write output, in CSV format.",
+    )
+
+    status_parser.add_argument(
+        "dois",
+        nargs="*",  # zero or more
+        help="Either a sequence of DOIs or the path to a file containing DOIs",
     )
 
     acquire_parser = subparsers.add_parser(
@@ -92,7 +120,7 @@ def setup_parser() -> argparse.ArgumentParser:
 
     acquire_parser.add_argument(
         "dois",
-        nargs="+",
+        nargs="+",  # one or more
         help="Either a sequence of DOIs or the path to a file containing DOIs",
     )
 
@@ -117,6 +145,9 @@ def run(args: argparse.Namespace) -> None:
     elif args.command == "acquire":
         run_acquire(args=args)
 
+    elif args.command == "status":
+        run_status(args=args)
+
     else:
         raise ValueError(f"Unexpected command: {args.command}")
 
@@ -127,6 +158,20 @@ def run_show_config() -> None:
 
 def run_get_dois(args: argparse.Namespace) -> None:
     pass
+
+
+def run_status(args: argparse.Namespace) -> None:
+
+    dois = (
+        None
+        if len(args.dois) == 0
+        else doiget.doi.form_dois_from_input(raw_input=args.dois)
+    )
+
+    doiget.status.run(
+        dois=dois,
+        output_path=args.output_path,
+    )
 
 
 def run_acquire(args: argparse.Namespace) -> None:

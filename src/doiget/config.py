@@ -110,6 +110,10 @@ class Settings(pydantic_settings.BaseSettings):
 
     hostname: str = socket.gethostname()
 
+    # level of metadata compression; -1 is default, 0 is no compression,
+    # 9 is highest compression (slowest)
+    metadata_compression_level: int = -1
+
     model_config = pydantic_settings.SettingsConfigDict(
         env_file=".env",
         env_prefix=f"{NAME.upper()}_",

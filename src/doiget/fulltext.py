@@ -145,3 +145,9 @@ class FullText:
 
         msg = f"No loadable data found for {self}"
         raise ValueError(msg)
+
+    def has_format(
+        self,
+        fmt: doiget.format.FormatName,
+    ) -> bool:
+        return self.formats[fmt].exists

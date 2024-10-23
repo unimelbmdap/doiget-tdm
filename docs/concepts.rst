@@ -8,15 +8,15 @@ Concepts
 
 This section provides a conceptual overview of the full-text acquisition process.
 
-When a request is initiated to acquire the full-text for a given Digital Object Identifier (DOI), the first check is whether the metadata (from CrossRef) for the DOI is present in the ``doiget`` data directory.
+When a request is initiated to acquire the full-text for a given Digital Object Identifier (DOI; see `this post <https://community.crossref.org/t/eli5-what-s-a-doi-membership-ticket-of-the-month-october-2024/12442>`_ for a primer on DOIs), the first check is whether the metadata (from CrossRef) for the DOI is present in the ``doiget`` data directory.
 If it is not present, the metadata is acquired from CrossRef and stored in the ``doiget`` data directory.
 Because the metadata is necessary for the acquisition of full-text content by ``doiget``, the full-text acquisition request fails if the metadata cannot be acquired.
 
 .. note::
 
-    To obtain the metadata for an item, we use the `CrossRef database <https://www.crossref.org/>`_.
+    To obtain the metadata for an item, we use `CrossRef <https://www.crossref.org/>`_.
     We query CrossRef using either its `web API <https://api.crossref.org>`_ or a local `LMDB <https://lmdb.readthedocs.io/>`_ database formed from the `CrossRef public data file <https://www.crossref.org/blog/2024-public-data-file-now-available-featuring-new-experimental-formats/>`_ (the latter is particularly useful when processing large numbers of DOIs as it does not require network calls).
-    The resulting metadata is stored locally in its native JSON format, with the JSON structure described `in the CrossRef API documentation <https://api.crossref.org/swagger-ui/index.html#/Works/get_works__doi_>`_.
+    The resulting metadata is stored locally in its native JSON format (potentially compressed), with the JSON structure described `in the CrossRef API documentation <https://api.crossref.org/swagger-ui/index.html#/Works/get_works__doi_>`_.
 
 
 Using the metadata, ``doiget`` then identifies the publisher of the DOI based on its ``member`` property.

@@ -8,3 +8,4 @@ Command-line reference
   :func: setup_parser
   :prog: doiget
 
+

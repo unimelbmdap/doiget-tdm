@@ -26,3 +26,12 @@ class Work:
             doi=doi,
             metadata=self.metadata,
         )
+
+        #: Item path in data directory
+        self.path = (
+            doiget.SETTINGS.data_dir
+            / self.doi.get_group(
+                n_groups=doiget.SETTINGS.data_dir_n_groups
+            )
+            / self.doi.quoted
+        )

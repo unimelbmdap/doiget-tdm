@@ -154,7 +154,11 @@ class CrossRefLMDBClient:
 
         return env
 
-    def get_doi_metadata(self, doi: doiget.doi.DOI) -> bytes:
+    def get_doi_metadata(
+        self,
+        doi: doiget.doi.DOI,
+        decompress: bool = True,
+    ) -> bytes:
         """
         Get the metadata for a given DOI.
 
@@ -229,12 +233,21 @@ class Metadata:
             n_groups=doiget.config.SETTINGS.data_dir_n_groups
         )
 
+        self._compression_level = doiget.SETTINGS.metadata_compression_level
+        self._is_compressed = self._compression_level != 0
+
+        path_suffix = (
+            ".gz"
+            if self._is_compressed
+            else ""
+        )
+
         #: Path to the raw metadata JSON file in the data directory
         self.path: pathlib.Path = (
             doiget.config.SETTINGS.data_dir
             / group
             / self._doi.quoted
-            / f"{self._doi.quoted}_metadata.json"
+            / f"{self._doi.quoted}_metadata.json{path_suffix}"
         )
 
         self._raw: simdjson.Object | None = None
@@ -301,12 +314,23 @@ class Metadata:
         return self._publisher_name
 
     def _load(self) -> None:
-        raw = simdjson.Parser().load(path=self.path)
 
-        if not isinstance(raw, simdjson.Object):
+        raw = self.path.read_bytes()
+
+        raw_json = (
+            zlib.decompress(raw)
+            if self._is_compressed
+            else raw
+        )
+
+        parser = simdjson.Parser()
+
+        data = parser.parse(src=raw_json)  # type: ignore[call-overload]
+
+        if not isinstance(data, simdjson.Object):
             raise TypeError("Unexpected type")
 
-        self._raw = raw
+        self._raw = data
 
     def acquire(
         self,
@@ -336,7 +360,16 @@ class Metadata:
 
         self.path.parent.mkdir(exist_ok=True, parents=True)
 
-        self.path.write_bytes(raw)
+        output = (
+            zlib.compress(
+                raw,
+                level=self._compression_level
+            )
+            if self._is_compressed
+            else raw
+        )
+
+        self.path.write_bytes(output)
 
         LOGGER.info(f"Wrote metadata to {self.path}")
 

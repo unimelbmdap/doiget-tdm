@@ -7,11 +7,11 @@ A typical workflow.
 Obtain DOIs of interest
 -----------------------
 
-Retrieve DOI metadata
----------------------
+Evaluate publishers and make agreements
+---------------------------------------
 
 Acquire full-text
 -----------------
 
-Standardise full-text
+Use full-text content
 ---------------------
