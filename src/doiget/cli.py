@@ -52,11 +52,13 @@ def setup_parser() -> argparse.ArgumentParser:
     _ = subparsers.add_parser(
         "show-config",
         help="Show configuration settings",
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
 
     get_dois_parser = subparsers.add_parser(
         "get-dois",
         help="Get the DOIs matching query and filter criteria",
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
 
     get_dois_parser.add_argument(
@@ -76,6 +78,7 @@ def setup_parser() -> argparse.ArgumentParser:
     status_parser = subparsers.add_parser(
         "status",
         help="Show the status of the data directory.",
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
 
     status_parser.add_argument(
@@ -94,6 +97,7 @@ def setup_parser() -> argparse.ArgumentParser:
     acquire_parser = subparsers.add_parser(
         "acquire",
         help="Download the metadata and fulltext for the DOIs",
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
 
     acquire_parser.add_argument(
