@@ -12,7 +12,7 @@ EXAMPLE_INVALID_DOI = "http://null"
 
 def test_doi() -> None:
     doi = doiget.doi.DOI(doi=EXAMPLE_VALID_DOI)
-    doi_from_quoted = doiget.doi.DOI(doi=EXAMPLE_VALID_DOI_QUOTED)
+    doi_from_quoted = doiget.doi.DOI(doi=EXAMPLE_VALID_DOI_QUOTED, unquote=True)
 
     assert doi == doi_from_quoted
 
@@ -27,7 +27,7 @@ def test_doi_group():
 
     assert doi_group == "3652"
 
-    doi_from_quoted = doiget.doi.DOI(doi=EXAMPLE_VALID_DOI_QUOTED)
+    doi_from_quoted = doiget.doi.DOI(doi=EXAMPLE_VALID_DOI_QUOTED, unquote=True)
 
     doi_from_quoted_group = doi_from_quoted.get_group(n_groups=n_groups)
 
