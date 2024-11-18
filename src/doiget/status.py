@@ -53,11 +53,6 @@ StatusRow = dataclasses.make_dataclass(
     slots=True,
 )
 
-StatusRowDict = typing.TypedDict(
-    "StatusRowDict",
-    SCHEMA.to_python(),
-)
-
 
 def convert_work_to_status_row(
     work: doiget.Work
@@ -326,13 +321,13 @@ def format_publisher_info(
     return table
 
 
-def iter_work_status() -> StatusRowDict:
+def iter_work_status() -> dict[str, object]:
 
     for work in doiget.data.iter_unsorted_works():
 
         status_row = convert_work_to_status_row(work=work)
 
-        yield typing.cast(StatusRowDict, dataclasses.asdict(status_row))
+        yield dataclasses.asdict(status_row)
 
 
 def get_df() -> pl.DataFrame:
