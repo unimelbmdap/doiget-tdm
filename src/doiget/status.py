@@ -12,6 +12,7 @@ import contextlib
 import functools
 import io
 import dataclasses
+import enum
 
 import polars as pl
 
@@ -131,6 +132,30 @@ def run(
         File to write a detailed summary (in CSV format).
 
     """
+
+    df = get_df()
+
+    if output_path is not None:
+
+        writers = {
+            ".csv": df.write_csv,
+            ".json": df.write_json,
+            ".xlsx": df.write_excel,
+            ".parquet": df.write_parquet,
+            ".pqt": df.write_parquet,
+        }
+
+        try:
+            writer = writers[output_path.suffix]
+        except KeyError:
+            msg = f"Invalid output path suffix '{output_path.suffix}'"
+            raise ValueError(msg)
+
+        writer(output_path)  # type: ignore [operator]
+
+
+def old():
+
 
     n = 0
     n_with_metadata = 0
@@ -321,13 +346,13 @@ def format_publisher_info(
     return table
 
 
-def iter_work_status() -> dict[str, object]:
+def iter_work_status() -> typing.Iterable[dict[str, object]]:
 
     for work in doiget.data.iter_unsorted_works():
 
         status_row = convert_work_to_status_row(work=work)
 
-        yield dataclasses.asdict(status_row)
+        yield dataclasses.asdict(status_row)  # type: ignore[call-overload]
 
 
 def get_df() -> pl.DataFrame:
