@@ -53,6 +53,11 @@ StatusRow = dataclasses.make_dataclass(
     slots=True,
 )
 
+StatusRowDict = typing.TypedDict(
+    "StatusRowDict",
+    SCHEMA.to_python(),
+)
+
 
 def convert_work_to_status_row(
     work: doiget.Work
@@ -114,18 +119,6 @@ def convert_work_to_status_row(
         published_date=published_date,
         **has_fulltext_fmt,
     )
-
-
-def convert_fmt_to_sources(
-    fmt: doiget.format.Format
-) -> str:
-
-    if fmt.sources is None:
-        return ""
-
-    src = "; ".join(str(src.link) for src in fmt.sources)
-
-    return src
 
 
 def run(
@@ -333,5 +326,19 @@ def format_publisher_info(
     return table
 
 
+def iter_work_status() -> StatusRowDict:
+
+    for work in doiget.data.iter_unsorted_works():
+
+        status_row = convert_work_to_status_row(work=work)
+
+        yield typing.cast(StatusRowDict, dataclasses.asdict(status_row))
 
 
+def get_df() -> pl.DataFrame:
+
+    return pl.DataFrame(
+        data=iter_work_status(),
+        schema=SCHEMA,
+        orient="row",
+    )
