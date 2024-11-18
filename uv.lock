@@ -570,6 +570,7 @@ dependencies = [
     { name = "requests" },
     { name = "requests-ratelimiter" },
     { name = "retryhttp", extra = ["requests"] },
+    { name = "rich" },
     { name = "tzdata" },
     { name = "universal-pathlib" },
 ]
@@ -630,6 +631,7 @@ requires-dist = [
     { name = "requests", specifier = ">=2.32.3" },
     { name = "requests-ratelimiter", specifier = ">=0.7.0" },
     { name = "retryhttp", extras = ["requests"], specifier = ">=1.1.0" },
+    { name = "rich", specifier = ">=13.9.4" },
     { name = "sphinx", marker = "extra == 'docs'", specifier = ">=8.0.2" },
     { name = "sphinx-argparse", marker = "extra == 'docs'", specifier = ">=0.5.2" },
     { name = "sphinx-argparse-cli", marker = "extra == 'docs'", specifier = ">=1.18.2" },

@@ -13,6 +13,9 @@ import functools
 import io
 import dataclasses
 
+import rich
+import rich.table
+
 import doiget.doi
 import doiget.format
 import doiget.data
@@ -118,8 +121,13 @@ def run(
 
     n = 0
     n_with_metadata = 0
+    n_with_fulltext = 0
 
-    n_with_format: collections.Counter[doiget.format.FormatName] = (
+    n_with_format: collections.Counter[tuple[doiget.format.FormatName, ...]] = (
+        collections.Counter()
+    )
+
+    n_with_best_format: collections.Counter[doiget.format.FormatName | None] = (
         collections.Counter()
     )
 
@@ -155,13 +163,32 @@ def run(
 
             work.fulltext.set_sources()
 
-            for fmt_name in doiget.SETTINGS.format_preference_order:
+            has_formats = {
+                fmt: work.fulltext.formats[fmt].exists
+                for fmt in doiget.SETTINGS.format_preference_order
+            }
 
-                fmt = work.fulltext.formats[fmt_name]
+            has_fulltext = any([has_format for has_format in has_formats.values()])
 
-                if fmt.exists:
-                    n_with_format[fmt_name] += 1
+            n_with_fulltext += int(has_fulltext)
+
+            for (fmt, has_fmt) in has_formats.items():
+
+                if has_fmt:
+                    n_with_best_format[fmt] += 1
                     break
+
+            else:
+                n_with_best_format[None] += 1
+
+            fulltext_fmts = tuple(
+                fmt
+                for (fmt, has_format) in has_formats.items()
+                if has_format and fmt is not None
+            )
+
+            if fulltext_fmts:
+                n_with_format[fulltext_fmts] += 1
 
             row = convert_work_to_status_row(work=work)
 
@@ -183,33 +210,102 @@ def run(
         if handle is not None:
             handle.close()
 
+    
+
     print(n)
     print(n_with_metadata)
     print(n_with_format)
+
+    pub_info = format_publisher_info(
+        n_per_member=n_per_member,
+        member_names=member_names,
+    )
+
+    rich.print(pub_info)
+
+    best_format_info = format_best_format(
+        n_with_best_format=n_with_best_format,
+    )
+
+    rich.print(best_format_info)
+
+    format_info = format_formats(
+        n_with_format=n_with_format,
+    )
+
+    rich.print(format_info)
+
+    print(n)
+    print(n_with_metadata)
+    print(n_with_fulltext)
+
+
+def format_formats(
+    n_with_format: collections.Counter[tuple[doiget.format.FormatName, ...]],
+) -> rich.table.Table:
+
+    table = rich.table.Table(
+        title="DOIs with full-text formats",
+    )
+
+    table.add_column("Format(s)")
+    table.add_column("Count")
+
+    for (fmts, count) in n_with_format.items():
+        table.add_row(
+            " + ".join([fmt.name for fmt in fmts]),
+            str(count),
+        )
+
+    return table
+
+
+def format_best_format(
+    n_with_best_format: collections.Counter[doiget.format.FormatName | None],
+) -> rich.table.Table:
+
+    table = rich.table.Table(
+        title="Best available format count",
+    )
+
+    for fmt in doiget.format.FormatName:
+        table.add_column(fmt.name)
+
+    table.add_column("-")
+
+    row = [
+        str(n_with_best_format[fmt])
+        for fmt in doiget.format.FormatName
+    ] + [str(n_with_best_format[None])]
+
+    table.add_row(*row)
+
+    return table
 
 
 def format_publisher_info(
     n_per_member: collections.Counter[doiget.metadata.MemberID],
     member_names: collections.defaultdict[doiget.metadata.MemberID, set[str]],
-) -> str:
+) -> rich.table.Table:
+
+    table = rich.table.Table(
+        title="Publishers of DOIs with metadata",
+        show_lines=True,
+    )
+
+    table.add_column("Member ID")
+    table.add_column("Publisher name(s)")
+    table.add_column("Count")
 
     member_ids = sorted(n_per_member)
 
-    info = "Publishers:\n"
-
-    publisher_counts = []
-
     for member_id in member_ids:
 
-        names = ", ".join([name for name in sorted(member_names[member_id])])
+        names = "\n".join([name for name in sorted(member_names[member_id])])
 
-        member_str = f"\tMember ID: {member_id} ('{names}') = {n_per_member[member_id]}"
+        table.add_row(str(member_id), names, str(n_per_member[member_id]))
 
-        publisher_counts.append(member_str)
-
-    info += "\n".join(publisher_counts)
-
-    return info
+    return table
 
 
 

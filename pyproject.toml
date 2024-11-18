@@ -22,6 +22,7 @@ dependencies = [
   "alive-progress>=3.1.5",
   "html5lib>=1.1",
   "crossref-lmdb",
+  "rich>=13.9.4",
 ]
 
 [project.scripts]

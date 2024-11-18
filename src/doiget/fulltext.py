@@ -64,9 +64,9 @@ class FullText:
         if not self.metadata.exists or self.metadata.member_id is None:
             return
 
-        publisher = doiget.publisher.registry[self.metadata.member_id]
-
-        publisher.set_sources(fulltext=self)
+        if self.metadata.member_id in doiget.publisher.registry:
+            publisher = doiget.publisher.registry[self.metadata.member_id]
+            publisher.set_sources(fulltext=self)
 
     def acquire(self) -> None:
         """
