@@ -67,6 +67,11 @@ class MemberID:
             raise ValueError("Can only compare member IDs")
         return str(self) == str(other)
 
+    def __lt__(self, other: object) -> bool:
+        if not isinstance(other, MemberID):
+            raise ValueError("Can only compare member IDs")
+        return int(self._id) < int(other._id)
+
 
 class CrossRefWebAPIClient:
 

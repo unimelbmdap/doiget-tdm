@@ -123,6 +123,14 @@ def run(
         collections.Counter()
     )
 
+    n_per_member: collections.Counter[doiget.metadata.MemberID] = (
+        collections.Counter()
+    )
+
+    member_names: collections.defaultdict[doiget.metadata.MemberID, set[str]] = (
+        collections.defaultdict(set)
+    )
+
     handle = (
         output_path.open("w", newline="")
         if output_path is not None
@@ -134,6 +142,14 @@ def run(
         for work in doiget.data.iter_unsorted_works():
 
             n_with_metadata += int(work.metadata.exists)
+
+            if work.metadata.exists:
+
+                member_id = work.metadata.member_id
+
+                n_per_member[member_id] += 1
+
+                member_names[member_id] |= {work.metadata.publisher_name}
 
             n += 1
 
@@ -170,4 +186,31 @@ def run(
     print(n)
     print(n_with_metadata)
     print(n_with_format)
+
+
+def format_publisher_info(
+    n_per_member: collections.Counter[doiget.metadata.MemberID],
+    member_names: collections.defaultdict[doiget.metadata.MemberID, set[str]],
+) -> str:
+
+    member_ids = sorted(n_per_member)
+
+    info = "Publishers:\n"
+
+    publisher_counts = []
+
+    for member_id in member_ids:
+
+        names = ", ".join([name for name in sorted(member_names[member_id])])
+
+        member_str = f"\tMember ID: {member_id} ('{names}') = {n_per_member[member_id]}"
+
+        publisher_counts.append(member_str)
+
+    info += "\n".join(publisher_counts)
+
+    return info
+
+
+
 
