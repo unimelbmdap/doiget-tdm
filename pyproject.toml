@@ -23,6 +23,7 @@ dependencies = [
   "html5lib>=1.1",
   "crossref-lmdb",
   "rich>=13.9.4",
+  "polars>=1.14.0",
 ]
 
 [project.scripts]
