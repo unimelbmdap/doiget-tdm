@@ -7,6 +7,7 @@ import collections
 import time
 import pathlib
 import zlib
+import datetime
 
 import simdjson
 
@@ -317,6 +318,102 @@ class Metadata:
             self._publisher_name = raw_publisher_name
 
         return self._publisher_name
+
+    @property
+    def journal_name(self) -> str | None:
+
+        if not self.exists or self.raw is None:
+            raise ValueError("No metadata available")
+
+        json_msg = "Unexpected JSON format"
+
+        if not isinstance(self.raw, simdjson.Object):
+            raise ValueError(json_msg)
+
+        try:
+            journal_names = self.raw["container-title"]
+        except KeyError:
+            return None
+
+        if not isinstance(journal_names, simdjson.Array):
+            raise ValueError(json_msg)
+
+        (journal_name, *_) = journal_names
+
+        return str(journal_name)
+
+    @property
+    def title(self) -> str | None:
+
+        if not self.exists or self.raw is None:
+            raise ValueError("No metadata available")
+
+        json_msg = "Unexpected JSON format"
+
+        if not isinstance(self.raw, simdjson.Object):
+            raise ValueError(json_msg)
+
+        try:
+            titles = self.raw["title"]
+        except KeyError:
+            return None
+
+        if not isinstance(titles, simdjson.Array):
+            raise ValueError(json_msg)
+
+        (title, *_) = titles
+
+        return str(title)
+
+    @property
+    def published_date(self) -> datetime.date | None:
+
+        if not self.exists or self.raw is None:
+            raise ValueError("No metadata available")
+
+        json_msg = "Unexpected JSON format"
+
+        if not isinstance(self.raw, simdjson.Object):
+            raise ValueError(json_msg)
+
+        try:
+            published = self.raw["published"]
+        except KeyError:
+            return None
+
+        if not isinstance(published, simdjson.Object):
+            raise ValueError(json_msg)
+
+        try:
+            date_parts = published["date-parts"]
+        except KeyError:
+            return None
+
+        if not isinstance(date_parts, simdjson.Array):
+            raise ValueError(json_msg)
+
+        dates: list[datetime.date] = []
+
+        for raw_date_parts in date_parts:
+
+            if not isinstance(raw_date_parts, simdjson.Array):
+                raise ValueError(json_msg)
+
+            if len(raw_date_parts) == 1:
+                (year,) = typing.cast(tuple[int], raw_date_parts)
+                month = day = 1
+            elif len(raw_date_parts) == 2:
+                (year, month) = typing.cast(tuple[int, int], raw_date_parts)
+                day = 1
+            elif len(raw_date_parts) == 3:
+                (year, month, day) = typing.cast(tuple[int, int, int], raw_date_parts)
+            else:
+                msg = f"Unknown date format: {raw_date_parts}"
+                raise ValueError(msg)
+
+            dates.append(datetime.date(year=year, month=month, day=day))
+
+        return max(dates)
 
     def _load(self) -> None:
 

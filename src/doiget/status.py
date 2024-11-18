@@ -13,6 +13,8 @@ import functools
 import io
 import dataclasses
 
+import polars as pl
+
 import rich
 import rich.table
 
@@ -21,26 +23,34 @@ import doiget.format
 import doiget.data
 
 
+SCHEMA: pl.Schema = pl.Schema(
+    schema=(
+        {
+            "doi": pl.String(),
+            "doi_quoted": pl.String(),
+            "has_metadata": pl.Boolean(),
+            "member_id": pl.Categorical(),
+            "publisher_name": pl.Categorical(),
+            "has_fulltext": pl.Boolean(),
+            "journal_name": pl.Categorical(),
+            "title": pl.String(),
+            "published_date": pl.Date(),
+        }
+        | {
+            f"has_fulltext_{fmt.name}": pl.Boolean()
+            for fmt in doiget.format.FormatName
+        }
+    ),
+)
+
+
 StatusRow = dataclasses.make_dataclass(
-    "StatusRow",
-    [
-        ("doi", str),
-        ("has_metadata", bool),
-        ("member_id", str),
-        ("publisher_name", str),
-        ("has_fulltext", bool),
-    ]
-    + [
-        (f"has_fulltext_{fmt.name}", bool)
-        for fmt in doiget.SETTINGS.format_preference_order
-    ]
-    + [
-        ("local_dir", str),
-    ]
-    + [
-        (f"fulltext_src_{fmt.name}", bool)
-        for fmt in doiget.SETTINGS.format_preference_order
-    ],
+    cls_name="StatusRow",
+    fields=SCHEMA.to_python().items(),
+    repr=False,
+    eq=False,
+    frozen=True,
+    slots=True,
 )
 
 
@@ -49,19 +59,39 @@ def convert_work_to_status_row(
 ) -> object:  # can't type hint dynamically-created dataclasses
 
     doi = str(work.doi)
+    doi_quoted = work.doi.quoted
+
     has_metadata = work.metadata.exists
 
-    try:
-        member_id = str(work.metadata.member_id)
-    except ValueError:
-        member_id = ""
+    member_id = (
+        str(work.metadata.member_id)
+        if has_metadata
+        else None
+    )
 
-    try:
-        publisher_name = work.metadata.publisher_name
-    except ValueError:
-        publisher_name = ""
+    publisher_name = (
+        work.metadata.publisher_name
+        if has_metadata
+        else None
+    )
 
-    has_fulltext = False
+    title = (
+        work.metadata.title
+        if has_metadata
+        else None
+    )
+
+    journal_name = (
+        work.metadata.journal_name
+        if has_metadata
+        else None
+    )
+
+    published_date = (
+        work.metadata.published_date
+        if has_metadata
+        else None
+    )
 
     has_fulltext_fmt = {
         f"has_fulltext_{fmt_name.name}": fmt.exists
@@ -72,22 +102,17 @@ def convert_work_to_status_row(
         fulltext_fmt_exists for fulltext_fmt_exists in has_fulltext_fmt.values()
     )
 
-    local_dir = str(work.path)
-
-    fulltext_src = {
-        f"fulltext_src_{fmt_name.name}": convert_fmt_to_sources(fmt=fmt)
-        for (fmt_name, fmt) in work.fulltext.formats.items()
-    }
-
     return StatusRow(
         doi=doi,
+        doi_quoted=doi_quoted,
         has_metadata=has_metadata,
         member_id=member_id,
         publisher_name=publisher_name,
+        journal_name=journal_name,
+        title=title,
         has_fulltext=has_fulltext,
-        local_dir=local_dir,
+        published_date=published_date,
         **has_fulltext_fmt,
-        **fulltext_src,
     )
 
 
