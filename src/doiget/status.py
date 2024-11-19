@@ -279,8 +279,35 @@ def old():
 
 
 def format_formats(
-    n_with_format: collections.Counter[tuple[doiget.format.FormatName, ...]],
+    df: pl.DataFrame,
 ) -> rich.table.Table:
+
+    cols = [
+        f"has_fulltext_{fmt.name}"
+        for fmt in doiget.SETTINGS.format_preference_order
+    ]
+
+    def row_func(row: tuple[bool, ...]) -> str:
+        return " + ".join(
+            sorted(
+                {
+                    fmt.name
+                    for (fmt, has_fmt) in zip(
+                        doiget.SETTINGS.format_preference_order,
+                        row,
+                        strict=True,
+                    )
+                    if has_fmt
+                }
+            )
+        )
+
+    fmt_types = df.select(pl.col(*cols)).map_rows(
+        function=row_func,
+        return_dtype=pl.Categorical(),
+    ).rename({"map": "fmt_types"})
+
+    return fmt_types.group_by(pl.col("fmt_types")).count()
 
     table = rich.table.Table(
         title="DOIs with full-text formats",
@@ -289,11 +316,6 @@ def format_formats(
     table.add_column("Format(s)")
     table.add_column("Count")
 
-    for (fmts, count) in n_with_format.items():
-        table.add_row(
-            " + ".join([fmt.name for fmt in fmts]),
-            str(count),
-        )
 
     return table
 
