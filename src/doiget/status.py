@@ -133,7 +133,11 @@ def run(
 
     """
 
-    df = get_df()
+    df = get_df(dois=dois)
+
+    formats_table = get_formats_table(df=df)
+
+    rich.print(formats_table)
 
     if output_path is not None:
 
@@ -278,9 +282,11 @@ def old():
     print(n_with_fulltext)
 
 
-def format_formats(
+def get_formats_table(
     df: pl.DataFrame,
 ) -> rich.table.Table:
+
+    with_fulltext = df.filter(pl.col("has_fulltext"))
 
     cols = [
         f"has_fulltext_{fmt.name}"
@@ -302,12 +308,12 @@ def format_formats(
             )
         )
 
-    fmt_types = df.select(pl.col(*cols)).map_rows(
+    fmt_types = with_fulltext.select(pl.col(*cols)).map_rows(
         function=row_func,
         return_dtype=pl.Categorical(),
     ).rename({"map": "fmt_types"})
 
-    return fmt_types.group_by(pl.col("fmt_types")).count()
+    counts = fmt_types.group_by(pl.col("fmt_types")).len()
 
     table = rich.table.Table(
         title="DOIs with full-text formats",
@@ -316,6 +322,8 @@ def format_formats(
     table.add_column("Format(s)")
     table.add_column("Count")
 
+    for value in counts.iter_rows():
+        table.add_row(*[str(val) for val in value])
 
     return table
 
@@ -343,10 +351,29 @@ def format_best_format(
     return table
 
 
-def format_publisher_info(
-    n_per_member: collections.Counter[doiget.metadata.MemberID],
-    member_names: collections.defaultdict[doiget.metadata.MemberID, set[str]],
+def get_publisher_table(
+    df: pl.DataFrame,
 ) -> rich.table.Table:
+
+    df_with_metadata = (
+        df
+        .filter(pl.col("has_metadata"))
+        .select(pl.col("member_id", "publisher_name"))
+    )
+
+    def combine_publisher_names(member_df: pl.DataFrame) -> pl.DataFrame:
+        publisher_names (
+            member_df
+            .select(pl.col("publisher_name"))
+            .unique()
+            .rows()
+        )
+
+    # TODO
+
+    return df_with_metadata
+
+
 
     table = rich.table.Table(
         title="Publishers of DOIs with metadata",
@@ -368,19 +395,24 @@ def format_publisher_info(
     return table
 
 
-def iter_work_status() -> typing.Iterable[dict[str, object]]:
+def iter_work_status(
+    dois: typing.Sequence[doiget.doi.DOI] | None,
+) -> typing.Iterable[dict[str, object]]:
 
-    for work in doiget.data.iter_unsorted_works():
+    def is_valid(work: doiget.work.Work) -> bool:
+        return dois is None or work.doi in dois
+
+    for work in doiget.data.iter_unsorted_works(test_if_valid_work=is_valid):
 
         status_row = convert_work_to_status_row(work=work)
 
         yield dataclasses.asdict(status_row)  # type: ignore[call-overload]
 
 
-def get_df() -> pl.DataFrame:
+def get_df(dois: typing.Sequence[doiget.doi.DOI] | None) -> pl.DataFrame:
 
     return pl.DataFrame(
-        data=iter_work_status(),
+        data=iter_work_status(dois=dois),
         schema=SCHEMA,
         orient="row",
     )
