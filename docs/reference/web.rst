@@ -1,7 +1,7 @@
-``doiget.web``
+``doiget_tdm.web``
 ===================
 
-.. autoclass:: doiget.web.WebRequester
+.. autoclass:: doiget_tdm.web.WebRequester
     :members:
 
 

@@ -1,4 +1,4 @@
-project = "doiget"
+project = "doiget-tdm"
 copyright = "2024, MDAP"
 author = "MDAP"
 version = "0.1.0"
@@ -43,7 +43,7 @@ typehints_always_use_bars_union = True
 typehints_defaults = "braces"
 
 github_username = "unimelbmdap"
-github_repository = "doiget"
+github_repository = "doiget-tdm"
 autodoc_show_sourcelink = True
 
 def setup(app):

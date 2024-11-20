@@ -1,9 +1,9 @@
 Defining a new publisher
 ========================
 
-Additional publishers can be added to ``doiget`` by those with knowledge of the Python programming language.
-A new publisher is created by describing a class that inherits from the :py:class:`doiget.publisher.Publisher` abstract base class (ABC).
-A directory containing the Python source file(s) is passed to ``doiget`` via the ``extra_handlers_path`` option described in :doc:`/configuration`.
+Additional publishers can be added to ``doiget-tdm`` by those with knowledge of the Python programming language.
+A new publisher is created by describing a class that inherits from the :py:class:`doiget_tdm.publisher.Publisher` abstract base class (ABC).
+A directory containing the Python source file(s) is passed to ``doiget-tdm`` via the ``extra_handlers_path`` option described in :doc:`/configuration`.
 
 
 Overview of a new publisher implementation
@@ -11,12 +11,12 @@ Overview of a new publisher implementation
 
 The first item of information that is required for a new publisher its its CrossRef member ID.
 Perhaps the simplest way to obtain this information is to find a DOI that is associated with the publisher and view its CrossRef metadata via the `CrossRef web API <https://api.crossref.org/swagger-ui/index.html#/Works/get_works__doi_>`_.
-The member ID is the ``member`` attribute in the metadata, and is represented in ``doiget`` in the :py:class:`doiget.metadata.MemberID` class.
+The member ID is the ``member`` attribute in the metadata, and is represented in ``doiget-tdm`` in the :py:class:`doiget_tdm.metadata.MemberID` class.
 
-The next task is to implement the :py:class:`doiget.publisher.Publisher.set_sources` method.
-This method receives an instance of :py:class:`doiget.fulltext.FullText` (as ``fulltext``), which has a ``formats`` property that is a dictionary that maps a :py:class:`doiget.format.FormatName` to a :py:class:`doiget.format.Format` instance.
+The next task is to implement the :py:class:`doiget_tdm.publisher.Publisher.set_sources` method.
+This method receives an instance of :py:class:`doiget_tdm.fulltext.FullText` (as ``fulltext``), which has a ``formats`` property that is a dictionary that maps a :py:class:`doiget_tdm.format.FormatName` to a :py:class:`doiget_tdm.format.Format` instance.
 Here, a 'format' refers to a specific form of full-text content for a DOI, such as XML, PDF, and HTML.
-Each :py:class:`doiget.format.Format` instance has a ``sources`` property, which is a list of zero or more instances of :py:class:`doiget.source.Source`.
+Each :py:class:`doiget_tdm.format.Format` instance has a ``sources`` property, which is a list of zero or more instances of :py:class:`doiget_tdm.source.Source`.
 
 The responsibility of the ``set_sources`` method is to populate the list of sources with instances of ``Source`` for each applicable format for a particular DOI.
 The first piece of information required for a ``Source`` is a ``link``.

@@ -1,5 +1,5 @@
-``doiget.data``
+``doiget_tdm.data``
 ==============
 
-.. autofunction:: doiget.data.iter_unsorted_works
+.. autofunction:: doiget_tdm.data.iter_unsorted_works
 

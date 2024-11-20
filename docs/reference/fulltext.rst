@@ -1,7 +1,7 @@
-``doiget.fulltext``
+``doiget_tdm.fulltext``
 ===================
 
-.. autoclass:: doiget.fulltext.FullText
+.. autoclass:: doiget_tdm.fulltext.FullText
     :members:
 
 

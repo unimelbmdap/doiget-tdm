@@ -1,13 +1,13 @@
 Configuration
 =============
 
-In addition to runtime options when executing ``doiget``, as documented in :doc:`/reference/cmd`, there are configuration options for ``doiget``.
+In addition to runtime options when executing ``doiget-tdm``, as documented in :doc:`/reference/cmd`, there are configuration options for ``doiget-tdm``.
 
 .. note::
 
     There are also per-publisher configuration options that are described in :doc:`/publishers/avail_publishers`.
 
-The active configuration settings can be shown by running ``doiget show-config``.
+The active configuration settings can be shown by running ``doiget-tdm show-config``.
 
 Options
 -------
@@ -19,13 +19,13 @@ Options
     Typical directories are:
 
     Linux
-        ``~/.local/share/doiget/``
+        ``~/.local/share/doiget-tdm/``
 
     Mac
-        ``~/Library/Application Support/doiget/data/``
+        ``~/Library/Application Support/doiget-tdm/data/``
 
     Windows
-        ``~\AppData\Local\doiget\data``
+        ``~\AppData\Local\doiget-tdm\data``
 
 ``cache_dir``
     The directory to store temporary but persistent files, such as full-text data archives that span multiple items.
@@ -34,13 +34,13 @@ Options
     Typical directories are:
 
     Linux
-        ``~/.cache/doiget/``
+        ``~/.cache/doiget-tdm/``
 
     Mac
-        ``~/Library/Caches/doiget/``
+        ``~/Library/Caches/doiget-tdm/``
 
     Windows
-        ``~\AppData\Local\doiget\doiget\Cache``
+        ``~\AppData\Local\doiget-tdm\doiget-tdm\Cache``
 
 ``data_dir_n_groups``
     The acquired data is stored on the filesystem (within ``data_dir``) with one directory per DOI.
@@ -103,32 +103,32 @@ Options
 Setting the configuration
 -------------------------
 
-The configuration for ``doiget`` can be set via three ways:
+The configuration for ``doiget-tdm`` can be set via three ways:
 
 Files in a configuration directory
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The directory in which ``doiget`` will search for configuration settings varies by platform.
+The directory in which ``doiget-tdm`` will search for configuration settings varies by platform.
 Typical directories are:
 
 Linux
-    ``~/.config/doiget/``
+    ``~/.config/doiget-tdm/``
 
 Mac
-    ``~/Library/Application Support/doiget/config/``
+    ``~/Library/Application Support/doiget-tdm/config/``
 
 Windows
-    ``~\AppData\Local\doiget\doiget\config``
+    ``~\AppData\Local\doiget-tdm\doiget-tdm\config``
 
-A configuration option can be set by creating a file inside the config directory with a name that has the form ``doiget_${OPTION}`` and the contents are the option setting.
-For example, the ``log_level`` option can be set to ``WARNING`` by creating a file called ``doiget_log_level`` that contains the text ``WARNING``.
+A configuration option can be set by creating a file inside the config directory with a name that has the form ``doiget-tdm_${OPTION}`` and the contents are the option setting.
+For example, the ``log_level`` option can be set to ``WARNING`` by creating a file called ``doiget-tdm_log_level`` that contains the text ``WARNING``.
 
 Within a ``.env`` file
 ~~~~~~~~~~~~~~~~~~~~~~
 
-Configuration settings can be read from a file named ``.env`` that is contained in the directory in which ``doiget`` is executed.
-This file contains one option per line, in the form ``DOIGET_${OPTION}=${VALUE}``.
-For example, the ``log_level`` option can be set to ``WARNING`` by having a line in ``.env`` that is ``DOIGET_LOG_LEVEL=INFO``.
+Configuration settings can be read from a file named ``.env`` that is contained in the directory in which ``doiget-tdm`` is executed.
+This file contains one option per line, in the form ``DOIGET_TDM_${OPTION}=${VALUE}``.
+For example, the ``log_level`` option can be set to ``WARNING`` by having a line in ``.env`` that is ``DOIGET_TDM_LOG_LEVEL=INFO``.
 
 Using environment variables
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~

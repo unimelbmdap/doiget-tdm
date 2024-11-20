@@ -1,9 +1,9 @@
-``doiget.format``
+``doiget_tdm.format``
 ===================
 
-.. autoclass:: doiget.format.Format
+.. autoclass:: doiget_tdm.format.Format
     :members:
 
-.. autoenum:: doiget.format.FormatName
+.. autoenum:: doiget_tdm.format.FormatName
     :members:
 

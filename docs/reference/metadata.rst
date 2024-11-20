@@ -1,16 +1,16 @@
-``doiget.metadata``
+``doiget_tdm.metadata``
 ====================
 
-.. autoclass:: doiget.metadata.MemberID
+.. autoclass:: doiget_tdm.metadata.MemberID
     :members:
 
-.. autoclass:: doiget.metadata.Metadata
+.. autoclass:: doiget_tdm.metadata.Metadata
     :members:
 
-.. autoclass:: doiget.metadata.CrossRefWebAPIClient
+.. autoclass:: doiget_tdm.metadata.CrossRefWebAPIClient
     :members:
 
-.. autoclass:: doiget.metadata.CrossRefLMDBClient
+.. autoclass:: doiget_tdm.metadata.CrossRefLMDBClient
     :members:
 
 

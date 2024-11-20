@@ -1,7 +1,7 @@
-``doiget.work``
+``doiget_tdm.work``
 ===================
 
-.. autoclass:: doiget.work.Work
+.. autoclass:: doiget_tdm.work.Work
     :members:
 
 

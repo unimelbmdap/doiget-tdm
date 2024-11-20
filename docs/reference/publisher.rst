@@ -1,7 +1,7 @@
-``doiget.publisher``
+``doiget_tdm.publisher``
 ====================
 
-.. autoclass:: doiget.publisher.Publisher
+.. autoclass:: doiget_tdm.publisher.Publisher
     :members:
 
 

@@ -1,7 +1,7 @@
-``doiget.validate``
+``doiget_tdm.validate``
 ===================
 
-.. automodule:: doiget.validate
+.. automodule:: doiget_tdm.validate
     :members:
 
 

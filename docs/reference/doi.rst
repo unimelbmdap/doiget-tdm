@@ -1,8 +1,8 @@
-``doiget.doi``
+``doiget_tdm.doi``
 ==============
 
-.. autoclass:: doiget.doi.DOI
+.. autoclass:: doiget_tdm.doi.DOI
     :members:
 
-.. autonamedtuple:: doiget.doi.DOIParts
+.. autonamedtuple:: doiget_tdm.doi.DOIParts
 

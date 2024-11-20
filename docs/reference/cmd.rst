@@ -4,8 +4,8 @@ Command-line reference
 .. _command_line_reference:
 
 .. argparse::
-  :module: doiget.cli
+  :module: doiget_tdm.cli
   :func: setup_parser
-  :prog: doiget
+  :prog: doiget_tdm
 
 

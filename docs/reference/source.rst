@@ -1,7 +1,7 @@
-``doiget.source``
+``doiget_tdm.source``
 ===================
 
-.. autoclass:: doiget.source.Source
+.. autoclass:: doiget_tdm.source.Source
     :members:
 
 

@@ -1,7 +1,7 @@
-``doiget.crossref``
+``doiget_tdm.crossref``
 ===================
 
-.. autoclass:: doiget.crossref.CrossRefWebAPI
+.. autoclass:: doiget_tdm.crossref.CrossRefWebAPI
     :members:
 
 
