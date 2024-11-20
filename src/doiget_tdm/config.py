@@ -112,7 +112,7 @@ class Settings(pydantic_settings.BaseSettings):
 
     # level of metadata compression; -1 is default, 0 is no compression,
     # 9 is highest compression (slowest)
-    metadata_compression_level: int = -1
+    metadata_compression_level: int = 0
 
     model_config = pydantic_settings.SettingsConfigDict(
         env_file=".env",

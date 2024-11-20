@@ -135,8 +135,10 @@ def run(
 
     df = get_df(dois=dois)
 
-    formats_table = get_formats_table(df=df)
+    publishers_table = get_publisher_table(df=df)
+    rich.print(publishers_table)
 
+    formats_table = get_formats_table(df=df)
     rich.print(formats_table)
 
     if output_path is not None:
@@ -156,130 +158,6 @@ def run(
             raise ValueError(msg)
 
         writer(output_path)  # type: ignore [operator]
-
-
-def old():
-
-
-    n = 0
-    n_with_metadata = 0
-    n_with_fulltext = 0
-
-    n_with_format: collections.Counter[tuple[doiget_tdm.format.FormatName, ...]] = (
-        collections.Counter()
-    )
-
-    n_with_best_format: collections.Counter[doiget_tdm.format.FormatName | None] = (
-        collections.Counter()
-    )
-
-    n_per_member: collections.Counter[doiget_tdm.metadata.MemberID] = (
-        collections.Counter()
-    )
-
-    member_names: collections.defaultdict[doiget_tdm.metadata.MemberID, set[str]] = (
-        collections.defaultdict(set)
-    )
-
-    handle = (
-        output_path.open("w", newline="")
-        if output_path is not None
-        else None
-    )
-
-    try:
-
-        for work in doiget_tdm.data.iter_unsorted_works():
-
-            n_with_metadata += int(work.metadata.exists)
-
-            if work.metadata.exists:
-
-                member_id = work.metadata.member_id
-
-                n_per_member[member_id] += 1
-
-                member_names[member_id] |= {work.metadata.publisher_name}
-
-            n += 1
-
-            work.fulltext.set_sources()
-
-            has_formats = {
-                fmt: work.fulltext.formats[fmt].exists
-                for fmt in doiget_tdm.SETTINGS.format_preference_order
-            }
-
-            has_fulltext = any([has_format for has_format in has_formats.values()])
-
-            n_with_fulltext += int(has_fulltext)
-
-            for (fmt, has_fmt) in has_formats.items():
-
-                if has_fmt:
-                    n_with_best_format[fmt] += 1
-                    break
-
-            else:
-                n_with_best_format[None] += 1
-
-            fulltext_fmts = tuple(
-                fmt
-                for (fmt, has_format) in has_formats.items()
-                if has_format and fmt is not None
-            )
-
-            if fulltext_fmts:
-                n_with_format[fulltext_fmts] += 1
-
-            row = convert_work_to_status_row(work=work)
-
-            row_dict = dataclasses.asdict(row)  # type: ignore[call-overload]
-
-    except Exception as err:
-
-        # if there has been an exception, don't leave a half-written file
-        # hanging around
-
-        if handle is not None:
-            handle.close()
-        if output_path is not None:
-            output_path.unlink()
-
-        raise err
-
-    else:
-        if handle is not None:
-            handle.close()
-
-    
-
-    print(n)
-    print(n_with_metadata)
-    print(n_with_format)
-
-    pub_info = format_publisher_info(
-        n_per_member=n_per_member,
-        member_names=member_names,
-    )
-
-    rich.print(pub_info)
-
-    best_format_info = format_best_format(
-        n_with_best_format=n_with_best_format,
-    )
-
-    rich.print(best_format_info)
-
-    format_info = format_formats(
-        n_with_format=n_with_format,
-    )
-
-    rich.print(format_info)
-
-    print(n)
-    print(n_with_metadata)
-    print(n_with_fulltext)
 
 
 def get_formats_table(
@@ -332,6 +210,8 @@ def format_best_format(
     n_with_best_format: collections.Counter[doiget_tdm.format.FormatName | None],
 ) -> rich.table.Table:
 
+    # TODO
+
     table = rich.table.Table(
         title="Best available format count",
     )
@@ -362,18 +242,38 @@ def get_publisher_table(
     )
 
     def combine_publisher_names(member_df: pl.DataFrame) -> pl.DataFrame:
-        publisher_names (
+
+        count = member_df.select("member_id").count().item()
+
+        publisher_names = (
             member_df
             .select(pl.col("publisher_name"))
             .unique()
             .rows()
         )
 
-    # TODO
+        member_id = member_df.select(pl.first("member_id")).item()
 
-    return df_with_metadata
+        combined = "; ".join(
+            [
+                publisher_name
+                for publisher_name, in publisher_names
+            ]
+        )
 
+        return pl.DataFrame(
+            {
+                "member_id": [member_id],
+                "publisher_name": [combined],
+                "count": [count],
+            }
+        )
 
+    names = (
+        df_with_metadata
+        .group_by("member_id")
+        .map_groups(combine_publisher_names)
+    )
 
     table = rich.table.Table(
         title="Publishers of DOIs with metadata",
@@ -384,13 +284,8 @@ def get_publisher_table(
     table.add_column("Publisher name(s)")
     table.add_column("Count")
 
-    member_ids = sorted(n_per_member)
-
-    for member_id in member_ids:
-
-        names = "\n".join([name for name in sorted(member_names[member_id])])
-
-        table.add_row(str(member_id), names, str(n_per_member[member_id]))
+    for value in names.sort("count", "publisher_name", descending=[True, False]).iter_rows():
+        table.add_row(*[str(val) for val in value])
 
     return table
 
