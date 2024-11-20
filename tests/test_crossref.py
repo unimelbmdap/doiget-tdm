@@ -9,13 +9,13 @@ import tenacity
 import requests_ratelimiter
 import pyrate_limiter
 
-import doiget.config
-import doiget.crossref
+import doiget_tdm.config
+import doiget_tdm.crossref
 
 
 def test_rate_limit(monkeypatch) -> None:
 
-    cr = doiget.crossref.CrossRefWebAPI()
+    cr = doiget_tdm.crossref.CrossRefWebAPI()
 
     def mock_get_raise(*args, **kwargs) -> None:
         raise requests.exceptions.RequestException()
@@ -64,7 +64,7 @@ def test_rate_limit(monkeypatch) -> None:
 
 def test_call(monkeypatch) -> None:
 
-    cr = doiget.crossref.CrossRefWebAPI()
+    cr = doiget_tdm.crossref.CrossRefWebAPI()
 
     def mock_get_raise(*args, **kwargs) -> None:
         raise requests.exceptions.RequestException()
@@ -99,13 +99,13 @@ def test_user_agent():
 
     mock_email = "test@test.com"
 
-    cr = doiget.crossref.CrossRefWebAPI()
+    cr = doiget_tdm.crossref.CrossRefWebAPI()
 
-    doiget.config.SETTINGS.email_address = None
+    doiget_tdm.config.SETTINGS.email_address = None
 
     assert mock_email not in cr.user_agent
 
-    doiget.config.SETTINGS.email_address = mock_email
+    doiget_tdm.config.SETTINGS.email_address = mock_email
 
     assert f"; mailto:{mock_email}" in cr.user_agent
 

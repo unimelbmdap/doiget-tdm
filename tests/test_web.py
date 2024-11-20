@@ -9,16 +9,16 @@ import tenacity
 import requests_ratelimiter
 import pyrate_limiter
 
-import doiget.web
+import doiget_tdm.web
 
 
 def test_init() -> None:
-    requester = doiget.web.WebRequester()
+    requester = doiget_tdm.web.WebRequester()
 
 
 def test_get(monkeypatch) -> None:
 
-    requester = doiget.web.WebRequester()
+    requester = doiget_tdm.web.WebRequester()
 
     def mock_get(*args, **kwargs) -> requests.Response:
         return requests.Response()
@@ -32,7 +32,7 @@ def test_get(monkeypatch) -> None:
 
 def test_retry_timeout(monkeypatch) -> None:
 
-    requester = doiget.web.WebRequester(max_retry_attempts=0)
+    requester = doiget_tdm.web.WebRequester(max_retry_attempts=0)
 
     def mock_get_timeout(*args, **kwargs) -> None:
         raise requests.exceptions.Timeout()
@@ -45,7 +45,7 @@ def test_retry_timeout(monkeypatch) -> None:
 
 def _test_retry_after_timeout(monkeypatch) -> None:
 
-    requester = doiget.web.WebRequester()
+    requester = doiget_tdm.web.WebRequester()
 
     n_attempts = 0
 

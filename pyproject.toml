@@ -1,5 +1,5 @@
 [project]
-name = "doiget"
+name = "doiget-tdm"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
@@ -23,11 +23,11 @@ dependencies = [
   "html5lib>=1.1",
   "crossref-lmdb",
   "rich>=13.9.4",
-  "polars>=1.14.0",
+  "polars-lts-cpu[xlsxwriter]>=1.14.0",
 ]
 
 [project.scripts]
-doiget = "doiget.cli:main"
+doiget-tdm = "doiget_tdm.cli:main"
 
 [project.optional-dependencies]
 interactive = [
@@ -80,7 +80,7 @@ repo-review = "repo-review"
 ipython = "uv run --extra interactive ipython"
 docs = "uv run --extra docs sphinx-build docs gh-pages"
 docs-watch = "uv run --extra docs sphinx-autobuild docs gh-pages"
-doiget = "uv run doiget"
+doiget-tdm = "uv run doiget-tdm"
 
 [tool.black]
 line-length = 88

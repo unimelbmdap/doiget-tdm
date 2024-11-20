@@ -7,13 +7,13 @@ import puremagic
 
 import html5lib
 
-import doiget.format
-import doiget.errors
+import doiget_tdm.format
+import doiget_tdm.errors
 
 
 def validate_data(
     data: bytes,
-    data_format: doiget.format.FormatName,
+    data_format: doiget_tdm.format.FormatName,
 ) -> bool:
     """
     Use heuristics to validate that data is in an expected format.
@@ -31,16 +31,16 @@ def validate_data(
 
     Raises
     ------
-    doiget.errors.ValidationError
+    doiget_tdm.errors.ValidationError
         On a validation error.
     """
 
     validators = {
-        doiget.format.FormatName.XML: validate_xml,
-        doiget.format.FormatName.PDF: validate_pdf,
-        doiget.format.FormatName.HTML: validate_html,
-        doiget.format.FormatName.TXT: validate_txt,
-        doiget.format.FormatName.TIFF: validate_tiff,
+        doiget_tdm.format.FormatName.XML: validate_xml,
+        doiget_tdm.format.FormatName.PDF: validate_pdf,
+        doiget_tdm.format.FormatName.HTML: validate_html,
+        doiget_tdm.format.FormatName.TXT: validate_txt,
+        doiget_tdm.format.FormatName.TIFF: validate_tiff,
     }
 
     validator_func = validators[data_format]
@@ -63,7 +63,7 @@ def validate_xml(data: bytes) -> None:
     try:
         doc = xml.dom.minidom.parseString(string=data)
     except xml.parsers.expat.ExpatError:
-        raise doiget.errors.ValidationError(
+        raise doiget_tdm.errors.ValidationError(
             "Cannot parse into XML"
         ) from None
 
@@ -88,7 +88,7 @@ def validate_html(data: bytes) -> None:
     try:
         doc = parser.parse(stream=data)
     except html5lib.html5parser.ParseError:
-        raise doiget.errors.ValidationError(
+        raise doiget_tdm.errors.ValidationError(
             "Cannot parse into HTML"
         ) from None
 
@@ -100,7 +100,7 @@ def _check_for_body(doc: xml.dom.minidom.Document) -> None:
     bodies = doc.getElementsByTagName(name="body")
 
     if len(bodies) == 0:
-        raise doiget.errors.ValidationError(
+        raise doiget_tdm.errors.ValidationError(
             "No `body` tag found in XML"
         )
 
@@ -110,7 +110,7 @@ def _check_for_body(doc: xml.dom.minidom.Document) -> None:
             break
 
     else:
-        raise doiget.errors.ValidationError(
+        raise doiget_tdm.errors.ValidationError(
             "XML `body` has no content"
         )
 
@@ -135,11 +135,11 @@ def validate_txt(data: bytes) -> None:
     ):
         try:
             other_func(data=data)
-        except doiget.errors.ValidationError:
+        except doiget_tdm.errors.ValidationError:
             pass
         else:
             msg = f"Data passes validation for {other_func} rather than text"
-            raise doiget.errors.ValidationError(msg)
+            raise doiget_tdm.errors.ValidationError(msg)
 
 
 def validate_pdf(data: bytes) -> None:
@@ -156,11 +156,11 @@ def validate_pdf(data: bytes) -> None:
         extension = puremagic.from_string(string=data)
     except puremagic.PureError as err:
         msg = f"Data validation error: {err}"
-        raise doiget.errors.ValidationError(msg) from None
+        raise doiget_tdm.errors.ValidationError(msg) from None
 
     if extension != ".pdf":
         msg = f"Expected PDF, but inferred type {extension}"
-        raise doiget.errors.ValidationError(msg)
+        raise doiget_tdm.errors.ValidationError(msg)
 
 
 def validate_tiff(data: bytes) -> None:
@@ -177,8 +177,8 @@ def validate_tiff(data: bytes) -> None:
         extension = puremagic.from_string(string=data)
     except puremagic.PureError as err:
         msg = f"Data validation error: {err}"
-        raise doiget.errors.ValidationError(msg) from None
+        raise doiget_tdm.errors.ValidationError(msg) from None
 
     if extension != ".tiff":
         msg = f"Expected TIFF, but inferred type {extension}"
-        raise doiget.errors.ValidationError(msg)
+        raise doiget_tdm.errors.ValidationError(msg)

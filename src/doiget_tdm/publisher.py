@@ -8,9 +8,9 @@ import simdjson
 
 import upath
 
-import doiget.fulltext
-import doiget.source
-import doiget.metadata
+import doiget_tdm.fulltext
+import doiget_tdm.source
+import doiget_tdm.metadata
 
 
 LOGGER = logging.getLogger(__name__)
@@ -24,12 +24,12 @@ class Publisher(abc.ABC):
 
     @property
     @abc.abstractmethod
-    def member_id(self) -> doiget.metadata.MemberID:
+    def member_id(self) -> doiget_tdm.metadata.MemberID:
         "CrossRef member ID."
         return self.member_id
 
     @abc.abstractmethod
-    def set_sources(self, fulltext: doiget.fulltext.FullText) -> None:
+    def set_sources(self, fulltext: doiget_tdm.fulltext.FullText) -> None:
         """
         Assigns information about full-text sources for this publisher.
 
@@ -47,7 +47,7 @@ class Publisher(abc.ABC):
         pass
 
     @abc.abstractmethod
-    def acquire(self, source: doiget.source.Source) -> bytes:
+    def acquire(self, source: doiget_tdm.source.Source) -> bytes:
         """
         Acquires raw full-text data from the provided source.
 
@@ -66,10 +66,10 @@ class Publisher(abc.ABC):
 
 
 def set_sources_from_crossref(
-    fulltext: doiget.fulltext.FullText,
-    acq_func: typing.Callable[[doiget.source.Source], bytes],
+    fulltext: doiget_tdm.fulltext.FullText,
+    acq_func: typing.Callable[[doiget_tdm.source.Source], bytes],
     encrypt: bool = False,
-    source_check_func: typing.Callable[[doiget.source.Source], bool] | None = None,
+    source_check_func: typing.Callable[[doiget_tdm.source.Source], bool] | None = None,
 ) -> None:
     """
     Assigns information about full-text sources from CrossRef.
@@ -121,7 +121,7 @@ def set_sources_from_crossref(
         url = upath.UPath(link["URL"])
 
         try:
-            format_name = doiget.format.FormatName.from_content_type(
+            format_name = doiget_tdm.format.FormatName.from_content_type(
                 content_type=content_type
             )
         except KeyError:
@@ -130,7 +130,7 @@ def set_sources_from_crossref(
             )
             continue
 
-        source = doiget.source.Source(
+        source = doiget_tdm.source.Source(
             acq_func=acq_func,
             link=url,
             format_name=format_name,
@@ -157,7 +157,7 @@ def set_sources_from_crossref(
         fulltext.formats[format_name].sources = sources
 
 
-registry: dict[doiget.metadata.MemberID, Publisher] = {}
+registry: dict[doiget_tdm.metadata.MemberID, Publisher] = {}
 
 T = typing.TypeVar("T", bound=Publisher)
 
@@ -169,7 +169,7 @@ def add_publisher(publisher: type[T]) -> type[T]:
     Parameters
     ----------
     publisher
-        An instance conforming to the ``doiget.publisher.Publisher`` ABC.
+        An instance conforming to the ``doiget_tdm.publisher.Publisher`` ABC.
 
     Returns
     -------

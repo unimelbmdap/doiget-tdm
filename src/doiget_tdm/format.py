@@ -6,9 +6,9 @@ import logging
 
 import pyrage
 
-import doiget.config
-import doiget.doi
-import doiget.source
+import doiget_tdm.config
+import doiget_tdm.doi
+import doiget_tdm.source
 
 
 LOGGER = logging.getLogger(__name__)
@@ -57,7 +57,7 @@ class Format:
     def __init__(
         self,
         name: FormatName,
-        doi: doiget.doi.DOI,
+        doi: doiget_tdm.doi.DOI,
     ) -> None:
         """
         Represents the full-text content data for a particular format.
@@ -73,18 +73,18 @@ class Format:
         #: Format name.
         self.name: FormatName = name
         #: Item DOI.
-        self.doi: doiget.doi.DOI = doi
+        self.doi: doiget_tdm.doi.DOI = doi
 
         #: The sources from which the full-text content for this format can be acquired.
-        self.sources: list[doiget.source.Source] | None = None
+        self.sources: list[doiget_tdm.source.Source] | None = None
 
         group = self.doi.get_group(
-            n_groups=doiget.config.SETTINGS.data_dir_n_groups
+            n_groups=doiget_tdm.config.SETTINGS.data_dir_n_groups
         )
 
         #: Path to the full-text file for this format in the data directory.
         self.local_path: pathlib.Path = (
-            doiget.config.SETTINGS.data_dir
+            doiget_tdm.config.SETTINGS.data_dir
             / group
             / self.doi.quoted
             / f"{self.doi.quoted}.{self.name.value}"
@@ -132,7 +132,7 @@ class Format:
 
             try:
                 data = source.acquire()
-            except doiget.errors.ACQ_ERRORS as err:
+            except doiget_tdm.errors.ACQ_ERRORS as err:
                 LOGGER.warning(
                     f"Error when acquiring source {source} ({err})"
                 )
@@ -140,14 +140,14 @@ class Format:
 
             try:
                 source.validate(data=data)
-            except doiget.errors.ValidationError as err:
+            except doiget_tdm.errors.ValidationError as err:
                 LOGGER.warning(
                     f"Error when validating data from source {source} ({err})"
                 )
                 continue
 
             if source.encrypt:
-                if doiget.config.SETTINGS.encryption_passphrase is None:
+                if doiget_tdm.config.SETTINGS.encryption_passphrase is None:
                     raise ValueError(
                         "Source is specified as requiring encryption but "
                         + "encryption passphrase configuration setting is missing"
@@ -156,7 +156,7 @@ class Format:
                 data = pyrage.passphrase.encrypt(
                     plaintext=data,
                     passphrase=(
-                        doiget.config.SETTINGS.encryption_passphrase.get_secret_value()
+                        doiget_tdm.config.SETTINGS.encryption_passphrase.get_secret_value()
                     ),
                 )
 
@@ -187,7 +187,7 @@ class Format:
         if not self.is_encrypted:
             return data
 
-        if doiget.config.SETTINGS.encryption_passphrase is None:
+        if doiget_tdm.config.SETTINGS.encryption_passphrase is None:
             raise ValueError(
                 "Source is specified as requiring encryption but "
                 + "encryption passphrase configuration setting is missing"
@@ -196,7 +196,7 @@ class Format:
         decrypted_data: bytes = pyrage.passphrase.decrypt(
             ciphertext=data,
             passphrase=(
-                doiget.config.SETTINGS.encryption_passphrase.get_secret_value()
+                doiget_tdm.config.SETTINGS.encryption_passphrase.get_secret_value()
             ),
         )
 

@@ -1,7 +1,7 @@
 import pytest
 
-import doiget.doi
-import doiget.config
+import doiget_tdm.doi
+import doiget_tdm.config
 
 
 EXAMPLE_VALID_DOI = "10.3758/s13414-023-02718-0"
@@ -11,8 +11,8 @@ EXAMPLE_INVALID_DOI = "http://null"
 
 
 def test_doi() -> None:
-    doi = doiget.doi.DOI(doi=EXAMPLE_VALID_DOI)
-    doi_from_quoted = doiget.doi.DOI(doi=EXAMPLE_VALID_DOI_QUOTED, unquote=True)
+    doi = doiget_tdm.doi.DOI(doi=EXAMPLE_VALID_DOI)
+    doi_from_quoted = doiget_tdm.doi.DOI(doi=EXAMPLE_VALID_DOI_QUOTED, unquote=True)
 
     assert doi == doi_from_quoted
 
@@ -21,13 +21,13 @@ def test_doi_group():
 
     n_groups = 5000
 
-    doi = doiget.doi.DOI(doi=EXAMPLE_VALID_DOI)
+    doi = doiget_tdm.doi.DOI(doi=EXAMPLE_VALID_DOI)
 
     doi_group = doi.get_group(n_groups=n_groups)
 
     assert doi_group == "3652"
 
-    doi_from_quoted = doiget.doi.DOI(doi=EXAMPLE_VALID_DOI_QUOTED, unquote=True)
+    doi_from_quoted = doiget_tdm.doi.DOI(doi=EXAMPLE_VALID_DOI_QUOTED, unquote=True)
 
     doi_from_quoted_group = doi_from_quoted.get_group(n_groups=n_groups)
 
@@ -35,7 +35,7 @@ def test_doi_group():
 
     n_groups = None
 
-    doi = doiget.doi.DOI(doi=EXAMPLE_VALID_DOI)
+    doi = doiget_tdm.doi.DOI(doi=EXAMPLE_VALID_DOI)
 
     doi_group = doi.get_group(n_groups=n_groups)
 
@@ -45,25 +45,25 @@ def test_doi_group():
 def test_doi_from_url() -> None:
     url = "https://doi.org/10.3758/s13414-023-02718-0"
 
-    doiget.doi.DOI.from_url(url=url)
+    doiget_tdm.doi.DOI.from_url(url=url)
 
     with pytest.raises(ValueError):
-        doiget.doi.DOI(doi=url)
+        doiget_tdm.doi.DOI(doi=url)
 
 
 def test_doi_from_url_error() -> None:
 
     with pytest.raises(ValueError):
-        doiget.doi.DOI.from_url(url="https://doi.org/notadoi/111")
+        doiget_tdm.doi.DOI.from_url(url="https://doi.org/notadoi/111")
 
 
 def test_doi_equality() -> None:
 
-    doi = doiget.doi.DOI(doi=EXAMPLE_VALID_DOI)
+    doi = doiget_tdm.doi.DOI(doi=EXAMPLE_VALID_DOI)
 
-    assert doi == doiget.doi.DOI(doi=EXAMPLE_VALID_DOI)
+    assert doi == doiget_tdm.doi.DOI(doi=EXAMPLE_VALID_DOI)
 
-    another_doi = doiget.doi.DOI(doi=EXAMPLE_VALID_DOI_2)
+    another_doi = doiget_tdm.doi.DOI(doi=EXAMPLE_VALID_DOI_2)
 
     assert doi != another_doi
 
@@ -71,14 +71,14 @@ def test_doi_equality() -> None:
 def test_invalid() -> None:
 
     with pytest.raises(ValueError):
-        doiget.doi.DOI(doi="123.456/789abc")
+        doiget_tdm.doi.DOI(doi="123.456/789abc")
 
 
 def test_doi_sorting() -> None:
 
-    doi_a = doiget.doi.DOI(doi="10.001/abc2")
-    doi_b = doiget.doi.DOI(doi="10.001/abc4")
-    doi_c = doiget.doi.DOI(doi="10.001/abc6")
+    doi_a = doiget_tdm.doi.DOI(doi="10.001/abc2")
+    doi_b = doiget_tdm.doi.DOI(doi="10.001/abc4")
+    doi_c = doiget_tdm.doi.DOI(doi="10.001/abc6")
 
     assert doi_a < doi_b < doi_c
 
@@ -87,7 +87,7 @@ def test_doi_sorting() -> None:
 
 def test_doi_dunders() -> None:
 
-    doi = doiget.doi.DOI(doi=EXAMPLE_VALID_DOI)
+    doi = doiget_tdm.doi.DOI(doi=EXAMPLE_VALID_DOI)
 
     str(doi)
     repr(doi)
@@ -96,7 +96,7 @@ def test_doi_dunders() -> None:
 
 def test_doi_parts() -> None:
 
-    doi = doiget.doi.DOI(doi=EXAMPLE_VALID_DOI)
+    doi = doiget_tdm.doi.DOI(doi=EXAMPLE_VALID_DOI)
 
     (prefix, suffix) = doi.parts
 
@@ -108,7 +108,7 @@ def test_doi_parts_multiple_backslash() -> None:
 
     test_doi = "10.3758/s1234/45/66"
 
-    doi = doiget.doi.DOI(doi=test_doi)
+    doi = doiget_tdm.doi.DOI(doi=test_doi)
 
     (prefix, suffix) = doi.parts
 
@@ -118,7 +118,7 @@ def test_doi_parts_multiple_backslash() -> None:
 
 def test_quoted() -> None:
 
-    doi = doiget.doi.DOI(doi=EXAMPLE_VALID_DOI)
+    doi = doiget_tdm.doi.DOI(doi=EXAMPLE_VALID_DOI)
 
     assert doi.quoted == EXAMPLE_VALID_DOI_QUOTED
 
@@ -166,40 +166,40 @@ def test_from_input(tmp_path) -> None:
     for unquote in [False, True]:
 
         assert (
-            doiget.doi.form_dois_from_input(
+            doiget_tdm.doi.form_dois_from_input(
                 raw_input=[EXAMPLE_VALID_DOI],
                 unquote=unquote,
             )
             == [EXAMPLE_VALID_DOI]
         )
 
-        assert doiget.doi.form_dois_from_input(
+        assert doiget_tdm.doi.form_dois_from_input(
             raw_input=test_dois,
             unquote=unquote,
         ) == test_dois
 
-        assert doiget.doi.form_dois_from_input(
+        assert doiget_tdm.doi.form_dois_from_input(
             raw_input=test_dois + test_dois,
             unquote=unquote,
         ) == test_dois
 
-        assert doiget.doi.form_dois_from_input(
+        assert doiget_tdm.doi.form_dois_from_input(
             raw_input=[tmp_path_lined],
             unquote=unquote,
         ) == test_dois
 
-        assert doiget.doi.form_dois_from_input(
+        assert doiget_tdm.doi.form_dois_from_input(
             raw_input=[tmp_path_csv_lower],
             unquote=unquote,
         ) == test_dois
 
-        assert doiget.doi.form_dois_from_input(
+        assert doiget_tdm.doi.form_dois_from_input(
             raw_input=[tmp_path_csv_upper],
             unquote=unquote,
         ) == test_dois
 
         assert (
-            doiget.doi.form_dois_from_input(
+            doiget_tdm.doi.form_dois_from_input(
                 raw_input=[EXAMPLE_VALID_DOI, EXAMPLE_INVALID_DOI],
                 unquote=unquote,
             )

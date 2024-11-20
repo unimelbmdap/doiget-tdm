@@ -7,17 +7,17 @@ import pytest
 
 import requests
 
-import doiget.doi
-import doiget.metadata
+import doiget_tdm.doi
+import doiget_tdm.metadata
 
 
 def test_lmdb(monkeypatch):
 
     monkeypatch.setitem(sys.modules, "lmdb", None)
 
-    importlib.reload(doiget.metadata)
+    importlib.reload(doiget_tdm.metadata)
 
-    assert not doiget.metadata.HAS_LMDB
+    assert not doiget_tdm.metadata.HAS_LMDB
 
 
 def test_api_get(monkeypatch):
@@ -39,12 +39,12 @@ def test_api_get(monkeypatch):
 
         return response
 
-    client = doiget.metadata.CrossRefWebAPIClient()
+    client = doiget_tdm.metadata.CrossRefWebAPIClient()
 
     monkeypatch.setattr(client._api, "call", mock_call)
 
     metadata = client.get_doi_metadata(
-        doi=doiget.doi.DOI(doi="10.7717/peerj.1038")
+        doi=doiget_tdm.doi.DOI(doi="10.7717/peerj.1038")
     )
 
     assert metadata == json.dumps(test_data_json["message"]).encode()
@@ -55,7 +55,7 @@ def test_api_get(monkeypatch):
 
     with pytest.raises(ValueError):
         metadata = client.get_doi_metadata(
-            doi=doiget.doi.DOI(doi="10.7717/peerj.1038")
+            doi=doiget_tdm.doi.DOI(doi="10.7717/peerj.1038")
         )
 
     # no status
@@ -65,7 +65,7 @@ def test_api_get(monkeypatch):
 
     with pytest.raises(ValueError):
         metadata = client.get_doi_metadata(
-            doi=doiget.doi.DOI(doi="10.7717/peerj.1038")
+            doi=doiget_tdm.doi.DOI(doi="10.7717/peerj.1038")
         )
 
     # no message
@@ -76,7 +76,7 @@ def test_api_get(monkeypatch):
 
     with pytest.raises(ValueError):
         metadata = client.get_doi_metadata(
-            doi=doiget.doi.DOI(doi="10.7717/peerj.1038")
+            doi=doiget_tdm.doi.DOI(doi="10.7717/peerj.1038")
         )
 
     # empty message
@@ -86,5 +86,5 @@ def test_api_get(monkeypatch):
 
     with pytest.raises(ValueError):
         metadata = client.get_doi_metadata(
-            doi=doiget.doi.DOI(doi="10.7717/peerj.1038")
+            doi=doiget_tdm.doi.DOI(doi="10.7717/peerj.1038")
         )

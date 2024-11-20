@@ -9,9 +9,9 @@ import pathlib
 import logging
 import sys
 
-import doiget
-import doiget.acquire
-import doiget.status
+import doiget_tdm
+import doiget_tdm.acquire
+import doiget_tdm.status
 
 
 LOGGER = logging.getLogger(__name__)
@@ -133,6 +133,8 @@ def setup_parser() -> argparse.ArgumentParser:
 
 def run(args: argparse.Namespace) -> None:
 
+    print(args.command)
+
     if args.command is None:
         parser = setup_parser()
         parser.print_help()
@@ -157,7 +159,7 @@ def run(args: argparse.Namespace) -> None:
 
 
 def run_show_config() -> None:
-    doiget.SETTINGS.print()
+    doiget_tdm.SETTINGS.print()
 
 
 def run_get_dois(args: argparse.Namespace) -> None:
@@ -169,10 +171,10 @@ def run_status(args: argparse.Namespace) -> None:
     dois = (
         None
         if len(args.dois) == 0
-        else doiget.doi.form_dois_from_input(raw_input=args.dois)
+        else doiget_tdm.doi.form_dois_from_input(raw_input=args.dois)
     )
 
-    doiget.status.run(
+    doiget_tdm.status.run(
         dois=dois,
         output_path=args.output_path,
     )
@@ -180,15 +182,15 @@ def run_status(args: argparse.Namespace) -> None:
 
 def run_acquire(args: argparse.Namespace) -> None:
 
-    dois = doiget.doi.form_dois_from_input(raw_input=args.dois)
+    dois = doiget_tdm.doi.form_dois_from_input(raw_input=args.dois)
 
     only_member_id = (
-        doiget.metadata.MemberID(id_=args.only_member_id)
+        doiget_tdm.metadata.MemberID(id_=args.only_member_id)
         if args.only_member_id is not None
         else None
     )
 
-    doiget.acquire.run(
+    doiget_tdm.acquire.run(
         dois=dois,
         only_metadata=args.only_metadata,
         start_from=args.start_from,

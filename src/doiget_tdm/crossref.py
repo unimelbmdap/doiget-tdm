@@ -3,8 +3,8 @@ import logging
 import requests.utils
 import pyrate_limiter
 
-import doiget
-import doiget.web
+import doiget_tdm
+import doiget_tdm.web
 
 LOGGER = logging.getLogger(__name__)
 LOGGER.addHandler(logging.NullHandler())
@@ -21,7 +21,7 @@ class CrossRefWebAPI:
 
         self.base_url = "https://api.crossref.org/"
 
-        self._session = doiget.web.WebRequester(
+        self._session = doiget_tdm.web.WebRequester(
             headers={"User-Agent": self.user_agent},
         )
 
@@ -38,9 +38,9 @@ class CrossRefWebAPI:
         Value to send as the "User-Agent" header.
         """
 
-        lib_name = f"doiget/{doiget.__version__} ({doiget._project_url}"
+        lib_name = f"doiget_tdm/{doiget_tdm.__version__} ({doiget_tdm._project_url}"
 
-        if (email := doiget.config.SETTINGS.email_address) is not None:
+        if (email := doiget_tdm.config.SETTINGS.email_address) is not None:
             lib_name += f"; mailto:{email}"
         else:
             if not self.polite_pool_warned:

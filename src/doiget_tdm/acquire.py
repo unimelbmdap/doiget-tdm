@@ -4,16 +4,16 @@ import typing
 
 import alive_progress
 
-import doiget.doi
-import doiget.work
-import doiget.metadata
+import doiget_tdm.doi
+import doiget_tdm.work
+import doiget_tdm.metadata
 
 
 def run(
-    dois: typing.Sequence[doiget.doi.DOI],
+    dois: typing.Sequence[doiget_tdm.doi.DOI],
     only_metadata: bool,
     start_from: int = 1,
-    only_member_id: doiget.metadata.MemberID | None = None,
+    only_member_id: doiget_tdm.metadata.MemberID | None = None,
     show_progress_bar: bool = True,
 ) -> None:
 
@@ -45,12 +45,12 @@ def run(
 
 
 def process_doi(
-    doi: doiget.doi.DOI,
+    doi: doiget_tdm.doi.DOI,
     only_metadata: bool,
-    only_member_id: doiget.metadata.MemberID | None = None,
+    only_member_id: doiget_tdm.metadata.MemberID | None = None,
 ) -> None:
 
-    work = doiget.work.Work(doi=doi)
+    work = doiget_tdm.work.Work(doi=doi)
 
     if not work.metadata.exists:
         work.metadata.acquire()

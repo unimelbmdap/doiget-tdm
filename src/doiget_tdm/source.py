@@ -5,8 +5,8 @@ import typing
 
 import upath
 
-import doiget.format
-import doiget.validate
+import doiget_tdm.format
+import doiget_tdm.validate
 
 
 SourceLink: typing.TypeAlias = upath.UPath | typing.Sequence[upath.UPath]
@@ -34,10 +34,10 @@ class Source:
 
     acq_func: typing.Callable[[Source], bytes]
     link: SourceLink
-    format_name: doiget.format.FormatName
+    format_name: doiget_tdm.format.FormatName
     encrypt: bool = False
-    validator_func: typing.Callable[[bytes, doiget.format.FormatName], bool] = (
-        doiget.validate.validate_data
+    validator_func: typing.Callable[[bytes, doiget_tdm.format.FormatName], bool] = (
+        doiget_tdm.validate.validate_data
     )
 
     def acquire(self) -> bytes:

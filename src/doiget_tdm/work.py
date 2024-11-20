@@ -1,13 +1,13 @@
 from __future__ import annotations
 
-import doiget.metadata
-import doiget.doi
-import doiget.fulltext
+import doiget_tdm.metadata
+import doiget_tdm.doi
+import doiget_tdm.fulltext
 
 
 class Work:
 
-    def __init__(self, doi: doiget.doi.DOI) -> None:
+    def __init__(self, doi: doiget_tdm.doi.DOI) -> None:
         """
         Representation of a single item of work.
 
@@ -18,20 +18,20 @@ class Work:
         """
 
         #: Item DOI
-        self.doi: doiget.doi.DOI = doi
+        self.doi: doiget_tdm.doi.DOI = doi
         #: Item metadata
-        self.metadata: doiget.metadata.Metadata = doiget.metadata.Metadata(doi=doi)
+        self.metadata: doiget_tdm.metadata.Metadata = doiget_tdm.metadata.Metadata(doi=doi)
         #: Item full-text
-        self.fulltext: doiget.fulltext.FullText = doiget.fulltext.FullText(
+        self.fulltext: doiget_tdm.fulltext.FullText = doiget_tdm.fulltext.FullText(
             doi=doi,
             metadata=self.metadata,
         )
 
         #: Item path in data directory
         self.path = (
-            doiget.SETTINGS.data_dir
+            doiget_tdm.SETTINGS.data_dir
             / self.doi.get_group(
-                n_groups=doiget.SETTINGS.data_dir_n_groups
+                n_groups=doiget_tdm.SETTINGS.data_dir_n_groups
             )
             / self.doi.quoted
         )

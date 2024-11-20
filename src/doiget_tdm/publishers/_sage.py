@@ -10,9 +10,9 @@ import pyrate_limiter
 
 import pydantic_settings
 
-import doiget.config
-import doiget.publisher
-import doiget.metadata
+import doiget_tdm.config
+import doiget_tdm.publisher
+import doiget_tdm.metadata
 
 LOGGER = logging.getLogger(__name__)
 LOGGER.addHandler(logging.NullHandler())
@@ -76,16 +76,16 @@ class Settings(pydantic_settings.BaseSettings):
 
     model_config = pydantic_settings.SettingsConfigDict(
         env_prefix="PYPUBTEXT_SAGE_",
-        secrets_dir=doiget.config.BASE_CONFIG_DIR,
+        secrets_dir=doiget_tdm.config.BASE_CONFIG_DIR,
         env_file=".env",
         extra="ignore",
     )
 
 
-@doiget.publisher.add_publisher
-class Sage(doiget.publisher.Publisher):
+@doiget_tdm.publisher.add_publisher
+class Sage(doiget_tdm.publisher.Publisher):
 
-    member_id = doiget.metadata.MemberID(id_="179")
+    member_id = doiget_tdm.metadata.MemberID(id_="179")
 
     def __init__(self) -> None:
 
@@ -95,30 +95,30 @@ class Sage(doiget.publisher.Publisher):
 
         self.valid_hostname = self.settings.valid_hostname
 
-        self.sessions: dict[RateLimit, doiget.web.WebRequester] | None = None
+        self.sessions: dict[RateLimit, doiget_tdm.web.WebRequester] | None = None
 
     def initialise(self) -> None:
 
         self.sessions = {
-            rate_limit: doiget.web.WebRequester(
+            rate_limit: doiget_tdm.web.WebRequester(
                 limiter=RATE_LIMITS[rate_limit],
             )
             for rate_limit in RateLimit
         }
 
-    def set_sources(self, fulltext: doiget.fulltext.FullText) -> None:
+    def set_sources(self, fulltext: doiget_tdm.fulltext.FullText) -> None:
 
-        def source_check_func(source: doiget.source.Source) -> bool:
+        def source_check_func(source: doiget_tdm.source.Source) -> bool:
             return "journals.sagepub.com" in str(source.link)
 
-        doiget.publisher.set_sources_from_crossref(
+        doiget_tdm.publisher.set_sources_from_crossref(
             fulltext=fulltext,
             acq_func=self.acquire,
             encrypt=False,
             source_check_func=source_check_func,
         )
 
-    def acquire(self, source: doiget.source.Source) -> bytes:
+    def acquire(self, source: doiget_tdm.source.Source) -> bytes:
 
         if isinstance(source.link, typing.Sequence):
             raise ValueError(f"Unexpected link: {source.link}")

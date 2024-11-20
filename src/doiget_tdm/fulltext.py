@@ -3,10 +3,10 @@ from __future__ import annotations
 import logging
 import typing
 
-import doiget.doi
-import doiget.metadata
-import doiget.format
-import doiget.publisher
+import doiget_tdm.doi
+import doiget_tdm.metadata
+import doiget_tdm.format
+import doiget_tdm.publisher
 
 
 LOGGER = logging.getLogger(__name__)
@@ -18,15 +18,15 @@ class LoadedData(typing.NamedTuple):
     Data and its format as loaded from a file.
     """
     data: bytes
-    fmt: doiget.format.FormatName
+    fmt: doiget_tdm.format.FormatName
 
 
 class FullText:
 
     def __init__(
         self,
-        doi: doiget.doi.DOI,
-        metadata: doiget.metadata.Metadata,
+        doi: doiget_tdm.doi.DOI,
+        metadata: doiget_tdm.metadata.Metadata,
     ) -> None:
         """
         Full-text content.
@@ -41,17 +41,17 @@ class FullText:
         """
 
         #: Item DOI.
-        self.doi: doiget.doi.DOI = doi
+        self.doi: doiget_tdm.doi.DOI = doi
         #: CrossRef metadata for the DOI.
-        self.metadata: doiget.metadata.Metadata = metadata
+        self.metadata: doiget_tdm.metadata.Metadata = metadata
 
         #: Potential full-text formats 
-        self.formats: dict[doiget.format.FormatName, doiget.format.Format] = {
-            format_name: doiget.format.Format(
+        self.formats: dict[doiget_tdm.format.FormatName, doiget_tdm.format.Format] = {
+            format_name: doiget_tdm.format.Format(
                 name=format_name,
                 doi=doi,
             )
-            for format_name in doiget.format.FormatName
+            for format_name in doiget_tdm.format.FormatName
         }
 
         self._sources_set = False
@@ -64,8 +64,8 @@ class FullText:
         if not self.metadata.exists or self.metadata.member_id is None:
             return
 
-        if self.metadata.member_id in doiget.publisher.registry:
-            publisher = doiget.publisher.registry[self.metadata.member_id]
+        if self.metadata.member_id in doiget_tdm.publisher.registry:
+            publisher = doiget_tdm.publisher.registry[self.metadata.member_id]
             publisher.set_sources(fulltext=self)
 
     def acquire(self) -> None:
@@ -79,7 +79,7 @@ class FullText:
 
         any_success = False
 
-        for fmt_name in doiget.SETTINGS.format_preference_order:
+        for fmt_name in doiget_tdm.SETTINGS.format_preference_order:
 
             fmt = self.formats[fmt_name]
 
@@ -101,7 +101,7 @@ class FullText:
 
             any_success = True
 
-            if doiget.SETTINGS.skip_remaining_formats:
+            if doiget_tdm.SETTINGS.skip_remaining_formats:
                 break
 
         if not any_success:
@@ -111,7 +111,7 @@ class FullText:
 
     def load(
         self,
-        fmt: doiget.format.FormatName | None = None,
+        fmt: doiget_tdm.format.FormatName | None = None,
     ) -> LoadedData:
         """
         Load the full-text content from the data directory.
@@ -128,7 +128,7 @@ class FullText:
         """
 
         formats = (
-            doiget.SETTINGS.format_preference_order
+            doiget_tdm.SETTINGS.format_preference_order
             if fmt is None
             else [fmt]
         )
@@ -148,6 +148,6 @@ class FullText:
 
     def has_format(
         self,
-        fmt: doiget.format.FormatName,
+        fmt: doiget_tdm.format.FormatName,
     ) -> bool:
         return self.formats[fmt].exists

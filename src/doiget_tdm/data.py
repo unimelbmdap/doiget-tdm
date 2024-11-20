@@ -7,7 +7,7 @@ import os
 import posix
 import logging
 
-import doiget
+import doiget_tdm
 
 
 LOGGER = logging.getLogger(__name__)
@@ -15,8 +15,8 @@ LOGGER.addHandler(logging.NullHandler())
 
 
 def iter_unsorted_works(
-    test_if_valid_work: typing.Callable[[doiget.Work], bool] | None = None,
-) -> typing.Iterable[doiget.Work]:
+    test_if_valid_work: typing.Callable[[doiget_tdm.Work], bool] | None = None,
+) -> typing.Iterable[doiget_tdm.Work]:
     """
     Iterator through the works in the data directory, in unsorted order.
 
@@ -32,9 +32,9 @@ def iter_unsorted_works(
 
     for item in _iter_paths():
 
-        doi = doiget.DOI(doi=item.name, unquote=True)
+        doi = doiget_tdm.DOI(doi=item.name, unquote=True)
 
-        work = doiget.Work(doi=doi)
+        work = doiget_tdm.Work(doi=doi)
 
         if test_if_valid_work is not None:
             if not test_if_valid_work(work):
@@ -47,12 +47,12 @@ def _iter_paths() -> typing.Iterable[posix.DirEntry[str]]:
 
     # using scandir because it is faster than listdir, glob, etc.
 
-    for path in os.scandir(path=doiget.SETTINGS.data_dir):
+    for path in os.scandir(path=doiget_tdm.SETTINGS.data_dir):
 
         if not path.is_dir():
             continue
 
-        if doiget.SETTINGS.data_dir_n_groups is None:
+        if doiget_tdm.SETTINGS.data_dir_n_groups is None:
 
             if path.name.isdigit():
                 LOGGER.warning(

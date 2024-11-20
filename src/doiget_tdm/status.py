@@ -19,9 +19,9 @@ import polars as pl
 import rich
 import rich.table
 
-import doiget.doi
-import doiget.format
-import doiget.data
+import doiget_tdm.doi
+import doiget_tdm.format
+import doiget_tdm.data
 
 
 SCHEMA: pl.Schema = pl.Schema(
@@ -39,7 +39,7 @@ SCHEMA: pl.Schema = pl.Schema(
         }
         | {
             f"has_fulltext_{fmt.name}": pl.Boolean()
-            for fmt in doiget.format.FormatName
+            for fmt in doiget_tdm.format.FormatName
         }
     ),
 )
@@ -56,7 +56,7 @@ StatusRow = dataclasses.make_dataclass(
 
 
 def convert_work_to_status_row(
-    work: doiget.Work
+    work: doiget_tdm.Work
 ) -> object:  # can't type hint dynamically-created dataclasses
 
     doi = str(work.doi)
@@ -118,7 +118,7 @@ def convert_work_to_status_row(
 
 
 def run(
-    dois: typing.Sequence[doiget.doi.DOI] | None,
+    dois: typing.Sequence[doiget_tdm.doi.DOI] | None,
     output_path: pathlib.Path | None,
 ) -> None:
     """
@@ -165,19 +165,19 @@ def old():
     n_with_metadata = 0
     n_with_fulltext = 0
 
-    n_with_format: collections.Counter[tuple[doiget.format.FormatName, ...]] = (
+    n_with_format: collections.Counter[tuple[doiget_tdm.format.FormatName, ...]] = (
         collections.Counter()
     )
 
-    n_with_best_format: collections.Counter[doiget.format.FormatName | None] = (
+    n_with_best_format: collections.Counter[doiget_tdm.format.FormatName | None] = (
         collections.Counter()
     )
 
-    n_per_member: collections.Counter[doiget.metadata.MemberID] = (
+    n_per_member: collections.Counter[doiget_tdm.metadata.MemberID] = (
         collections.Counter()
     )
 
-    member_names: collections.defaultdict[doiget.metadata.MemberID, set[str]] = (
+    member_names: collections.defaultdict[doiget_tdm.metadata.MemberID, set[str]] = (
         collections.defaultdict(set)
     )
 
@@ -189,7 +189,7 @@ def old():
 
     try:
 
-        for work in doiget.data.iter_unsorted_works():
+        for work in doiget_tdm.data.iter_unsorted_works():
 
             n_with_metadata += int(work.metadata.exists)
 
@@ -207,7 +207,7 @@ def old():
 
             has_formats = {
                 fmt: work.fulltext.formats[fmt].exists
-                for fmt in doiget.SETTINGS.format_preference_order
+                for fmt in doiget_tdm.SETTINGS.format_preference_order
             }
 
             has_fulltext = any([has_format for has_format in has_formats.values()])
@@ -290,7 +290,7 @@ def get_formats_table(
 
     cols = [
         f"has_fulltext_{fmt.name}"
-        for fmt in doiget.SETTINGS.format_preference_order
+        for fmt in doiget_tdm.SETTINGS.format_preference_order
     ]
 
     def row_func(row: tuple[bool, ...]) -> str:
@@ -299,7 +299,7 @@ def get_formats_table(
                 {
                     fmt.name
                     for (fmt, has_fmt) in zip(
-                        doiget.SETTINGS.format_preference_order,
+                        doiget_tdm.SETTINGS.format_preference_order,
                         row,
                         strict=True,
                     )
@@ -329,21 +329,21 @@ def get_formats_table(
 
 
 def format_best_format(
-    n_with_best_format: collections.Counter[doiget.format.FormatName | None],
+    n_with_best_format: collections.Counter[doiget_tdm.format.FormatName | None],
 ) -> rich.table.Table:
 
     table = rich.table.Table(
         title="Best available format count",
     )
 
-    for fmt in doiget.format.FormatName:
+    for fmt in doiget_tdm.format.FormatName:
         table.add_column(fmt.name)
 
     table.add_column("-")
 
     row = [
         str(n_with_best_format[fmt])
-        for fmt in doiget.format.FormatName
+        for fmt in doiget_tdm.format.FormatName
     ] + [str(n_with_best_format[None])]
 
     table.add_row(*row)
@@ -396,20 +396,20 @@ def get_publisher_table(
 
 
 def iter_work_status(
-    dois: typing.Sequence[doiget.doi.DOI] | None,
+    dois: typing.Sequence[doiget_tdm.doi.DOI] | None,
 ) -> typing.Iterable[dict[str, object]]:
 
-    def is_valid(work: doiget.work.Work) -> bool:
+    def is_valid(work: doiget_tdm.work.Work) -> bool:
         return dois is None or work.doi in dois
 
-    for work in doiget.data.iter_unsorted_works(test_if_valid_work=is_valid):
+    for work in doiget_tdm.data.iter_unsorted_works(test_if_valid_work=is_valid):
 
         status_row = convert_work_to_status_row(work=work)
 
         yield dataclasses.asdict(status_row)  # type: ignore[call-overload]
 
 
-def get_df(dois: typing.Sequence[doiget.doi.DOI] | None) -> pl.DataFrame:
+def get_df(dois: typing.Sequence[doiget_tdm.doi.DOI] | None) -> pl.DataFrame:
 
     return pl.DataFrame(
         data=iter_work_status(dois=dois),

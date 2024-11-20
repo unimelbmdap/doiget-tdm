@@ -20,9 +20,9 @@ else:
 
 import rich
 
-import doiget.config
-import doiget.doi
-import doiget.crossref
+import doiget_tdm.config
+import doiget_tdm.doi
+import doiget_tdm.crossref
 
 LOGGER = logging.getLogger(__name__)
 LOGGER.addHandler(logging.NullHandler())
@@ -81,9 +81,9 @@ class CrossRefWebAPIClient:
         Client to the CrossRef web API.
         """
 
-        self._api = doiget.crossref.CrossRefWebAPI()
+        self._api = doiget_tdm.crossref.CrossRefWebAPI()
 
-    def get_doi_metadata(self, doi: doiget.doi.DOI) -> bytes:
+    def get_doi_metadata(self, doi: doiget_tdm.doi.DOI) -> bytes:
         """
         Get the metadata for a given DOI.
 
@@ -162,7 +162,7 @@ class CrossRefLMDBClient:
 
     def get_doi_metadata(
         self,
-        doi: doiget.doi.DOI,
+        doi: doiget_tdm.doi.DOI,
         decompress: bool = True,
     ) -> bytes:
         """
@@ -196,7 +196,7 @@ class CrossRefLMDBClient:
         return item
 
 
-MetadataSource: typing.TypeAlias = typing.Callable[[doiget.doi.DOI], bytes]
+MetadataSource: typing.TypeAlias = typing.Callable[[doiget_tdm.doi.DOI], bytes]
 
 def get_metadata_sources() -> tuple[MetadataSource, ...]:
 
@@ -207,7 +207,7 @@ def get_metadata_sources() -> tuple[MetadataSource, ...]:
     )
 
     if HAS_LMDB:
-        db_path = doiget.config.SETTINGS.crossref_lmdb_path
+        db_path = doiget_tdm.config.SETTINGS.crossref_lmdb_path
         if db_path is not None:
             crossref_lmdb_client = CrossRefLMDBClient(db_path=db_path)
             metadata_sources = (
@@ -223,7 +223,7 @@ metadata_sources = get_metadata_sources()
 
 class Metadata:
 
-    def __init__(self, doi: doiget.doi.DOI) -> None:
+    def __init__(self, doi: doiget_tdm.doi.DOI) -> None:
         """
         CrossRef metadata for a given DOI.
 
@@ -236,10 +236,10 @@ class Metadata:
         self._doi = doi
 
         group = self._doi.get_group(
-            n_groups=doiget.config.SETTINGS.data_dir_n_groups
+            n_groups=doiget_tdm.config.SETTINGS.data_dir_n_groups
         )
 
-        self._compression_level = doiget.SETTINGS.metadata_compression_level
+        self._compression_level = doiget_tdm.SETTINGS.metadata_compression_level
         self._is_compressed = self._compression_level != 0
 
         path_suffix = (
@@ -250,7 +250,7 @@ class Metadata:
 
         #: Path to the raw metadata JSON file in the data directory
         self.path: pathlib.Path = (
-            doiget.config.SETTINGS.data_dir
+            doiget_tdm.config.SETTINGS.data_dir
             / group
             / self._doi.quoted
             / f"{self._doi.quoted}_metadata.json{path_suffix}"

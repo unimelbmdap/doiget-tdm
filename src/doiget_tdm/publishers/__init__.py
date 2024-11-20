@@ -3,8 +3,8 @@ import pathlib
 import sys
 import logging
 
-import doiget
-import doiget.publisher
+import doiget_tdm
+import doiget_tdm.publisher
 
 
 LOGGER = logging.getLogger(__name__)
@@ -16,8 +16,8 @@ def _load_handlers() -> None:
     module_files = sorted(pathlib.Path(__file__).parent.glob("*.py"))
 
     extra_files = (
-        sorted(doiget.SETTINGS.extra_handlers_path.glob("*.py"))
-        if doiget.SETTINGS.extra_handlers_path is not None
+        sorted(doiget_tdm.SETTINGS.extra_handlers_path.glob("*.py"))
+        if doiget_tdm.SETTINGS.extra_handlers_path is not None
         else []
     )
 
@@ -34,7 +34,7 @@ def _load_handlers() -> None:
         LOGGER.info(f"Loading the handler {module_file.name} ({file_type})")
 
         # recipe from the importlib docs
-        module_name = f"doiget.publishers.{module_file.name}"
+        module_name = f"doiget_tdm.publishers.{module_file.name}"
 
         spec = importlib.util.spec_from_file_location(
             module_name,

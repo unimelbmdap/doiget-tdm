@@ -16,9 +16,9 @@ import platformdirs
 
 import rich
 
-import doiget.format
+import doiget_tdm.format
 
-NAME = "doiget"
+NAME = "doiget_tdm"
 
 
 class Platform(enum.Enum):
@@ -100,8 +100,8 @@ class Settings(pydantic_settings.BaseSettings):
 
     crossref_lmdb_path: pathlib.Path | None = None
 
-    format_preference_order: tuple[doiget.format.FormatName, ...] = (
-        tuple(doiget.format.FormatName)
+    format_preference_order: tuple[doiget_tdm.format.FormatName, ...] = (
+        tuple(doiget_tdm.format.FormatName)
     )
 
     skip_remaining_formats: bool = True
