@@ -18,7 +18,7 @@ import rich
 
 import doiget_tdm.format
 
-NAME = "doiget_tdm"
+NAME = "doiget-tdm"
 
 
 class Platform(enum.Enum):
