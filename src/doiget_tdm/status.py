@@ -206,8 +206,8 @@ def get_formats_table(
     return table
 
 
-def format_best_format(
-    n_with_best_format: collections.Counter[doiget_tdm.format.FormatName | None],
+def get_best_format_table(
+    df: pl.DataFrame,
 ) -> rich.table.Table:
 
     # TODO
