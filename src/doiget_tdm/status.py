@@ -141,6 +141,9 @@ def run(
     formats_table = get_formats_table(df=df)
     rich.print(formats_table)
 
+    best_format_table = get_best_format_table(df=df)
+    rich.print(best_format_table)
+
     if output_path is not None:
 
         writers = {
@@ -210,23 +213,48 @@ def get_best_format_table(
     df: pl.DataFrame,
 ) -> rich.table.Table:
 
-    # TODO
+    fmt_columns = [
+        f"has_fulltext_{fmt.name}"
+        for fmt in doiget_tdm.SETTINGS.format_preference_order
+    ]
+
+    best_expr: pl.expr.whenthen.Then | pl.expr.whenthen.ChainedThen | None = None
+
+    for fmt_column in fmt_columns:
+
+        (*_, fmt) = fmt_column.split("_")
+
+        if best_expr is None:
+            best_expr = pl.when(pl.col(fmt_column)).then(pl.lit(fmt))
+        else:
+            best_expr = best_expr.when(pl.col(fmt_column)).then(pl.lit(fmt))
+
+    if not isinstance(best_expr, pl.expr.whenthen.ChainedThen):
+        raise ValueError()
+
+    best = df.filter(pl.col("has_fulltext")).select(best_expr.alias("best"))
+
+    counts = best.group_by("best").len()
+
+    for curr_fmt in doiget_tdm.format.FormatName:
+        if curr_fmt.name not in counts["best"]:
+            counts = pl.concat(
+                [
+                    counts,
+                    pl.DataFrame({"best": curr_fmt.name, "len": 0}, schema=counts.schema),
+                ],
+                how="vertical",
+            )
 
     table = rich.table.Table(
         title="Best available format count",
     )
 
-    for fmt in doiget_tdm.format.FormatName:
-        table.add_column(fmt.name)
+    table.add_column("Format")
+    table.add_column("Count")
 
-    table.add_column("-")
-
-    row = [
-        str(n_with_best_format[fmt])
-        for fmt in doiget_tdm.format.FormatName
-    ] + [str(n_with_best_format[None])]
-
-    table.add_row(*row)
+    for value in counts.iter_rows():
+        table.add_row(*[str(val) for val in value])
 
     return table
 
