@@ -7,12 +7,7 @@ from __future__ import annotations
 
 import pathlib
 import typing
-import collections
-import contextlib
-import functools
-import io
 import dataclasses
-import enum
 
 import polars as pl
 
@@ -158,7 +153,7 @@ def run(
             writer = writers[output_path.suffix]
         except KeyError:
             msg = f"Invalid output path suffix '{output_path.suffix}'"
-            raise ValueError(msg)
+            raise ValueError(msg) from None
 
         writer(output_path)  # type: ignore [operator]
 
@@ -241,7 +236,10 @@ def get_best_format_table(
             counts = pl.concat(
                 [
                     counts,
-                    pl.DataFrame({"best": curr_fmt.name, "len": 0}, schema=counts.schema),
+                    pl.DataFrame(
+                        {"best": curr_fmt.name, "len": 0},
+                        schema=counts.schema,
+                    ),
                 ],
                 how="vertical",
             )
@@ -312,7 +310,11 @@ def get_publisher_table(
     table.add_column("Publisher name(s)")
     table.add_column("Count")
 
-    for value in names.sort("count", "publisher_name", descending=[True, False]).iter_rows():
+    for value in names.sort(
+        "count",
+        "publisher_name",
+        descending=[True, False],
+    ).iter_rows():
         table.add_row(*[str(val) for val in value])
 
     return table

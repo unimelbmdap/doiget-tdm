@@ -191,7 +191,11 @@ class CrossRefLMDBClient:
                 msg = f"{doi} not found in database"
                 raise KeyError(msg)
 
-            item = zlib.decompress(raw_item)
+            item = (
+                zlib.decompress(raw_item)
+                if decompress
+                else raw_item
+            )
 
         return item
 
