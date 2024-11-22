@@ -1,5 +1,5 @@
 ``doiget_tdm.metadata``
-====================
+=======================
 
 .. autoclass:: doiget_tdm.metadata.MemberID
     :members:

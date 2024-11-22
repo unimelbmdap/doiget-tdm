@@ -10,7 +10,7 @@ For example, you might query the `CrossRef API <https://api.crossref.org/swagger
 For input into ``doiget-tdm``, you can save these DOIs either as a text file with one DOI per line or as a CSV file with a column named "DOI".
 
 Begin configuring ``doiget-tdm``
-----------------------------
+--------------------------------
 
 There are a few `configuration options <configuration.html>`_ for ``doiget-tdm`` that are worth considering at this point, particularly:
 
@@ -53,7 +53,7 @@ This will print a summary of the status of the DOI set, including the distributi
     You can also provide a ``--output-path`` option to ``doiget-tdm status`` to save a CSV file that has one row per DOI and columns including aspects of the metadata like the publisher.
 
 Make publisher agreements and update ``doiget-tdm`` configuration
--------------------------------------------------------------
+-----------------------------------------------------------------
 
 This is often facilitated by an institutional librarian, with whom the publisher subscriptions are made.
 
