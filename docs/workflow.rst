@@ -50,18 +50,70 @@ This will print a summary of the status of the DOI set, including the distributi
 
 .. note::
 
-    You can also provide a ``--output-path`` option to ``doiget-tdm status`` to save a CSV file that has one row per DOI and columns including aspects of the metadata like the publisher.
+    You can also provide a ``--output-path`` option to ``doiget-tdm status`` to save a file that has one row per DOI and columns that relate to aspects of the metadata like the publisher.
 
 Make publisher agreements and update ``doiget-tdm`` configuration
 -----------------------------------------------------------------
 
 This is often facilitated by an institutional librarian, with whom the publisher subscriptions are made.
 
-If there are publishers that are in the set of DOIs but not in the :doc:`/publishers/avail_publishers` for ``doiget-tdm``, you will need to investigate :doc:`/publishers/new_publisher` to add custom functionality to ``doiget-tdm``.
+If there are publishers that are in the set of DOIs but not in the :doc:`/publishers/avail_publishers` for ``doiget-tdm``, you can investigate :doc:`/publishers/new_publisher` to add custom functionality to ``doiget-tdm``.
 
 
 Acquire full-text
 -----------------
 
+You can then acquire the full-text by running:
+
+.. code-block:: bash
+
+    doiget-tdm acquire doi_list.txt
+
+
+For each DOI in the file ``doi_list.txt``, ``doiget-tdm`` will infer the publisher that is responsible for the DOI and will then use publisher-specific logic for acquiring the full-text content --- using the publisher-specific configuration that you have provided.
+
+.. note::
+
+    Some publishers require requests to be made from a specific IP address, so you might need to run this command on multiple machines.
+    Such publishers tend to have a ``valid_hostname`` configuration option, which only attempts to acquire the full-text content for a particular DOI if the hostname of the requesting machine matches the value of ``valid_hostname``.
+    However, you can also provide one (or more) member IDs (using the ``--only-member-id`` parameter) and it will only attempt to acquire DOIs with matching member IDs.
+
+
 Use full-text content
 ---------------------
+
+Accessing within Python
+~~~~~~~~~~~~~~~~~~~~~~~
+
+If doing further processing using Python, ...
+
+
+Accessing within the filesystem
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The retrieved files will be stored within the directory specified by the ``data_dir`` configuration option.
+The specific location within ``data_dir`` depends on the value of the ``data_dir_n_groups`` configuration option:
+
+``data_dir_n_groups`` is 0
+    Files for the DOI are stored in ``${DATA_DIR}/${QUOTED_DOI}/``
+
+``data_dir_n_groups`` is > 0
+    Files for the DOI are stored in ``${DATA_DIR}/${DOI_GROUP}/${QUOTED_DOI}/``
+
+Here, ``${DATA_DIR}`` is the value of ``data_dir``, ``${DOI_GROUP}`` is a number between 0 and ``data_dir_n_groups`` - 1, and ``${QUOTED_DOI}`` is the DOI string in 'quoted' form (see `quote <https://docs.python.org/3/library/urllib.parse.html#urllib.parse.quote>`_).
+
+.. note::
+
+    The use of the 'quoted' form of DOI strings is to work around the conflict between the presence of characters like ``/`` in DOI strings and the meaning of characters like ``/`` in filesystems --- as a directory separator, in this case.
+
+For example, the data for the DOI "10.1371/journal.pbio.1002611" will be stored in:
+
+``data_dir_n_groups`` is 0
+    ``${DATA_DIR}/10.1371%2Fjournal.pbio.1002611/``
+
+``data_dir_n_groups`` is 5,000
+    ``${DATA_DIR}/1785/10.1371%2Fjournal.pbio.1002611/``
+
+
+
+

@@ -101,8 +101,10 @@ def setup_parser() -> argparse.ArgumentParser:
     )
 
     acquire_parser.add_argument(
-        "--only-member_id",
+        "--only-member-id",
         help="Only acquire from DOIs with this member ID",
+        action="append",
+        type=int,
         required=False,
         default=None,
     )
@@ -133,7 +135,7 @@ def setup_parser() -> argparse.ArgumentParser:
 
 def run(args: argparse.Namespace) -> None:
 
-    print(args.command)
+    print(args)
 
     if args.command is None:
         parser = setup_parser()
@@ -184,15 +186,19 @@ def run_acquire(args: argparse.Namespace) -> None:
 
     dois = doiget_tdm.doi.form_dois_from_input(raw_input=args.dois)
 
-    only_member_id = (
-        doiget_tdm.metadata.MemberID(id_=args.only_member_id)
-        if args.only_member_id is not None
-        else None
-    )
+    only_member_ids: list[doiget_tdm.metadata.MemberID] | None
+
+    if args.only_member_ids is None:
+        only_member_ids = None
+    else:
+        only_member_ids = [
+            doiget_tdm.metadata.MemberID(id_=only_member_id)
+            for only_member_id in args.only_member_id
+        ]
 
     doiget_tdm.acquire.run(
         dois=dois,
         only_metadata=args.only_metadata,
         start_from=args.start_from,
-        only_member_id=only_member_id,
+        only_member_ids=only_member_ids,
     )

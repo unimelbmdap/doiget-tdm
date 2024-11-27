@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import typing
+import collections.abc
 
 import alive_progress
 
@@ -13,7 +14,7 @@ def run(
     dois: typing.Sequence[doiget_tdm.doi.DOI],
     only_metadata: bool,
     start_from: int = 1,
-    only_member_id: doiget_tdm.metadata.MemberID | None = None,
+    only_member_ids: collections.abc.Container[doiget_tdm.metadata.MemberID] | None = None,
     show_progress_bar: bool = True,
 ) -> None:
 
@@ -38,7 +39,7 @@ def run(
             process_doi(
                 doi=doi,
                 only_metadata=only_metadata,
-                only_member_id=only_member_id,
+                only_member_ids=only_member_ids,
             )
 
             progress_bar()
@@ -47,7 +48,7 @@ def run(
 def process_doi(
     doi: doiget_tdm.doi.DOI,
     only_metadata: bool,
-    only_member_id: doiget_tdm.metadata.MemberID | None = None,
+    only_member_ids: collections.abc.Container[doiget_tdm.metadata.MemberID] | None = None,
 ) -> None:
 
     work = doiget_tdm.work.Work(doi=doi)
@@ -55,7 +56,7 @@ def process_doi(
     if not work.metadata.exists:
         work.metadata.acquire()
 
-    if only_member_id is not None and work.metadata.member_id != only_member_id:
+    if only_member_ids is not None and work.metadata.member_id not in only_member_ids:
         return
 
     if not only_metadata:

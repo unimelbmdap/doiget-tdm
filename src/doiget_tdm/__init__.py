@@ -18,10 +18,12 @@ SETTINGS = doiget_tdm.config.SETTINGS
 
 from doiget_tdm.doi import DOI  # noqa: E402
 from doiget_tdm.work import Work  # noqa: E402
+from doiget_tdm.data import iter_unsorted_works  # noqa: E402
 import doiget_tdm.publishers  # noqa: E402
 
 __all__ = (
     "DOI",
     "Work",
     "SETTINGS",
+    "iter_unsorted_works",
 )
