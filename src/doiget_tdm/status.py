@@ -321,22 +321,29 @@ def get_publisher_table(
     return table
 
 
-def iter_unsorted_works() -> typing.Iterable[dict[str, object]]:
-
-    for work in doiget_tdm.data.iter_unsorted_works():
-
-        status_row = convert_work_to_status_row(work=work)
-
-        yield dataclasses.asdict(status_row)  # type: ignore[call-overload]
-
-
 def iter_works(
-    dois: typing.Sequence[doiget_tdm.doi.DOI]
+    dois: typing.Sequence[doiget_tdm.doi.DOI] | None
 ) -> typing.Iterable[dict[str, object]]:
 
-    for doi in dois:
+    iterator = (
+        iter(dois)
+        if dois is not None
+        else doiget_tdm.data.iter_unsorted_works()
+    )
 
-        work = doiget_tdm.Work(doi=doi)
+    items_are_works = dois is None
+
+    for item in iterator:
+
+        if items_are_works:
+            if not isinstance(item, doiget_tdm.Work):
+                raise ValueError()
+            work = item
+
+        else:
+            if not isinstance(item, doiget_tdm.DOI):
+                raise ValueError()
+            work = doiget_tdm.Work(doi=item)
 
         status_row = convert_work_to_status_row(work=work)
 
@@ -345,14 +352,8 @@ def iter_works(
 
 def get_df(dois: typing.Sequence[doiget_tdm.doi.DOI] | None) -> pl.DataFrame:
 
-    gen_func = (
-        functools.partial(iter_works, dois=dois)
-        if dois is not None
-        else iter_unsorted_works
-    )
-
     return pl.DataFrame(
-        data=gen_func,
+        data=iter_works(dois=dois),
         schema=SCHEMA,
         orient="row",
     )
