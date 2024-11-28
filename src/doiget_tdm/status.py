@@ -8,6 +8,7 @@ from __future__ import annotations
 import pathlib
 import typing
 import dataclasses
+import functools
 
 import polars as pl
 
@@ -320,14 +321,22 @@ def get_publisher_table(
     return table
 
 
-def iter_work_status(
-    dois: typing.Sequence[doiget_tdm.doi.DOI] | None,
+def iter_unsorted_works() -> typing.Iterable[dict[str, object]]:
+
+    for work in doiget_tdm.data.iter_unsorted_works():
+
+        status_row = convert_work_to_status_row(work=work)
+
+        yield dataclasses.asdict(status_row)  # type: ignore[call-overload]
+
+
+def iter_works(
+    dois: typing.Sequence[doiget_tdm.doi.DOI]
 ) -> typing.Iterable[dict[str, object]]:
 
-    def is_valid(work: doiget_tdm.work.Work) -> bool:
-        return dois is None or work.doi in dois
+    for doi in dois:
 
-    for work in doiget_tdm.data.iter_unsorted_works(test_if_valid_work=is_valid):
+        work = doiget_tdm.Work(doi=doi)
 
         status_row = convert_work_to_status_row(work=work)
 
@@ -336,8 +345,14 @@ def iter_work_status(
 
 def get_df(dois: typing.Sequence[doiget_tdm.doi.DOI] | None) -> pl.DataFrame:
 
+    gen_func = (
+        functools.partial(iter_works, dois=dois)
+        if dois is not None
+        else iter_unsorted_works
+    )
+
     return pl.DataFrame(
-        data=iter_work_status(dois=dois),
+        data=gen_func,
         schema=SCHEMA,
         orient="row",
     )
