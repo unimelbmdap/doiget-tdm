@@ -9,6 +9,7 @@ import pathlib
 import typing
 import dataclasses
 import functools
+import warnings
 
 import polars as pl
 
@@ -199,7 +200,7 @@ def get_formats_table(
     table.add_column("Format(s)")
     table.add_column("Count")
 
-    for value in counts.iter_rows():
+    for value in counts.sort("len").iter_rows():
         table.add_row(*[str(val) for val in value])
 
     return table
@@ -252,7 +253,7 @@ def get_best_format_table(
     table.add_column("Format")
     table.add_column("Count")
 
-    for value in counts.iter_rows():
+    for value in counts.sort("len").iter_rows():
         table.add_row(*[str(val) for val in value])
 
     return table
@@ -352,8 +353,12 @@ def iter_works(
 
 def get_df(dois: typing.Sequence[doiget_tdm.doi.DOI] | None) -> pl.DataFrame:
 
-    return pl.DataFrame(
+    warnings.simplefilter("ignore", pl.PerformanceWarningCategoricalRemapping)
+
+    df = pl.DataFrame(
         data=iter_works(dois=dois),
         schema=SCHEMA,
         orient="row",
     )
+
+    return df
