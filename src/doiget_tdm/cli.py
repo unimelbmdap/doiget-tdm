@@ -135,8 +135,6 @@ def setup_parser() -> argparse.ArgumentParser:
 
 def run(args: argparse.Namespace) -> None:
 
-    print(args)
-
     if args.command is None:
         parser = setup_parser()
         parser.print_help()
