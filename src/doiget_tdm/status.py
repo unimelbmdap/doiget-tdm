@@ -12,6 +12,7 @@ import functools
 import warnings
 
 import polars as pl
+import polars.exceptions
 
 import rich
 import rich.table
@@ -353,7 +354,7 @@ def iter_works(
 
 def get_df(dois: typing.Sequence[doiget_tdm.doi.DOI] | None) -> pl.DataFrame:
 
-    warnings.simplefilter("ignore", pl.PerformanceWarningCategoricalRemapping)
+    warnings.simplefilter("ignore", polars.exceptions.CategoricalRemappingWarning)
 
     df = pl.DataFrame(
         data=iter_works(dois=dois),
