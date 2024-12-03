@@ -73,6 +73,8 @@ class FullText:
         Attempt to acquire the full-text content.
         """
 
+        LOGGER.info(f"Attempting to acquire full-text for the DOI {self.doi}")
+
         if not self._sources_set:
             self.set_sources()
             self._sources_set = True
@@ -84,12 +86,14 @@ class FullText:
             fmt = self.formats[fmt_name]
 
             if fmt.exists:
-                LOGGER.warning(
+                LOGGER.info(
                     f"Full-text {fmt_name.name} content already exists for {self.doi}; "
                     + "skipping"
                 )
 
             else:
+
+                LOGGER.info(f"Trying to acquire the {fmt_name.name} format")
 
                 try:
                     fmt.acquire()
@@ -105,7 +109,7 @@ class FullText:
                 break
 
         if not any_success:
-            LOGGER.warning(
+            LOGGER.error(
                 f"Unable to obtain any full-text content for {self.doi}"
             )
 
