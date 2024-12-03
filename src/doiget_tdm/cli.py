@@ -186,7 +186,7 @@ def run_acquire(args: argparse.Namespace) -> None:
 
     only_member_ids: list[doiget_tdm.metadata.MemberID] | None
 
-    if args.only_member_ids is None:
+    if args.only_member_id is None:
         only_member_ids = None
     else:
         only_member_ids = [

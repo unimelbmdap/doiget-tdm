@@ -126,7 +126,7 @@ class Format:
         )
 
         if len(sources) == 0:
-            LOGGER.warning(f"No sources for {self}")
+            LOGGER.warning(f"No sources for {self.name}")
 
         for source in sources:
 
