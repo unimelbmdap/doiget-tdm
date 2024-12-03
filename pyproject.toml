@@ -24,6 +24,7 @@ dependencies = [
   "crossref-lmdb",
   "rich>=13.9.4",
   "polars-lts-cpu[xlsxwriter]>=1.14.0",
+  "tenacity>=9.0.0",
 ]
 
 [project.scripts]
