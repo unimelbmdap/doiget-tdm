@@ -23,7 +23,6 @@ Features
 
 * Acquire full-text of published articles, with built-in support for multiple publishers and their acquisition methods (e.g., network or local files).
 * Customise acquisition and add additional publishers.
-* Obtain sets of article identifiers (DOIs) from `CrossRef <https://crossref.org>`_.
 * Retrieve article metadata from `CrossRef <https://crossref.org>`_.
 
 
