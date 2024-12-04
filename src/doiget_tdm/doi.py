@@ -158,11 +158,8 @@ class DOI:
             if ``n_groups`` is ``None``.
         """
 
-        if n_groups in [None, 0]:
+        if n_groups is None or n_groups == 0:
             return ""
-
-        if typing.TYPE_CHECKING:
-            assert n_groups is not None
 
         hashed = hashlib.sha256(self._doi.encode())
         hash_value = int.from_bytes(hashed.digest(), "big")
