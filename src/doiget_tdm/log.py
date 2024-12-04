@@ -13,7 +13,7 @@ def setup_logging() -> None:
         )
     )
 
-    fmt = "%(asctime)s :: %(levelname)s :: %(message)s :: (%(pathname)s, %(lineno)d)"
+    fmt = "%(asctime)s :: %(levelname)s :: %(message)s"
     formatter = logging.Formatter(fmt=fmt)
 
     # handler for the screen

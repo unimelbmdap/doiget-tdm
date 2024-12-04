@@ -103,9 +103,12 @@ class FullText:
                     )
                     continue
 
+                LOGGER.info(f"Successfully acquired the {fmt_name.name} format")
+
             any_success = True
 
             if doiget_tdm.SETTINGS.skip_remaining_formats:
+                LOGGER.info("Skipping any remaining formats")
                 break
 
         if not any_success:

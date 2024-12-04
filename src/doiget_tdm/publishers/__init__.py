@@ -31,7 +31,7 @@ def _load_handlers() -> None:
         if module_file.name.startswith("__"):
             continue
 
-        LOGGER.info(f"Loading the handler {module_file.name} ({file_type})")
+        # LOGGER.info(f"Loading the handler {module_file.name} ({file_type})")
 
         # recipe from the importlib docs
         module_name = f"doiget_tdm.publishers.{module_file.name}"
