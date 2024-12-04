@@ -475,7 +475,10 @@ class Metadata:
             else raw
         )
 
-        self.path.write_bytes(output)
+        # keep retrying if the write failed
+        for attempt in doiget_tdm.errors.get_retry_controller(logger=LOGGER):
+            with attempt:
+                self.path.write_bytes(output)
 
         LOGGER.info(f"Wrote metadata to {self.path}")
 

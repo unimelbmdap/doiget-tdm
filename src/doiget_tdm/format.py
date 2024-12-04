@@ -6,6 +6,8 @@ import logging
 
 import pyrage
 
+import tenacity
+
 import doiget_tdm.config
 import doiget_tdm.doi
 import doiget_tdm.source
@@ -164,12 +166,18 @@ class Format:
                     "Writing encryption sentinel file to "
                     + f"{self.is_encrypted_sentinel_path}"
                 )
-                self.is_encrypted_sentinel_path.touch()
+                # keep retrying if the write failed
+                for attempt in doiget_tdm.errors.get_retry_controller(logger=LOGGER):
+                    with attempt:
+                        self.is_encrypted_sentinel_path.touch()
 
             LOGGER.info(
                 f"Writing full-text content to {self.local_path}"
             )
-            self.local_path.write_bytes(data)
+            # keep retrying if the write failed
+            for attempt in doiget_tdm.errors.get_retry_controller(logger=LOGGER):
+                with attempt:
+                    self.local_path.write_bytes(data)
 
             break
 
@@ -201,4 +209,3 @@ class Format:
         )
 
         return decrypted_data
-
