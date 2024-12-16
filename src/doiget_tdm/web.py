@@ -67,7 +67,7 @@ class WebRequester:
         if headers is not None:
             self._session.headers = {**self._session.headers, **headers}
 
-    def get(self, url: str) -> requests.Response:
+    def get(self, url: str, raise_error: bool = True) -> requests.Response:
         """
         Perform a GET request.
 
@@ -75,18 +75,25 @@ class WebRequester:
         ----------
         url
             The URL to request.
+        raise_error
+            Whether to raise a Python error if the HTTP status code indicates a
+            request error.
 
         Returns
         -------
             The request response.
         """
 
-        getter = functools.partial(
-            self._session.get,
-            timeout=60,
-        )
+        retry_get = self.retry_wrapper(self._getter)
+        response: requests.Response = retry_get(url=url, raise_error=raise_error)
 
-        retry_get = self.retry_wrapper(getter)
-        response: requests.Response = retry_get(url=url)
+        return response
+
+    def _getter(self, url: str, raise_error: bool = True) -> requests.Response:
+
+        response = self._session.get(url=url, timeout=60)
+
+        if raise_error:
+            response.raise_for_status()
 
         return response
