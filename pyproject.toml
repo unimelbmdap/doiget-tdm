@@ -3,7 +3,7 @@ name = "doiget-tdm"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
-requires-python = ">=3.10"
+requires-python = ">=3.11,<3.13"
 dependencies = [
   "limiter>=0.5.0",
   "platformdirs>=4.3.6",
@@ -66,6 +66,7 @@ dev-dependencies = [
   "types-requests>=2.32.0.20240914",
   "pyrage-stubs>=1.2.1",
   "types-html5lib>=1.1.11.20240806",
+  "posting>=2.3.0",
 ]
 
 [tool.uv.sources]
