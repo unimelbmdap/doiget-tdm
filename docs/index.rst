@@ -16,14 +16,14 @@ Documentation
     reference/index
 
 ``doiget-tdm`` is a command-line application and Python library for obtaining the metadata and full-text of published journal articles.
-It is primarily intended for use in text data mining projects where the user has subscriptions to full-text content and data exchange agreements where necessary.
+It is primarily intended for use in text data mining projects where the user has subscriptions to full-text content and has organised data exchange agreements.
 
 Features
 --------
 
 * Acquire full-text of published articles, with built-in support for multiple publishers and their acquisition methods (e.g., network or local files).
 * Customise acquisition and add additional publishers.
-* Retrieve article metadata from `CrossRef <https://crossref.org>`_.
+* Retrieve article metadata from `Crossref <https://crossref.org>`_.
 
 
 Installation

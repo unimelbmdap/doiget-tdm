@@ -19,13 +19,13 @@ Options
     Typical directories are:
 
     Linux
-        ``~/.local/share/doiget-tdm/``
+        ``~/.local/share/doiget_tdm/``
 
     Mac
-        ``~/Library/Application Support/doiget-tdm/data/``
+        ``~/Library/Application Support/doiget_tdm/data/``
 
     Windows
-        ``~\AppData\Local\doiget-tdm\data``
+        ``~\AppData\Local\doiget_tdm\data``
 
 ``cache_dir``
     The directory to store temporary but persistent files, such as full-text data archives that span multiple items.
@@ -34,10 +34,10 @@ Options
     Typical directories are:
 
     Linux
-        ``~/.cache/doiget-tdm/``
+        ``~/.cache/doiget_tdm/``
 
     Mac
-        ``~/Library/Caches/doiget-tdm/``
+        ``~/Library/Caches/doiget_tdm/``
 
     Windows
         ``~\AppData\Local\doiget-tdm\doiget-tdm\Cache``
@@ -112,13 +112,13 @@ The directory in which ``doiget-tdm`` will search for configuration settings var
 Typical directories are:
 
 Linux
-    ``~/.config/doiget-tdm/``
+    ``~/.config/doiget_tdm/``
 
 Mac
-    ``~/Library/Application Support/doiget-tdm/config/``
+    ``~/Library/Application Support/doiget_tdm/config/``
 
 Windows
-    ``~\AppData\Local\doiget-tdm\doiget-tdm\config``
+    ``~\AppData\Local\doiget-tdm\doiget_tdm\config``
 
 A configuration option can be set by creating a file inside the config directory with a name that has the form ``doiget-tdm_${OPTION}`` and the contents are the option setting.
 For example, the ``log_level`` option can be set to ``WARNING`` by creating a file called ``doiget-tdm_log_level`` that contains the text ``WARNING``.
