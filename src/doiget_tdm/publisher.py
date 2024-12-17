@@ -173,9 +173,6 @@ def set_sources_from_crossref(
 
         sources = fulltext.formats[format_name].sources
 
-        if sources is None:
-            sources = []
-
         if source not in sources:
             sources.insert(0, source)
 

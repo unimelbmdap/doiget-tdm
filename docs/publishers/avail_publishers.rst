@@ -20,11 +20,9 @@ No configuration required.
 PLoS
 ----
 
-No configuration required.
-
-.. note::
-    This uses simple web requests to acquire content from PLoS.
-    This method is discouraged for bulk article acquisitions; consider using the PLoS corpus file instead (see `PLoS Text and Data Mining <https://api.plos.org/text-and-data-mining.html>`_).
+``doiget_tdm_plos_allofplos_path``
+    The filesystem path to the PLoS corpus file (see `PLoS Text and Data Mining <https://api.plos.org/text-and-data-mining.html>`_).
+    If not specified, the handler will fall back to retrieving the full-text content via web requests; however, this is discouraged for bulk acquisitions.
 
 Sage
 ----

@@ -69,7 +69,7 @@ class FullText:
             publisher = doiget_tdm.publisher.registry[self.metadata.member_id]
             publisher.set_sources(fulltext=self)
 
-    def acquire(self) -> None:
+    def acquire(self, skip_existing: bool = True) -> None:
         """
         Attempt to acquire the full-text content.
         """
@@ -86,7 +86,7 @@ class FullText:
 
             fmt = self.formats[fmt_name]
 
-            if fmt.exists:
+            if skip_existing and fmt.exists:
                 LOGGER.info(
                     f"Full-text {fmt_name.name} content already exists for {self.doi}; "
                     + "skipping"

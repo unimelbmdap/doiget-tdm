@@ -77,7 +77,7 @@ class Format:
         self.doi: doiget_tdm.doi.DOI = doi
 
         #: The sources from which the full-text content for this format can be acquired.
-        self.sources: list[doiget_tdm.source.Source] | None = None
+        self.sources: list[doiget_tdm.source.Source] = []
 
         group = self.doi.get_group(
             n_groups=doiget_tdm.config.SETTINGS.data_dir_n_groups
@@ -118,17 +118,20 @@ class Format:
         Attempt to acquire the full-text content for the format.
         """
 
-        sources = self.sources if self.sources is not None else []
-
-        if len(sources) == 0:
+        if len(self.sources) == 0:
             LOGGER.warning(f"No sources for {self.name}")
 
-        for source in sources:
+        for source in self.sources:
 
             try:
                 data = source.acquire()
             except doiget_tdm.errors.ACQ_ERRORS as err:
                 LOGGER.warning(f"Error when acquiring source {source} ({err})")
+                continue
+            except Exception as err:
+                LOGGER.warning(
+                    f"Unexpected error when acquiring source {source} ({err})"
+                )
                 continue
 
             try:
@@ -136,6 +139,11 @@ class Format:
             except doiget_tdm.errors.ValidationError as err:
                 LOGGER.warning(
                     f"Error when validating data from source {source} ({err})"
+                )
+                continue
+            except Exception as err:
+                LOGGER.warning(
+                    f"Unexpected error when validating source {source} ({err})"
                 )
                 continue
 
