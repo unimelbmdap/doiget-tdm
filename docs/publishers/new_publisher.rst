@@ -9,8 +9,8 @@ A directory containing the Python source file(s) is passed to ``doiget-tdm`` via
 Overview of a new publisher implementation
 ------------------------------------------
 
-The first item of information that is required for a new publisher its its CrossRef member ID.
-Perhaps the simplest way to obtain this information is to find a DOI that is associated with the publisher and view its CrossRef metadata via the `CrossRef web API <https://api.crossref.org/swagger-ui/index.html#/Works/get_works__doi_>`_.
+The first item of information that is required for a new publisher its its Crossref member ID.
+Perhaps the simplest way to obtain this information is to find a DOI that is associated with the publisher and view its Crossref metadata via the `Crossref web API <https://api.crossref.org/swagger-ui/index.html#/Works/get_works__doi_>`_.
 The member ID is the ``member`` attribute in the metadata, and is represented in ``doiget-tdm`` in the :py:class:`doiget_tdm.metadata.MemberID` class.
 
 The next task is to implement the :py:class:`doiget_tdm.publisher.Publisher.set_sources` method.
@@ -31,9 +31,3 @@ This is specified via a method that receives a single ``link`` parameter and ret
     Publishers can (optionally) `provide links to full-text content <https://www.crossref.org/documentation/retrieve-metadata/rest-api/text-and-data-mining-for-members/>`_ via the ``link`` property in the metadata.
     The ``link`` property contains one or more items that specify a link to full-text content.
     The items are primarily distinguished by their ``intended-application`` (e.g., ``"text-mining"``) and ``content-type`` (e.g., ``"application/xml"``).
-
-
-Example of a new publisher implementation
------------------------------------------
-
-Here, we will walk through the process of creating a new publisher.

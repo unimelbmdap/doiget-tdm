@@ -50,7 +50,7 @@ Options
     The default is to not have this intermediate grouping layer.
 
 ``email_address``
-    The DOI metadata is typically acquired from the CrossRef web API, which asks that users provide their email address as part of the request header.
+    The DOI metadata is typically acquired from the Crossref web API, which asks that users provide their email address as part of the request header.
 
     The default is to not specify an email address.
 
@@ -71,7 +71,7 @@ Options
     The default is ``INFO``.
 
 ``crossref_lmdb_path``
-    The path to a directory containing a local LMDB version of the CrossRef public data.
+    The path to a directory containing a local LMDB version of the Crossref public data.
     If present, it will be used to obtain the DOI metadata in preference to a web API call.
 
     The default is to not have a LMDB available.

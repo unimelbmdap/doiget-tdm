@@ -13,6 +13,11 @@
 * Acquire full-text of published articles, with built-in support for multiple publishers and their acquisition methods (e.g., network or local files).
 * Customise acquisition and add additional publishers.
 * Retrieve article metadata from [Crossref](https://crossref.org).
+* Currently supported publishers:
+    * Elsevier
+    * Frontiers
+    * Sage
+    * Springer-Nature
 
 
 ## Installation

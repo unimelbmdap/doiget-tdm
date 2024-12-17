@@ -7,11 +7,10 @@ Documentation
     :hidden:
 
     configuration
-    concepts
-    publishers/index
     workflow
+    publishers/index
+    concepts
     using_the_api
-    development
     reference/cmd
     reference/index
 
@@ -24,7 +23,10 @@ Features
 * Acquire full-text of published articles, with built-in support for multiple publishers and their acquisition methods (e.g., network or local files).
 * Customise acquisition and add additional publishers.
 * Retrieve article metadata from `Crossref <https://crossref.org>`_.
-
+* Currently supported publishers:
+    * Elsevier
+    * Frontiers
+    * Springer-Nature
 
 Installation
 ------------
@@ -58,20 +60,20 @@ Documentation guide
 :doc:`/configuration`
     Describes the available configuration options and how they can be specified.
 
-:doc:`/concepts`
-    Outlines the conceptual approach taken by ``doiget-tdm``. 
+:doc:`/workflow`
+    Describes a typical workflow for using ``doiget-tdm``.
 
 :doc:`/publishers/index`
     Lists the details of publishers with built-in support and describes the process of adding additional publishers.
 
-:doc:`/workflow`
-    Describes a typical workflow for using ``doiget-tdm``.
+:doc:`/concepts`
+    Outlines the conceptual approach taken by ``doiget-tdm``. 
 
 :doc:`/using_the_api`
     Examples of using the API to interact with ``doiget-tdm`` through Python.
 
-:doc:`/development`
-    Describes the development process of ``doiget-tdm``, which may be useful for contributing to ``doiget-tdm``.
+.. :doc:`/development`
+      Describes the development process of ``doiget-tdm``, which may be useful for contributing to ``doiget-tdm``.
 
 :doc:`/reference/cmd`
     Provides a reference to the ``doiget-tdm`` command-line application and its options.
