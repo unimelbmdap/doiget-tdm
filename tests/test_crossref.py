@@ -35,6 +35,7 @@ def test_rate_limit(monkeypatch) -> None:
 
     def mock_get_headers(*args, **kwargs) -> None:
         response = requests.Response()
+        response.status_code = 200
         response.headers["x-ratelimit-limit"] = str(mock_limit)
         response.headers["x-ratelimit-interval"] = f"{mock_period}s"
         return response

@@ -21,7 +21,9 @@ def test_get(monkeypatch) -> None:
     requester = doiget_tdm.web.WebRequester()
 
     def mock_get(*args, **kwargs) -> requests.Response:
-        return requests.Response()
+        mock_response = requests.Response()
+        mock_response.status_code = 200
+        return mock_response
 
     monkeypatch.setattr(requester._session, "get", mock_get)
 
