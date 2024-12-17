@@ -16,6 +16,7 @@
 * Currently supported publishers:
     * Elsevier
     * Frontiers
+    * PLoS
     * Sage
     * Springer-Nature
 

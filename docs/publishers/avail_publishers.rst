@@ -16,6 +16,16 @@ Frontiers
 
 No configuration required.
 
+
+PLoS
+----
+
+No configuration required.
+
+.. note::
+    This uses simple web requests to acquire content from PLoS.
+    This method is discouraged for bulk article acquisitions; consider using the PLoS corpus file instead (see `PLoS Text and Data Mining <https://api.plos.org/text-and-data-mining.html>`_).
+
 Sage
 ----
 
