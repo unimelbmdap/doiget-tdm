@@ -1,4 +1,3 @@
-
 import time
 
 import pytest
@@ -75,7 +74,6 @@ def test_call(monkeypatch) -> None:
     with pytest.raises(requests.exceptions.RequestException):
         cr.call(query="")
 
-
     def mock_get_raise_specific(*args, **kwargs) -> None:
         response = requests.Response()
         response.status_code = 404
@@ -109,4 +107,3 @@ def test_user_agent():
     doiget_tdm.config.SETTINGS.email_address = mock_email
 
     assert f"; mailto:{mock_email}" in cr.user_agent
-

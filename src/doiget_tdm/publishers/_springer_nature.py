@@ -63,9 +63,7 @@ class SpringerNature(doiget_tdm.publisher.Publisher):
             ),
         )
 
-        self.session = doiget_tdm.web.WebRequester(
-            limiter=limiter
-        )
+        self.session = doiget_tdm.web.WebRequester(limiter=limiter)
 
     def set_sources(self, fulltext: doiget_tdm.fulltext.FullText) -> None:
 

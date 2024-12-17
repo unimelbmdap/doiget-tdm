@@ -63,9 +63,7 @@ def validate_xml(data: bytes) -> None:
     try:
         doc = xml.dom.minidom.parseString(string=data)
     except xml.parsers.expat.ExpatError:
-        raise doiget_tdm.errors.ValidationError(
-            "Cannot parse into XML"
-        ) from None
+        raise doiget_tdm.errors.ValidationError("Cannot parse into XML") from None
 
     _check_for_body(doc=doc)
 
@@ -88,9 +86,7 @@ def validate_html(data: bytes) -> None:
     try:
         doc = parser.parse(stream=data)
     except html5lib.html5parser.ParseError:
-        raise doiget_tdm.errors.ValidationError(
-            "Cannot parse into HTML"
-        ) from None
+        raise doiget_tdm.errors.ValidationError("Cannot parse into HTML") from None
 
     _check_for_body(doc=doc)
 
@@ -100,9 +96,7 @@ def _check_for_body(doc: xml.dom.minidom.Document) -> None:
     bodies = doc.getElementsByTagName(name="body")
 
     if len(bodies) == 0:
-        raise doiget_tdm.errors.ValidationError(
-            "No `body` tag found in XML"
-        )
+        raise doiget_tdm.errors.ValidationError("No `body` tag found in XML")
 
     for body in bodies:
 
@@ -110,9 +104,7 @@ def _check_for_body(doc: xml.dom.minidom.Document) -> None:
             break
 
     else:
-        raise doiget_tdm.errors.ValidationError(
-            "XML `body` has no content"
-        )
+        raise doiget_tdm.errors.ValidationError("XML `body` has no content")
 
 
 def validate_txt(data: bytes) -> None:

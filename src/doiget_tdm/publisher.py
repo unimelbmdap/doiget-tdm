@@ -125,9 +125,7 @@ def set_sources_from_crossref(
                 content_type=content_type
             )
         except KeyError:
-            LOGGER.warning(
-                f"Skipping due to unknown content-type '{content_type}'"
-            )
+            LOGGER.warning(f"Skipping due to unknown content-type '{content_type}'")
             continue
 
         source = doiget_tdm.source.Source(
@@ -141,9 +139,7 @@ def set_sources_from_crossref(
             source_ok = source_check_func(source)
 
             if not source_ok:
-                LOGGER.warning(
-                    f"Skipping due to a failed source check on {source}"
-                )
+                LOGGER.warning(f"Skipping due to a failed source check on {source}")
                 continue
 
         sources = fulltext.formats[format_name].sources

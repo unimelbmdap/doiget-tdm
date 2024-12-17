@@ -19,6 +19,7 @@ class FormatName(enum.Enum):
     """
     Possible full-text content formats.
     """
+
     XML = "xml"
     PDF = "pdf"
     HTML = "html"
@@ -103,9 +104,7 @@ class Format:
         The path to a sentinel (empty) file that marks that the content
         is encrypted.
         """
-        return self.local_path.with_suffix(
-            self.local_path.suffix + ".encrypted"
-        )
+        return self.local_path.with_suffix(self.local_path.suffix + ".encrypted")
 
     @property
     def is_encrypted(self) -> bool:
@@ -119,11 +118,7 @@ class Format:
         Attempt to acquire the full-text content for the format.
         """
 
-        sources = (
-            self.sources
-            if self.sources is not None
-            else []
-        )
+        sources = self.sources if self.sources is not None else []
 
         if len(sources) == 0:
             LOGGER.warning(f"No sources for {self.name}")
@@ -133,9 +128,7 @@ class Format:
             try:
                 data = source.acquire()
             except doiget_tdm.errors.ACQ_ERRORS as err:
-                LOGGER.warning(
-                    f"Error when acquiring source {source} ({err})"
-                )
+                LOGGER.warning(f"Error when acquiring source {source} ({err})")
                 continue
 
             try:
@@ -169,9 +162,7 @@ class Format:
                     with attempt:
                         self.is_encrypted_sentinel_path.touch()
 
-            LOGGER.info(
-                f"Writing full-text content to {self.local_path}"
-            )
+            LOGGER.info(f"Writing full-text content to {self.local_path}")
             # keep retrying if the write failed
             for attempt in doiget_tdm.errors.get_retry_controller(logger=LOGGER):
                 with attempt:

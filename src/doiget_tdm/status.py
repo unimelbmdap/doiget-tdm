@@ -53,7 +53,7 @@ StatusRow = dataclasses.make_dataclass(
 
 
 def convert_work_to_status_row(
-    work: doiget_tdm.Work
+    work: doiget_tdm.Work,
 ) -> object:  # can't type hint dynamically-created dataclasses
 
     doi = str(work.doi)
@@ -61,35 +61,15 @@ def convert_work_to_status_row(
 
     has_metadata = work.metadata.exists
 
-    member_id = (
-        str(work.metadata.member_id)
-        if has_metadata
-        else None
-    )
+    member_id = str(work.metadata.member_id) if has_metadata else None
 
-    publisher_name = (
-        work.metadata.publisher_name
-        if has_metadata
-        else None
-    )
+    publisher_name = work.metadata.publisher_name if has_metadata else None
 
-    title = (
-        work.metadata.title
-        if has_metadata
-        else None
-    )
+    title = work.metadata.title if has_metadata else None
 
-    journal_name = (
-        work.metadata.journal_name
-        if has_metadata
-        else None
-    )
+    journal_name = work.metadata.journal_name if has_metadata else None
 
-    published_date = (
-        work.metadata.published_date
-        if has_metadata
-        else None
-    )
+    published_date = work.metadata.published_date if has_metadata else None
 
     has_fulltext_fmt = {
         f"has_fulltext_{fmt_name.name}": fmt.exists
@@ -186,10 +166,14 @@ def get_formats_table(
             )
         )
 
-    fmt_types = with_fulltext.select(pl.col(*cols)).map_rows(
-        function=row_func,
-        return_dtype=pl.Categorical(),
-    ).rename({"map": "fmt_types"})
+    fmt_types = (
+        with_fulltext.select(pl.col(*cols))
+        .map_rows(
+            function=row_func,
+            return_dtype=pl.Categorical(),
+        )
+        .rename({"map": "fmt_types"})
+    )
 
     counts = fmt_types.group_by(pl.col("fmt_types")).len()
 
@@ -263,31 +247,19 @@ def get_publisher_table(
     df: pl.DataFrame,
 ) -> rich.table.Table:
 
-    df_with_metadata = (
-        df
-        .filter(pl.col("has_metadata"))
-        .select(pl.col("member_id", "publisher_name"))
+    df_with_metadata = df.filter(pl.col("has_metadata")).select(
+        pl.col("member_id", "publisher_name")
     )
 
     def combine_publisher_names(member_df: pl.DataFrame) -> pl.DataFrame:
 
         count = member_df.select("member_id").count().item()
 
-        publisher_names = (
-            member_df
-            .select(pl.col("publisher_name"))
-            .unique()
-            .rows()
-        )
+        publisher_names = member_df.select(pl.col("publisher_name")).unique().rows()
 
         member_id = member_df.select(pl.first("member_id")).item()
 
-        combined = "; ".join(
-            [
-                publisher_name
-                for publisher_name, in publisher_names
-            ]
-        )
+        combined = "; ".join([publisher_name for publisher_name, in publisher_names])
 
         return pl.DataFrame(
             {
@@ -297,11 +269,7 @@ def get_publisher_table(
             }
         )
 
-    names = (
-        df_with_metadata
-        .group_by("member_id")
-        .map_groups(combine_publisher_names)
-    )
+    names = df_with_metadata.group_by("member_id").map_groups(combine_publisher_names)
 
     table = rich.table.Table(
         title="Publishers of DOIs with metadata",
@@ -323,14 +291,10 @@ def get_publisher_table(
 
 
 def iter_works(
-    dois: typing.Sequence[doiget_tdm.doi.DOI] | None
+    dois: typing.Sequence[doiget_tdm.doi.DOI] | None,
 ) -> typing.Iterable[dict[str, object]]:
 
-    iterator = (
-        iter(dois)
-        if dois is not None
-        else doiget_tdm.data.iter_unsorted_works()
-    )
+    iterator = iter(dois) if dois is not None else doiget_tdm.data.iter_unsorted_works()
 
     items_are_works = dois is None
 

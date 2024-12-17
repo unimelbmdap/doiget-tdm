@@ -46,9 +46,7 @@ class RateLimit(enum.Enum):
         use_slower = is_weekday and (midnight <= dt.time() <= noon)
 
         current_rate_limit = (
-            RateLimit.ONE_PER_SIX_S
-            if use_slower
-            else RateLimit.ONE_PER_TWO_S
+            RateLimit.ONE_PER_SIX_S if use_slower else RateLimit.ONE_PER_TWO_S
         )
 
         return current_rate_limit

@@ -17,6 +17,7 @@ class LoadedData(typing.NamedTuple):
     """
     Data and its format as loaded from a file.
     """
+
     data: bytes
     fmt: doiget_tdm.format.FormatName
 
@@ -45,7 +46,7 @@ class FullText:
         #: CrossRef metadata for the DOI.
         self.metadata: doiget_tdm.metadata.Metadata = metadata
 
-        #: Potential full-text formats 
+        #: Potential full-text formats
         self.formats: dict[doiget_tdm.format.FormatName, doiget_tdm.format.Format] = {
             format_name: doiget_tdm.format.Format(
                 name=format_name,
@@ -112,9 +113,7 @@ class FullText:
                 break
 
         if not any_success:
-            LOGGER.error(
-                f"Unable to obtain any full-text content for {self.doi}"
-            )
+            LOGGER.error(f"Unable to obtain any full-text content for {self.doi}")
 
     def load(
         self,
@@ -134,11 +133,7 @@ class FullText:
             A namedtuple with ``data`` and ``fmt`` attributes.
         """
 
-        formats = (
-            doiget_tdm.SETTINGS.format_preference_order
-            if fmt is None
-            else [fmt]
-        )
+        formats = doiget_tdm.SETTINGS.format_preference_order if fmt is None else [fmt]
 
         for curr_fmt in formats:
             fmt_data = self.formats[curr_fmt]

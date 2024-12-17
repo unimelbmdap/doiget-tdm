@@ -14,16 +14,15 @@ def run(
     dois: typing.Sequence[doiget_tdm.doi.DOI],
     only_metadata: bool,
     start_from: int = 1,
-    only_member_ids: collections.abc.Container[doiget_tdm.metadata.MemberID] | None = None,
+    only_member_ids: (
+        collections.abc.Container[doiget_tdm.metadata.MemberID] | None
+    ) = None,
     show_progress_bar: bool = True,
 ) -> None:
 
     n_dois = len(dois)
 
-    progress_bar_disabled = (
-        not show_progress_bar
-        or n_dois == 1
-    )
+    progress_bar_disabled = not show_progress_bar or n_dois == 1
 
     with alive_progress.alive_bar(
         total=n_dois,
@@ -48,7 +47,9 @@ def run(
 def process_doi(
     doi: doiget_tdm.doi.DOI,
     only_metadata: bool,
-    only_member_ids: collections.abc.Container[doiget_tdm.metadata.MemberID] | None = None,
+    only_member_ids: (
+        collections.abc.Container[doiget_tdm.metadata.MemberID] | None
+    ) = None,
 ) -> None:
 
     work = doiget_tdm.work.Work(doi=doi)
@@ -61,6 +62,3 @@ def process_doi(
 
     if not only_metadata:
         work.fulltext.acquire()
-
-
-

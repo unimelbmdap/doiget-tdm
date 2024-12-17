@@ -2,7 +2,6 @@
 Represent Digital Object Identifiers (DOIs) and their creation from input.
 """
 
-
 from __future__ import annotations
 
 import urllib.parse
@@ -26,6 +25,7 @@ class DOIParts(typing.NamedTuple):
     """
     Parts (prefix and suffix) of a DOI.
     """
+
     prefix: str
     suffix: str
 
@@ -60,9 +60,7 @@ class DOI:
             )
 
         if not self._doi.startswith("10."):
-            raise ValueError(
-                f"The string {self._doi} does not appear to be a DOI."
-            )
+            raise ValueError(f"The string {self._doi} does not appear to be a DOI.")
 
         if unquote:
             self._doi = urllib.parse.unquote(string=self._doi)

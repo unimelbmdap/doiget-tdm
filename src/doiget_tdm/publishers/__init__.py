@@ -25,7 +25,7 @@ def _load_handlers() -> None:
 
     all_files = module_files + extra_files
 
-    for (module_file, file_type) in zip(all_files, file_types, strict=True):
+    for module_file, file_type in zip(all_files, file_types, strict=True):
 
         # ignore __init__.py and any in-progress modules
         if module_file.name.startswith("__"):

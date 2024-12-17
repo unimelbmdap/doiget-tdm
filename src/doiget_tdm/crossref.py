@@ -26,10 +26,7 @@ class CrossRefWebAPI:
         )
 
         self.default_limit = pyrate_limiter.Limiter(
-            pyrate_limiter.RequestRate(
-                limit=50,
-                interval=1
-            )
+            pyrate_limiter.RequestRate(limit=50, interval=1)
         )
 
     @property
@@ -86,15 +83,10 @@ class CrossRefWebAPI:
         period_s = int(response.headers["x-ratelimit-interval"][:-1])
 
         limit = pyrate_limiter.Limiter(
-            pyrate_limiter.RequestRate(
-                limit=n_calls,
-                interval=period_s
-            )
+            pyrate_limiter.RequestRate(limit=n_calls, interval=period_s)
         )
 
-        LOGGER.info(
-            f"Set CrossRef rate limits to {n_calls} calls per {period_s} s"
-        )
+        LOGGER.info(f"Set CrossRef rate limits to {n_calls} calls per {period_s} s")
 
         return limit
 

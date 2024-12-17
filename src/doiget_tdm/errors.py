@@ -1,4 +1,3 @@
-
 import logging
 
 import requests.exceptions
@@ -27,9 +26,7 @@ ACQ_ERRORS = (
 )
 
 
-def get_retry_controller(
-    logger: logging.Logger
-) -> tenacity.Retrying:
+def get_retry_controller(logger: logging.Logger) -> tenacity.Retrying:
 
     return tenacity.Retrying(
         wait=tenacity.wait.wait_fixed(wait=10),

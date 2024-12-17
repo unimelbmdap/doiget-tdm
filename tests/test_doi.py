@@ -123,8 +123,6 @@ def test_quoted() -> None:
     assert doi.quoted == EXAMPLE_VALID_DOI_QUOTED
 
 
-
-
 def test_from_input(tmp_path) -> None:
 
     test_dois = [
@@ -141,12 +139,7 @@ def test_from_input(tmp_path) -> None:
         ["afw", EXAMPLE_VALID_DOI, "ggeag"],
         ["sgts", EXAMPLE_VALID_DOI_2, "sgeg"],
     ]
-    csv_lower_txt = "\n".join(
-        [
-            ",".join(row)
-            for row in csv_lower_txt_parts
-        ]
-    )
+    csv_lower_txt = "\n".join([",".join(row) for row in csv_lower_txt_parts])
     tmp_path_csv_lower.write_text(csv_lower_txt)
 
     tmp_path_csv_upper = tmp_path / "upper.txt"
@@ -155,53 +148,57 @@ def test_from_input(tmp_path) -> None:
         ["afw", EXAMPLE_VALID_DOI, "ggeag"],
         ["sgts", EXAMPLE_VALID_DOI_2, "sgeg"],
     ]
-    csv_upper_txt = "\n".join(
-        [
-            ",".join(row)
-            for row in csv_upper_txt_parts
-        ]
-    )
+    csv_upper_txt = "\n".join([",".join(row) for row in csv_upper_txt_parts])
     tmp_path_csv_upper.write_text(csv_upper_txt)
 
     for unquote in [False, True]:
 
-        assert (
-            doiget_tdm.doi.form_dois_from_input(
-                raw_input=[EXAMPLE_VALID_DOI],
-                unquote=unquote,
-            )
-            == [EXAMPLE_VALID_DOI]
-        )
-
         assert doiget_tdm.doi.form_dois_from_input(
-            raw_input=test_dois,
+            raw_input=[EXAMPLE_VALID_DOI],
             unquote=unquote,
-        ) == test_dois
-
-        assert doiget_tdm.doi.form_dois_from_input(
-            raw_input=test_dois + test_dois,
-            unquote=unquote,
-        ) == test_dois
-
-        assert doiget_tdm.doi.form_dois_from_input(
-            raw_input=[tmp_path_lined],
-            unquote=unquote,
-        ) == test_dois
-
-        assert doiget_tdm.doi.form_dois_from_input(
-            raw_input=[tmp_path_csv_lower],
-            unquote=unquote,
-        ) == test_dois
-
-        assert doiget_tdm.doi.form_dois_from_input(
-            raw_input=[tmp_path_csv_upper],
-            unquote=unquote,
-        ) == test_dois
+        ) == [EXAMPLE_VALID_DOI]
 
         assert (
             doiget_tdm.doi.form_dois_from_input(
-                raw_input=[EXAMPLE_VALID_DOI, EXAMPLE_INVALID_DOI],
+                raw_input=test_dois,
                 unquote=unquote,
             )
-            == [EXAMPLE_VALID_DOI]
+            == test_dois
         )
+
+        assert (
+            doiget_tdm.doi.form_dois_from_input(
+                raw_input=test_dois + test_dois,
+                unquote=unquote,
+            )
+            == test_dois
+        )
+
+        assert (
+            doiget_tdm.doi.form_dois_from_input(
+                raw_input=[tmp_path_lined],
+                unquote=unquote,
+            )
+            == test_dois
+        )
+
+        assert (
+            doiget_tdm.doi.form_dois_from_input(
+                raw_input=[tmp_path_csv_lower],
+                unquote=unquote,
+            )
+            == test_dois
+        )
+
+        assert (
+            doiget_tdm.doi.form_dois_from_input(
+                raw_input=[tmp_path_csv_upper],
+                unquote=unquote,
+            )
+            == test_dois
+        )
+
+        assert doiget_tdm.doi.form_dois_from_input(
+            raw_input=[EXAMPLE_VALID_DOI, EXAMPLE_INVALID_DOI],
+            unquote=unquote,
+        ) == [EXAMPLE_VALID_DOI]

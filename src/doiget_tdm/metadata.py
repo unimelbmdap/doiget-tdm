@@ -191,16 +191,13 @@ class CrossRefLMDBClient:
                 msg = f"{doi} not found in database"
                 raise KeyError(msg)
 
-            item = (
-                zlib.decompress(raw_item)
-                if decompress
-                else raw_item
-            )
+            item = zlib.decompress(raw_item) if decompress else raw_item
 
         return item
 
 
 MetadataSource: typing.TypeAlias = typing.Callable[[doiget_tdm.doi.DOI], bytes]
+
 
 def get_metadata_sources() -> tuple[MetadataSource, ...]:
 
@@ -246,11 +243,7 @@ class Metadata:
         self._compression_level = doiget_tdm.SETTINGS.metadata_compression_level
         self._is_compressed = self._compression_level != 0
 
-        path_suffix = (
-            ".gz"
-            if self._is_compressed
-            else ""
-        )
+        path_suffix = ".gz" if self._is_compressed else ""
 
         #: Path to the raw metadata JSON file in the data directory
         self.path: pathlib.Path = (
@@ -309,10 +302,7 @@ class Metadata:
         The publisher name from the metadata ("publisher").
         """
 
-        if (
-            not self.exists
-            or "publisher" not in self.raw
-        ):
+        if not self.exists or "publisher" not in self.raw:
             raise ValueError("No metadata available")
 
         if self._publisher_name is None:
@@ -423,11 +413,7 @@ class Metadata:
 
         raw = self.path.read_bytes()
 
-        raw_json = (
-            zlib.decompress(raw)
-            if self._is_compressed
-            else raw
-        )
+        raw_json = zlib.decompress(raw) if self._is_compressed else raw
 
         parser = simdjson.Parser()
 
@@ -467,10 +453,7 @@ class Metadata:
         self.path.parent.mkdir(exist_ok=True, parents=True)
 
         output = (
-            zlib.compress(
-                raw,
-                level=self._compression_level
-            )
+            zlib.compress(raw, level=self._compression_level)
             if self._is_compressed
             else raw
         )

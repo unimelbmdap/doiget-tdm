@@ -88,9 +88,7 @@ class Elsevier(doiget_tdm.publisher.Publisher):
         if response.status_code == http.HTTPStatus.UNAUTHORIZED:
             error_info = response.json()
             error_msg = error_info["error-message"]
-            LOGGER.warning(
-                f"Received the following error from the server: {error_msg}"
-            )
+            LOGGER.warning(f"Received the following error from the server: {error_msg}")
             response.raise_for_status()
 
         return response.content

@@ -59,9 +59,7 @@ class WebRequester:
 
         self.max_retry_attempts = max_retry_attempts
 
-        self.retry_wrapper = retryhttp.retry(
-            max_attempt_number=self.max_retry_attempts
-        )
+        self.retry_wrapper = retryhttp.retry(max_attempt_number=self.max_retry_attempts)
 
         if headers is not None:
             self._session.headers = {**self._session.headers, **headers}

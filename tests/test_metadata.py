@@ -43,9 +43,7 @@ def test_api_get(monkeypatch):
 
     monkeypatch.setattr(client._api, "call", mock_call)
 
-    metadata = client.get_doi_metadata(
-        doi=doiget_tdm.doi.DOI(doi="10.7717/peerj.1038")
-    )
+    metadata = client.get_doi_metadata(doi=doiget_tdm.doi.DOI(doi="10.7717/peerj.1038"))
 
     assert metadata == json.dumps(test_data_json["message"]).encode()
 

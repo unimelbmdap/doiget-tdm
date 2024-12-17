@@ -54,9 +54,7 @@ def _iter_paths() -> typing.Iterable[os.DirEntry[str]]:
         if doiget_tdm.SETTINGS.data_dir_n_groups is None:
 
             if path.name.isdigit():
-                LOGGER.warning(
-                    f"Path with digits ({path}) found; skipping"
-                )
+                LOGGER.warning(f"Path with digits ({path}) found; skipping")
                 continue
 
             yield path
@@ -64,9 +62,7 @@ def _iter_paths() -> typing.Iterable[os.DirEntry[str]]:
         else:
 
             if not path.name.isdigit():
-                LOGGER.warning(
-                    f"Path without digits ({path}) found; skipping"
-                )
+                LOGGER.warning(f"Path without digits ({path}) found; skipping")
                 continue
 
             for inner_path in os.scandir(path=path.path):

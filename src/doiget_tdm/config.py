@@ -30,17 +30,13 @@ class Platform(enum.Enum):
 PLATFORM = (
     Platform.WINDOWS
     if sys.platform == "win32"
-    else Platform.MAC
-    if sys.platform == "darwin"
-    else Platform.LINUX
+    else Platform.MAC if sys.platform == "darwin" else Platform.LINUX
 )
 
 # because Windows and Mac have the config directory the same as the
 # data directory, we need to add an extra subdirectory on those platforms
 BASE_CONFIG_DIR_SUFFIX = (
-    "config"
-    if PLATFORM in (Platform.WINDOWS, Platform.MAC)
-    else ""
+    "config" if PLATFORM in (Platform.WINDOWS, Platform.MAC) else ""
 )
 
 BASE_CONFIG_DIR = (
@@ -50,11 +46,7 @@ BASE_CONFIG_DIR = (
 
 BASE_CONFIG_DIR.mkdir(exist_ok=True, parents=True)
 
-DEFAULT_DATA_DIR_SUFFIX = (
-    "data"
-    if PLATFORM in (Platform.WINDOWS, Platform.MAC)
-    else ""
-)
+DEFAULT_DATA_DIR_SUFFIX = "data" if PLATFORM in (Platform.WINDOWS, Platform.MAC) else ""
 
 DEFAULT_DATA_DIR = (
     platformdirs.user_data_path(
@@ -88,20 +80,17 @@ class Settings(pydantic_settings.BaseSettings):
     # because there could potentially be multiple instances running at the same
     # time (but not initialised in the same second!), append a timestamp to the
     # log file path
-    log_file: pathlib.Path = (
-        platformdirs.user_log_path(
-            NAME,
-            ensure_exists=True,
-        )
-        / (NAME + "_{time}.log")
-    )
+    log_file: pathlib.Path = platformdirs.user_log_path(
+        NAME,
+        ensure_exists=True,
+    ) / (NAME + "_{time}.log")
 
     quiet: bool = False
 
     crossref_lmdb_path: pathlib.Path | None = None
 
-    format_preference_order: tuple[doiget_tdm.format.FormatName, ...] = (
-        tuple(doiget_tdm.format.FormatName)
+    format_preference_order: tuple[doiget_tdm.format.FormatName, ...] = tuple(
+        doiget_tdm.format.FormatName
     )
 
     skip_remaining_formats: bool = True

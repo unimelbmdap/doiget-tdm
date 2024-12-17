@@ -190,6 +190,7 @@ def run_acquire(args: argparse.Namespace) -> None:
         only_member_ids=only_member_ids,
     )
 
+
 def run_show_doi_data_path(args: argparse.Namespace) -> None:
 
     dois = doiget_tdm.doi.form_dois_from_input(raw_input=args.dois)
