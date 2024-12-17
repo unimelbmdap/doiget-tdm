@@ -8,7 +8,6 @@ from __future__ import annotations
 import pathlib
 import typing
 import dataclasses
-import functools
 import warnings
 
 import polars as pl

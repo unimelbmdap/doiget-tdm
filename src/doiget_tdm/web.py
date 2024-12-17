@@ -3,7 +3,6 @@ Make web requests with rate limiting and retrying.
 """
 
 import collections.abc
-import functools
 
 import requests
 import requests_ratelimiter

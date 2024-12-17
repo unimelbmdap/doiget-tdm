@@ -6,8 +6,6 @@ import logging
 
 import pyrage
 
-import tenacity
-
 import doiget_tdm.config
 import doiget_tdm.doi
 import doiget_tdm.source

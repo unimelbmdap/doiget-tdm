@@ -12,6 +12,7 @@ import sys
 import doiget_tdm
 import doiget_tdm.acquire
 import doiget_tdm.status
+import doiget_tdm.paths
 
 
 LOGGER = logging.getLogger(__name__)
@@ -53,26 +54,6 @@ def setup_parser() -> argparse.ArgumentParser:
         "show-config",
         help="Show configuration settings",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-    )
-
-    get_dois_parser = subparsers.add_parser(
-        "get-dois",
-        help="Get the DOIs matching query and filter criteria",
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-    )
-
-    get_dois_parser.add_argument(
-        "--query-path",
-        type=pathlib.Path,
-        required=True,
-        help="Path to a query specification (in JSON format)",
-    )
-
-    get_dois_parser.add_argument(
-        "--output-path",
-        type=pathlib.Path,
-        required=True,
-        help="Path to write the output",
     )
 
     status_parser = subparsers.add_parser(
@@ -130,6 +111,18 @@ def setup_parser() -> argparse.ArgumentParser:
         help="Either a sequence of DOIs or the path to a file containing DOIs",
     )
 
+    path_parser = subparsers.add_parser(
+        "show-doi-data-path",
+        help="Show the data path for DOI(s)",
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+    )
+
+    path_parser.add_argument(
+        "dois",
+        nargs="+",  # one or more
+        help="Either a sequence of DOIs or the path to a file containing DOIs",
+    )
+
     return parser
 
 
@@ -145,14 +138,14 @@ def run(args: argparse.Namespace) -> None:
     if args.command == "show-config":
         run_show_config()
 
-    elif args.command == "get-dois":
-        run_get_dois(args=args)
-
     elif args.command == "acquire":
         run_acquire(args=args)
 
     elif args.command == "status":
         run_status(args=args)
+
+    elif args.command == "show-doi-data-path":
+        run_show_doi_data_path(args=args)
 
     else:
         raise ValueError(f"Unexpected command: {args.command}")
@@ -160,10 +153,6 @@ def run(args: argparse.Namespace) -> None:
 
 def run_show_config() -> None:
     doiget_tdm.SETTINGS.print()
-
-
-def run_get_dois(args: argparse.Namespace) -> None:
-    pass
 
 
 def run_status(args: argparse.Namespace) -> None:
@@ -200,3 +189,9 @@ def run_acquire(args: argparse.Namespace) -> None:
         start_from=args.start_from,
         only_member_ids=only_member_ids,
     )
+
+def run_show_doi_data_path(args: argparse.Namespace) -> None:
+
+    dois = doiget_tdm.doi.form_dois_from_input(raw_input=args.dois)
+
+    doiget_tdm.paths.run_show_doi_data_path(dois=dois)

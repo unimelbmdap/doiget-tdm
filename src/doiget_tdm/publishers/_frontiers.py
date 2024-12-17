@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import xml.dom.minidom
 import logging
 
 import upath

@@ -23,7 +23,7 @@ import doiget_tdm.publishers  # noqa: E402
 
 __all__ = (
     "DOI",
-    "Work",
     "SETTINGS",
+    "Work",
     "iter_unsorted_works",
 )
