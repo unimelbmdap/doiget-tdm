@@ -78,7 +78,7 @@ class Elsevier(doiget_tdm.publisher.Publisher):
         if self.session is None:
             raise ValueError("Error initialising session")
 
-        response = self.session.get(url=str(source.link))
+        response = self.session.get(url=str(source.link), raise_error=False)
 
         els_status = response.headers.get("X-ELS-Status")
 
@@ -89,6 +89,7 @@ class Elsevier(doiget_tdm.publisher.Publisher):
             error_info = response.json()
             error_msg = error_info["error-message"]
             LOGGER.warning(f"Received the following error from the server: {error_msg}")
-            response.raise_for_status()
+
+        response.raise_for_status()
 
         return response.content

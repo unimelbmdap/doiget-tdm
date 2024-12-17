@@ -65,6 +65,35 @@ class Publisher(abc.ABC):
         pass
 
 
+class GenericWebHost:
+
+    def __init__(self) -> None:
+
+        self.session = doiget_tdm.web.WebRequester()
+
+    def set_sources(self, fulltext: doiget_tdm.fulltext.FullText) -> None:
+
+        def source_check_func(source: doiget_tdm.source.Source) -> bool:
+
+            if not hasattr(self, "source_domain"):
+                return True
+
+            return self.source_domain in str(source.link)
+
+        set_sources_from_crossref(
+            fulltext=fulltext,
+            acq_func=self.acquire,
+            encrypt=False,
+            source_check_func=source_check_func,
+        )
+
+    def acquire(self, source: doiget_tdm.source.Source) -> bytes:
+
+        response = self.session.get(url=str(source.link))
+
+        return response.content
+
+
 def set_sources_from_crossref(
     fulltext: doiget_tdm.fulltext.FullText,
     acq_func: typing.Callable[[doiget_tdm.source.Source], bytes],
