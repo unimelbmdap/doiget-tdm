@@ -4,7 +4,6 @@ Interface to the items in the data directory.
 
 import typing
 import os
-import posix
 import logging
 
 import doiget_tdm
@@ -43,7 +42,7 @@ def iter_unsorted_works(
         yield work
 
 
-def _iter_paths() -> typing.Iterable[posix.DirEntry[str]]:
+def _iter_paths() -> typing.Iterable[os.DirEntry[str]]:
 
     # using scandir because it is faster than listdir, glob, etc.
 
