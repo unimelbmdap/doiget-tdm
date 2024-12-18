@@ -13,6 +13,8 @@ import pydantic_settings
 import doiget_tdm.config
 import doiget_tdm.publisher
 import doiget_tdm.metadata
+import doiget_tdm.errors
+
 
 LOGGER = logging.getLogger(__name__)
 LOGGER.addHandler(logging.NullHandler())
@@ -91,8 +93,6 @@ class Sage(doiget_tdm.publisher.Publisher):
 
         self.settings = Settings()
 
-        self.valid_hostname = self.settings.valid_hostname
-
         self.sessions: dict[RateLimit, doiget_tdm.web.WebRequester] | None = None
 
     def initialise(self) -> None:
@@ -120,6 +120,12 @@ class Sage(doiget_tdm.publisher.Publisher):
 
         if isinstance(source.link, typing.Sequence):
             raise ValueError(f"Unexpected link: {source.link}")
+
+        if (
+            self.settings.valid_hostname is not None
+            and self.settings.valid_hostname != doiget_tdm.config.SETTINGS.hostname
+        ):
+            raise doiget_tdm.errors.InvalidHostnameError()
 
         if self.sessions is None:
             self.initialise()

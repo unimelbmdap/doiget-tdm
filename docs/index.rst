@@ -26,7 +26,9 @@ Features
 * Currently supported publishers:
     * Elsevier
     * Frontiers
+    * PeerJ
     * PLoS
+    * Royal Society
     * Springer-Nature
 
 Installation

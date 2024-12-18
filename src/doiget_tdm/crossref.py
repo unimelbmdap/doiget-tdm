@@ -35,7 +35,7 @@ class CrossRefWebAPI:
         Value to send as the "User-Agent" header.
         """
 
-        lib_name = f"doiget_tdm/{doiget_tdm.__version__} ({doiget_tdm._project_url}"
+        lib_name = f"doiget-tdm/{doiget_tdm.__version__} ({doiget_tdm._project_url}"
 
         if (email := doiget_tdm.config.SETTINGS.email_address) is not None:
             lib_name += f"; mailto:{email}"

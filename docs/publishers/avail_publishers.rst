@@ -17,12 +17,26 @@ Frontiers
 No configuration required.
 
 
+PeerJ
+-----
+
+No configuration required.
+
 PLoS
 ----
 
 ``doiget_tdm_plos_allofplos_path``
     The filesystem path to the PLoS corpus file (see `PLoS Text and Data Mining <https://api.plos.org/text-and-data-mining.html>`_).
     If not specified, the handler will fall back to retrieving the full-text content via web requests; however, this is discouraged for bulk acquisitions.
+
+Royal Society
+-------------
+
+``doiget_tdm_royal_society_valid_hostname``
+    Full-text requests can only be made from systems matching this hostname.
+
+.. note::
+    Access must be granted by the Royal Society; see `Data sharing and mining <https://royalsociety.org/journals/ethics-policies/data-sharing-mining/#data-mining>`_.
 
 Sage
 ----
