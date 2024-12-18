@@ -423,8 +423,8 @@ toml = [
 
 [[package]]
 name = "crossref-lmdb"
-version = "0.1.0"
-source = { git = "https://github.com/unimelbmdap/crossref-lmdb?branch=main#833f9301e273bbc1cf5afcd16182bab0df639636" }
+version = "0.1.2"
+source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "alive-progress" },
     { name = "email-validator" },
@@ -434,6 +434,10 @@ dependencies = [
     { name = "requests-ratelimiter" },
     { name = "retryhttp" },
     { name = "tenacity" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/54/f5/409aba7f32e8d1ee2715aeec1f32831f342b633910d15d428afbf4c7e3a3/crossref_lmdb-0.1.2.tar.gz", hash = "sha256:cbced50497b1d63727ca048193796e171d65a49994e6b19c9e46826978377fd5", size = 117807 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/f9/a7/9d3633641d13ded9f6a36234afc0b1d61443c3212ef41ecf8b137197fad5/crossref_lmdb-0.1.2-py3-none-any.whl", hash = "sha256:7902e96368b75762e0f638c7c23921cc8bf126318cb54c77c8ad53188db0476e", size = 17137 },
 ]
 
 [[package]]
@@ -585,7 +589,7 @@ dev = [
 requires-dist = [
     { name = "alive-progress", specifier = ">=3.1.5" },
     { name = "autodoc-pydantic", marker = "extra == 'docs'", specifier = ">=2.2.0" },
-    { name = "crossref-lmdb", git = "https://github.com/unimelbmdap/crossref-lmdb?branch=main" },
+    { name = "crossref-lmdb", specifier = ">=0.1.2" },
     { name = "enum-tools", extras = ["sphinx"], marker = "extra == 'docs'", specifier = ">=0.12.0" },
     { name = "furo", marker = "extra == 'docs'", specifier = ">=2024.8.6" },
     { name = "html5lib", specifier = ">=1.1" },
