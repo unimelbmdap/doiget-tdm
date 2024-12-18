@@ -126,11 +126,11 @@ class Format:
             try:
                 data = source.acquire()
             except doiget_tdm.errors.ACQ_ERRORS as err:
-                LOGGER.warning(f"Error when acquiring source {source} ({err})")
+                LOGGER.warning(f"Error when acquiring source ({err})")
                 continue
             except Exception as err:
                 LOGGER.warning(
-                    f"Unexpected error when acquiring source {source} ({err})"
+                    f"Unexpected error when acquiring source ({err})"
                 )
                 continue
 
@@ -138,12 +138,12 @@ class Format:
                 source.validate(data=data)
             except doiget_tdm.errors.ValidationError as err:
                 LOGGER.warning(
-                    f"Error when validating data from source {source} ({err})"
+                    f"Error when validating data from source ({err})"
                 )
                 continue
             except Exception as err:
                 LOGGER.warning(
-                    f"Unexpected error when validating source {source} ({err})"
+                    f"Unexpected error when validating source ({err})"
                 )
                 continue
 

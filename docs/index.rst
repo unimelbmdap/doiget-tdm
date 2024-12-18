@@ -15,7 +15,10 @@ Documentation
     reference/index
 
 ``doiget-tdm`` is a command-line application and Python library for obtaining the metadata and full-text of published journal articles.
-It is primarily intended for use in text data mining projects where the user has subscriptions to full-text content and has organised data exchange agreements.
+
+.. warning::
+    This package is primarily intended for use in text data mining projects where the user has subscriptions to full-text content and has organised data exchange agreements.
+    Acquisition for most publishers will not work without configuration - see :doc:`/publishers/avail_publishers`.
 
 Features
 --------
@@ -28,9 +31,11 @@ Features
     * Frontiers
     * PeerJ
     * PLoS
+    * PNAS
     * Royal Society
     * Springer-Nature
     * Taylor & Francis
+
 
 Installation
 ------------

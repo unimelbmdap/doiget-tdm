@@ -29,6 +29,12 @@ PLoS
     The filesystem path to the PLoS corpus file (see `PLoS Text and Data Mining <https://api.plos.org/text-and-data-mining.html>`_).
     If not specified, the handler will fall back to retrieving the full-text content via web requests; however, this is discouraged for bulk acquisitions.
 
+PNAS
+----
+
+``doiget_tdm_pnas_valid_hostname``
+    Full-text requests can only be made from systems matching this hostname.
+
 Royal Society
 -------------
 
