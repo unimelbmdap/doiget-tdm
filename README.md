@@ -2,9 +2,9 @@
 
 `doiget-tdm` is a command-line application and Python library for obtaining the metadata and full-text of published journal articles.
 
-> [!NOTE]
+> [!WARNING]
 > This package is primarily intended for use in text data mining projects where the user has subscriptions to full-text content and has organised data exchange agreements.
-> Acquisition for most publishers will not work without configuration - see [Available publishers](https://unimelbmdap.github.io/doiget-tdm/ publishers/avail_publishers.html)
+> Acquisition for most publishers will not work without configuration - see [Available publishers](https://unimelbmdap.github.io/doiget-tdm/publishers/avail_publishers.html)
 
 > [!WARNING]
 > This package is still in development and should be considered as alpha quality.
