@@ -67,11 +67,11 @@ Read through the :doc:`/workflow` document to understand how to use the package 
 Documentation guide
 -------------------
 
-:doc:`/configuration`
-    Describes the available configuration options and how they can be specified.
-
 :doc:`/workflow`
     Describes a typical workflow for using ``doiget-tdm``.
+
+:doc:`/configuration`
+    Describes the available configuration options and how they can be specified.
 
 :doc:`/publishers/index`
     Lists the details of publishers with built-in support and describes the process of adding additional publishers.
@@ -81,9 +81,6 @@ Documentation guide
 
 :doc:`/using_the_api`
     Examples of using the API to interact with ``doiget-tdm`` through Python.
-
-.. :doc:`/development`
-      Describes the development process of ``doiget-tdm``, which may be useful for contributing to ``doiget-tdm``.
 
 :doc:`/reference/cmd`
     Provides a reference to the ``doiget-tdm`` command-line application and its options.
