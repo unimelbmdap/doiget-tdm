@@ -44,6 +44,15 @@ Sage
 ``doiget_tdm_sage_valid_hostname``
     Full-text requests can only be made from systems matching this hostname.
 
+Taylor & Francis (Informa)
+--------------------------
+
+``doiget_tdm_taylor_and_francis_valid_hostname``
+    Full-text requests can only be made from systems matching this hostname.
+
+.. note::
+    Access must be granted by Taylor & Francis; see `Text and Data Mining <https://taylorandfrancis.com/our-policies/textanddatamining/>`_.
+
 Springer-Nature
 ---------------
 

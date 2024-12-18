@@ -21,6 +21,7 @@
     * Royal Society
     * Sage
     * Springer-Nature
+    * Taylor & Francis
 
 
 ## Installation

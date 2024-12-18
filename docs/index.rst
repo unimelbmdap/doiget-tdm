@@ -30,6 +30,7 @@ Features
     * PLoS
     * Royal Society
     * Springer-Nature
+    * Taylor & Francis
 
 Installation
 ------------
