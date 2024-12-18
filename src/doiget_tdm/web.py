@@ -7,7 +7,7 @@ import collections.abc
 import requests
 import requests_ratelimiter
 import pyrate_limiter
-import retryhttp  # type: ignore[import-untyped]
+import retryhttp
 
 
 DEFAULT_LIMITER = pyrate_limiter.Limiter(
