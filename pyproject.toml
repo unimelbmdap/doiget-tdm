@@ -21,10 +21,10 @@ dependencies = [
   "more-itertools>=10.5.0",
   "alive-progress>=3.1.5",
   "html5lib>=1.1",
-  "crossref-lmdb",
   "rich>=13.9.4",
   "polars-lts-cpu[xlsxwriter]>=1.14.0",
   "tenacity>=9.0.0",
+  "crossref-lmdb",
 ]
 
 [project.scripts]
@@ -70,7 +70,7 @@ dev-dependencies = [
 ]
 
 [tool.uv.sources]
-crossref-lmdb = { git = "https://github.com/unimelbmdap/crossref-lmdb" }
+crossref-lmdb = { git = "https://github.com/unimelbmdap/crossref-lmdb", branch = "main" }
 
 # until uv gets a task runner
 [tool.poe.tasks]

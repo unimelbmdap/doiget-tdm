@@ -424,7 +424,7 @@ toml = [
 [[package]]
 name = "crossref-lmdb"
 version = "0.1.0"
-source = { git = "https://github.com/unimelbmdap/crossref-lmdb#833f9301e273bbc1cf5afcd16182bab0df639636" }
+source = { git = "https://github.com/unimelbmdap/crossref-lmdb?branch=main#833f9301e273bbc1cf5afcd16182bab0df639636" }
 dependencies = [
     { name = "alive-progress" },
     { name = "email-validator" },
@@ -585,7 +585,7 @@ dev = [
 requires-dist = [
     { name = "alive-progress", specifier = ">=3.1.5" },
     { name = "autodoc-pydantic", marker = "extra == 'docs'", specifier = ">=2.2.0" },
-    { name = "crossref-lmdb", git = "https://github.com/unimelbmdap/crossref-lmdb" },
+    { name = "crossref-lmdb", git = "https://github.com/unimelbmdap/crossref-lmdb?branch=main" },
     { name = "enum-tools", extras = ["sphinx"], marker = "extra == 'docs'", specifier = ">=0.12.0" },
     { name = "furo", marker = "extra == 'docs'", specifier = ">=2024.8.6" },
     { name = "html5lib", specifier = ">=1.1" },
