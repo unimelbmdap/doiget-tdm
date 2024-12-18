@@ -62,6 +62,7 @@ Download the full-text (XML) of the journal article with DOI `10.1371/journal.pb
 
     doiget-tdm acquire '10.1371/journal.pbio.1002611'
 
+Read through the :doc:`/workflow` document to understand how to use the package in a text data mining project.
 
 Documentation guide
 -------------------

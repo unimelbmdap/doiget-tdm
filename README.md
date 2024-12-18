@@ -48,6 +48,8 @@ Download the full-text (XML) of the journal article with DOI [`10.1371/journal.p
 doiget-tdm acquire '10.1371/journal.pbio.1002611'
 ```
 
+Read through the [Workflow](https://unimelbmdap.github.io/doiget-tdm/workflow.html) documentat to understand how to use the package in a text data mining project.
+
 ## Documentation
 
 See the [documentation](https://unimelbmdap.github.io/doiget-tdm/) for detailed information about how to use `doiget-tdm`.
