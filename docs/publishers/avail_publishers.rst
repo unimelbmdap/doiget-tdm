@@ -70,3 +70,15 @@ Springer-Nature
     The final component of the API path, without the leading ``/``.
 ``doiget_tdm_springer_nature_n_requests_per_day``
     The limit on the number of requests per day; defaults to 500.
+
+Wiley
+-----
+
+``doiget_tdm_wiley_valid_hostname``
+    Full-text requests can only be made from systems matching this hostname.
+``doiget_tdm_wiley_tdm_client_key``
+    The API key provided by Wiley.
+
+.. note::
+    Access must be granted by Wiley; see `Text and Data Mining <https://onlinelibrary.wiley.com/library-info/resources/text-and-datamining>`_.
+

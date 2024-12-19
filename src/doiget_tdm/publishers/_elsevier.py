@@ -4,6 +4,7 @@ import typing
 import logging
 import http
 
+import pydantic
 import pydantic_settings
 
 import doiget_tdm.config
@@ -16,8 +17,8 @@ LOGGER.addHandler(logging.NullHandler())
 
 class Settings(pydantic_settings.BaseSettings):
 
-    api_key: str | None = None
-    institution_token: str | None = None
+    api_key: pydantic.SecretStr | None = None
+    institution_token: pydantic.SecretStr | None = None
 
     model_config = pydantic_settings.SettingsConfigDict(
         env_prefix="DOIGET_TDM_ELSEVIER_",
@@ -36,9 +37,22 @@ class Elsevier(doiget_tdm.publisher.Publisher):
 
         self.settings = Settings()
 
+        self.is_configured = all(
+            (
+                self.settings.api_key is not None,
+                self.settings.institution_token is not None,
+            ),
+        )
+
+        if not self.is_configured:
+            LOGGER.warning("Handler for Elsevier is not configured")
+
         self.session: doiget_tdm.web.WebRequester | None = None
 
     def initialise(self) -> None:
+
+        if not self.is_configured:
+            return
 
         headers = {}
 
@@ -48,10 +62,9 @@ class Elsevier(doiget_tdm.publisher.Publisher):
             strict=True,
         ):
 
-            if (value := getattr(self.settings, header_key, None)) is not None:
-                headers[header_name] = value
-            else:
-                LOGGER.warning(f"No authentication for `{header_key}`.")
+            header_value = getattr(self.settings, header_key).get_secret_value()
+
+            headers[header_name] = header_value
 
         self.session = doiget_tdm.web.WebRequester(headers=headers)
 

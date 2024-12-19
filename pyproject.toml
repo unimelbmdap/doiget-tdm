@@ -25,6 +25,7 @@ dependencies = [
   "polars-lts-cpu[xlsxwriter]>=1.14.0",
   "tenacity>=9.0.0",
   "crossref-lmdb>=0.1.2",
+  "pyrate-limiter>=2.10.0",
 ]
 
 [project.scripts]
