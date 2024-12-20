@@ -96,9 +96,9 @@ Options
 
 ``metadata_compression_level``
     Level to compress the JSON metadata when storing.
-    Set it to `-1` to use the default compression level, `0` for no compression, or a number between `1` (least compression) to `9` (most compression).
+    Set it to ``-1`` to use the default compression level, ``0`` for no compression, or a number between ``1`` (least compression) to ``9`` (most compression).
 
-    The default is `-1`.
+    The default is ``-1``.
 
 Setting the configuration
 -------------------------

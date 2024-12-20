@@ -85,8 +85,6 @@ class Settings(pydantic_settings.BaseSettings):
         ensure_exists=True,
     ) / (NAME + "_{time}.log")
 
-    quiet: bool = False
-
     crossref_lmdb_path: pathlib.Path | None = None
 
     format_preference_order: tuple[doiget_tdm.format.FormatName, ...] = tuple(

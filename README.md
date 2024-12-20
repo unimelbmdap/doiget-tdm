@@ -12,7 +12,7 @@
 ## Features
 
 * Acquire full-text of published articles, with built-in support for multiple publishers and their acquisition methods (e.g., network or local files).
-* Currently supported publishers (given appropriate access and preparation):
+* Currently supported publishers (given appropriate access and configuration):
     * American Medical Association (AMA)
     * American Psychological Association (APA)
     * Elsevier
@@ -34,7 +34,7 @@
 The package can be installed using `pip`:
 
 ```bash
-pip install git+https://github.com/unimelbmdap/doiget-tdm
+pip install doiget-tdm
 ```
 
 ## Quickstart

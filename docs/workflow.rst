@@ -1,6 +1,8 @@
 Workflow
 ========
 
+This section describes how ``doiget-tdm`` can fit in with a text data mining workflow.
+
 Obtain DOIs of interest
 -----------------------
 
@@ -55,7 +57,8 @@ This will print a summary of the status of the DOI set, including the distributi
 Make publisher agreements and update ``doiget-tdm`` configuration
 -----------------------------------------------------------------
 
-This is often facilitated by an institutional librarian, with whom the publisher subscriptions are made.
+As described in :doc:`/publishers/avail_publishers`, many of the publishers require permission to perform TDM and have particular configuration requirements.
+Obtaining such access is often facilitated by an institutional librarian, with whom the publisher subscriptions are made.
 
 If there are publishers that are in the set of DOIs but not in the :doc:`/publishers/avail_publishers` for ``doiget-tdm``, you can investigate :doc:`/publishers/new_publisher` to add custom functionality to ``doiget-tdm``.
 
@@ -82,10 +85,12 @@ For each DOI in the file ``doi_list.txt``, ``doiget-tdm`` will infer the publish
 Use full-text content
 ---------------------
 
+The acquisition of full-text content will store files within your defined ``data_dir``.
+
 Accessing within Python
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-If doing further processing using Python, ...
+If doing further processing using Python, 
 
 
 Accessing within the filesystem
