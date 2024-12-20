@@ -75,7 +75,7 @@ class Settings(pydantic_settings.BaseSettings):
     valid_hostname: str | None = None
 
     model_config = pydantic_settings.SettingsConfigDict(
-        env_prefix="PYPUBTEXT_SAGE_",
+        env_prefix="DOIGET_TDM_SAGE_",
         secrets_dir=doiget_tdm.config.BASE_CONFIG_DIR,
         env_file=".env",
         extra="ignore",

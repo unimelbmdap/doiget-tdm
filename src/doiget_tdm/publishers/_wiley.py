@@ -23,10 +23,10 @@ LOGGER.addHandler(logging.NullHandler())
 class Settings(pydantic_settings.BaseSettings):
 
     valid_hostname: str | None = None
-    tdm_client_token: pydantic.SecretStr | None
+    tdm_client_token: pydantic.SecretStr | None = None
 
     model_config = pydantic_settings.SettingsConfigDict(
-        env_prefix="PYPUBTEXT_WILEY_",
+        env_prefix="DOIGET_TDM_WILEY_",
         secrets_dir=doiget_tdm.config.BASE_CONFIG_DIR,
         env_file=".env",
         extra="ignore",
