@@ -3,6 +3,22 @@ Available publishers
 
 This describes the publishers that currently have built-in support in ``doiget-tdm`` and their configuration requirements.
 
+American Psychological Association (APA)
+----------------------------------------
+
+The APA provides full-text content by sending files directly to the requester.
+For use with ``doiget-tdm``, these files must be placed into a single zip file.
+This zip file then must be encrypted using `age <https://github.com/FiloSottile/age>`_.
+
+``doiget_tdm_apa_data_path``
+    The filesystem location of the encrypted zip file referred to above.
+``doiget_tdm_apa_passphrase``
+    The passphrase to decrypt ``doiget_tdm_apa_data_path``.
+
+.. note::
+    Each XML retrieved from the data archive is encrypted when saving in ``data_dir``.
+    Hence, the ``encryption_passphrase`` configuration option for ``doiget-tdm`` must be set to use the APA publisher.
+
 Elsevier
 --------
 

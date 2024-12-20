@@ -13,6 +13,7 @@
 
 * Acquire full-text of published articles, with built-in support for multiple publishers and their acquisition methods (e.g., network or local files).
 * Currently supported publishers:
+    * American Psychological Association (APA)
     * Elsevier
     * Frontiers
     * PeerJ
