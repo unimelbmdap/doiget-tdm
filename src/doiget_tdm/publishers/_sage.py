@@ -121,11 +121,7 @@ class Sage(doiget_tdm.publisher.Publisher):
         if isinstance(source.link, typing.Sequence):
             raise ValueError(f"Unexpected link: {source.link}")
 
-        if (
-            self.settings.valid_hostname is not None
-            and self.settings.valid_hostname != doiget_tdm.config.SETTINGS.hostname
-        ):
-            raise doiget_tdm.errors.InvalidHostnameError()
+        doiget_tdm.errors.check_hostname(valid_hostname=self.settings.valid_hostname)
 
         if self.sessions is None:
             self.initialise()

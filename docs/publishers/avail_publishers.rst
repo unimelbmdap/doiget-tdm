@@ -3,6 +3,20 @@ Available publishers
 
 This describes the publishers that currently have built-in support in ``doiget-tdm`` and their configuration requirements.
 
+American Medical Association (AMA)
+----------------------------------
+
+``doiget_tdm_ama_valid_hostname``
+    Full-text requests can only be made from systems matching this hostname.
+``doiget_tdm_ama_api_key``
+    The API key provided by AMA.
+
+.. note::
+    Access must be granted by the AMA; see `Text and Data Mining <https://tdm.jamanetwork.com/>`_.
+
+.. note::
+    The AMA API only returns full-text content in plain text format.
+
 American Psychological Association (APA)
 ----------------------------------------
 
@@ -26,6 +40,9 @@ Elsevier
     The API key provided by Elsevier.
 ``doiget_tdm_elsevier_institution_token``
     The token used for authenticating as an institution.
+
+.. note::
+    Access must be granted by Elsevier; see `Text and data mining <https://www.elsevier.com/about/open-science/research-data/text-and-data-mining>`__.
 
 Frontiers
 ---------
@@ -66,6 +83,10 @@ Sage
 ``doiget_tdm_sage_valid_hostname``
     Full-text requests can only be made from systems matching this hostname.
 
+.. note::
+    See `Text and Data Mining on Sage Journals  <https://journals.sagepub.com/page/policies/text-and-data-mining>`_.
+
+
 Taylor & Francis (Informa)
 --------------------------
 
@@ -73,7 +94,7 @@ Taylor & Francis (Informa)
     Full-text requests can only be made from systems matching this hostname.
 
 .. note::
-    Access must be granted by Taylor & Francis; see `Text and Data Mining <https://taylorandfrancis.com/our-policies/textanddatamining/>`_.
+    Access must be granted by Taylor & Francis; see `Text and Data Mining <https://taylorandfrancis.com/our-policies/textanddatamining/>`__.
 
 Springer-Nature
 ---------------
@@ -87,6 +108,9 @@ Springer-Nature
 ``doiget_tdm_springer_nature_n_requests_per_day``
     The limit on the number of requests per day; defaults to 500.
 
+.. note::
+    Access must be granted by Springer-Nature; see `Text and data mining at Springer Nature <https://www.springernature.com/gp/researchers/text-and-data-mining>`_.
+
 Wiley
 -----
 
@@ -96,5 +120,5 @@ Wiley
     The API key provided by Wiley.
 
 .. note::
-    Access must be granted by Wiley; see `Text and Data Mining <https://onlinelibrary.wiley.com/library-info/resources/text-and-datamining>`_.
+    Access must be granted by Wiley; see `Text and Data Mining <https://onlinelibrary.wiley.com/library-info/resources/text-and-datamining>`__.
 

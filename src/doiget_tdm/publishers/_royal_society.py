@@ -39,11 +39,7 @@ class RoyalSociety(
 
     def acquire(self, source: doiget_tdm.source.Source) -> bytes:
 
-        if (
-            self.settings.valid_hostname is not None
-            and self.settings.valid_hostname != doiget_tdm.config.SETTINGS.hostname
-        ):
-            raise doiget_tdm.errors.InvalidHostnameError()
+        doiget_tdm.errors.check_hostname(valid_hostname=self.settings.valid_hostname)
 
         response = self.session.get(url=str(source.link))
 

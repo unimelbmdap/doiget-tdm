@@ -24,7 +24,8 @@ Features
 --------
 
 * Acquire full-text of published articles, with built-in support for multiple publishers and their acquisition methods (e.g., network or local files).
-* Currently supported publishers:
+* Currently supported publishers (given appropriate access and preparation):
+    * American Medical Association (AMA)
     * American Psychological Association (APA)
     * Elsevier
     * Frontiers

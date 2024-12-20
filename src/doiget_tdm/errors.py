@@ -4,6 +4,8 @@ import requests.exceptions
 
 import tenacity
 
+import doiget_tdm.config
+
 
 class ValidationError(Exception):
     pass
@@ -24,6 +26,19 @@ ACQ_ERRORS = (
     InvalidHostnameError,
     AcquisitionError,
 )
+
+
+def check_hostname(valid_hostname: str | None) -> None:
+
+    if (
+        valid_hostname is not None
+        and valid_hostname != doiget_tdm.config.SETTINGS.hostname
+    ):
+        msg = (
+            f"Invalid hostname ({doiget_tdm.config.SETTINGS.hostname}) for request"
+            + f"; required hostname is {valid_hostname}"
+        )
+        raise InvalidHostnameError(msg)
 
 
 def get_retry_controller(logger: logging.Logger) -> tenacity.Retrying:
