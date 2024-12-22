@@ -337,6 +337,111 @@ class Metadata:
         return str(journal_name)
 
     @property
+    def volume(self) -> str | None:
+
+        if not self.exists or self.raw is None:
+            raise ValueError("No metadata available")
+
+        json_msg = "Unexpected JSON format"
+
+        if not isinstance(self.raw, simdjson.Object):
+            raise ValueError(json_msg)
+
+        try:
+            volume = str(self.raw["volume"])
+        except KeyError:
+            return None
+
+        return volume
+
+    @property
+    def issue(self) -> str | None:
+
+        if not self.exists or self.raw is None:
+            raise ValueError("No metadata available")
+
+        json_msg = "Unexpected JSON format"
+
+        if not isinstance(self.raw, simdjson.Object):
+            raise ValueError(json_msg)
+
+        try:
+            issue = str(self.raw["issue"])
+        except KeyError:
+            return None
+
+        return issue
+
+    @property
+    def page(self) -> str | None:
+
+        if not self.exists or self.raw is None:
+            raise ValueError("No metadata available")
+
+        json_msg = "Unexpected JSON format"
+
+        if not isinstance(self.raw, simdjson.Object):
+            raise ValueError(json_msg)
+
+        try:
+            page = str(self.raw["page"])
+        except KeyError:
+            return None
+
+        return page
+
+    @property
+    def issns(self) -> list[str] | None:
+
+        if not self.exists or self.raw is None:
+            raise ValueError("No metadata available")
+
+        json_msg = "Unexpected JSON format"
+
+        if not isinstance(self.raw, simdjson.Object):
+            raise ValueError(json_msg)
+
+        try:
+            raw_issns = self.raw["ISSN"]
+        except KeyError:
+            return None
+
+        if not isinstance(raw_issns, simdjson.Array):
+            raise ValueError(json_msg)
+
+        return raw_issns.as_list()
+
+    @property
+    def electronic_issn(self) -> str | None:
+
+        if not self.exists or self.raw is None:
+            raise ValueError("No metadata available")
+
+        json_msg = "Unexpected JSON format"
+
+        if not isinstance(self.raw, simdjson.Object):
+            raise ValueError(json_msg)
+
+        try:
+            issn_types = self.raw["issn-type"]
+        except KeyError:
+            return None
+
+        if not isinstance(issn_types, simdjson.Array):
+            raise ValueError(json_msg)
+
+        issn: str | None = None
+
+        for issn_type in issn_types:
+            if not isinstance(issn_type, simdjson.Object):
+                raise ValueError(json_msg)
+
+            if issn_type["type"] == "electronic":
+                issn = str(issn_type["value"])
+
+        return issn
+
+    @property
     def title(self) -> str | None:
 
         if not self.exists or self.raw is None:
