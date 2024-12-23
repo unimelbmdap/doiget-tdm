@@ -10,7 +10,6 @@ Documentation
     workflow
     publishers/index
     concepts
-    using_the_api
     reference/cmd
     reference/index
 
