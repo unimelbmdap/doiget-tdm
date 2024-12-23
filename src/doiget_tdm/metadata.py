@@ -409,10 +409,7 @@ class Metadata:
         if not isinstance(raw_issns, simdjson.Array):
             raise ValueError(json_msg)
 
-        return [
-            str(raw_issn)
-            for raw_issn in raw_issns.as_list()
-        ]
+        return [str(raw_issn) for raw_issn in raw_issns.as_list()]
 
     @property
     def electronic_issn(self) -> str | None:

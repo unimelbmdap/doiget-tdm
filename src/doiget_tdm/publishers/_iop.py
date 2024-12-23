@@ -235,9 +235,7 @@ class IOP(doiget_tdm.publisher.Publisher):
 
         self.save_server_file_list(file_list=file_list)
 
-        LOGGER.info(
-            f"Saved IOP server file list to {self.server_file_list_path}"
-        )
+        LOGGER.info(f"Saved IOP server file list to {self.server_file_list_path}")
 
     @staticmethod
     def get_doi_from_filename(filename: str) -> str:
@@ -248,13 +246,9 @@ class IOP(doiget_tdm.publisher.Publisher):
             i_doi_start = name.index("10__")
         except ValueError:
 
-            underscores = [
-                i_char
-                for (i_char, char) in enumerate(name)
-                if char == "_"
-            ]
+            underscores = [i_char for (i_char, char) in enumerate(name) if char == "_"]
 
-            name = "10__" + name[underscores[4] + 1:]
+            name = "10__" + name[underscores[4] + 1 :]
 
             i_doi_start = 0
 

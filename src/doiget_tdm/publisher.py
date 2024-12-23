@@ -222,7 +222,7 @@ def print_publisher_settings() -> None:
 
     rich.print("\n[bold underline]Publishers[/bold underline]")
 
-    for (member_id, publisher) in publishers:
+    for member_id, publisher in publishers:
 
         publisher_name = get_name_from_instance(instance=publisher)
 
@@ -230,7 +230,7 @@ def print_publisher_settings() -> None:
 
         if settings := getattr(publisher, "settings", None):
 
-            for (key, value) in settings.model_dump().items():
+            for key, value in settings.model_dump().items():
                 rich.print(f"\t{key}: {value}")
 
             if hasattr(publisher, "is_configured"):

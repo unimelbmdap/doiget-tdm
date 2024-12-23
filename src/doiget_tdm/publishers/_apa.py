@@ -130,7 +130,6 @@ class APA(doiget_tdm.publisher.Publisher):
 
         return self.read_from_archive(alternative_id=str(source.link))
 
-
     def form_file_lut(self) -> None:
 
         assert self.settings.data_path is not None

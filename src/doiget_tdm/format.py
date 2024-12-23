@@ -129,22 +129,16 @@ class Format:
                 LOGGER.warning(f"Error when acquiring source ({err})")
                 continue
             except Exception as err:
-                LOGGER.warning(
-                    f"Unexpected error when acquiring source ({err})"
-                )
+                LOGGER.warning(f"Unexpected error when acquiring source ({err})")
                 continue
 
             try:
                 source.validate(data=data)
             except doiget_tdm.errors.ValidationError as err:
-                LOGGER.warning(
-                    f"Error when validating data from source ({err})"
-                )
+                LOGGER.warning(f"Error when validating data from source ({err})")
                 continue
             except Exception as err:
-                LOGGER.warning(
-                    f"Unexpected error when validating source ({err})"
-                )
+                LOGGER.warning(f"Unexpected error when validating source ({err})")
                 continue
 
             if source.encrypt:

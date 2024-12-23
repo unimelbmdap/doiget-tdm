@@ -142,7 +142,7 @@ class Settings(pydantic_settings.BaseSettings):
             if key in ["log_level", "file_log_level"]:
                 settings_dict[key] = logging.getLevelName(value)
 
-        for (key, value) in settings_dict.items():
+        for key, value in settings_dict.items():
             rich.print(f"\t{key}: {value}")
 
 
