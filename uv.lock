@@ -97,6 +97,19 @@ wheels = [
 ]
 
 [[package]]
+name = "auditwheel"
+version = "6.1.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "packaging" },
+    { name = "pyelftools" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/ce/12/af339761d80296e76033669e4179883108d8a7d79bb032bd58427a2b4485/auditwheel-6.1.0.tar.gz", hash = "sha256:3bdc686e774cf9e355e924b0fe5a562d55caa385d72234ffe7b81b378dba360f", size = 556250 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/21/87/14ef114af3495dd4d367c811b37c13b33bd1dfca410d14b0dfbcdef60c9b/auditwheel-6.1.0-py3-none-any.whl", hash = "sha256:e52f734861859e3743eb29fcac7da9c4921a1e4bea58f954b52f2926f8e9e364", size = 44057 },
+]
+
+[[package]]
 name = "autodoc-pydantic"
 version = "2.2.0"
 source = { registry = "https://pypi.org/simple" }
@@ -573,6 +586,7 @@ lmdb = [
 
 [package.dev-dependencies]
 dev = [
+    { name = "auditwheel" },
     { name = "black" },
     { name = "mypy" },
     { name = "posting" },
@@ -585,6 +599,7 @@ dev = [
     { name = "types-html5lib" },
     { name = "types-pysftp" },
     { name = "types-requests" },
+    { name = "validate-pyproject", extra = ["all"] },
 ]
 
 [package.metadata]
@@ -626,6 +641,7 @@ requires-dist = [
 
 [package.metadata.requires-dev]
 dev = [
+    { name = "auditwheel", specifier = ">=6.1.0" },
     { name = "black", specifier = ">=24.8.0" },
     { name = "mypy", specifier = ">=1.11.2" },
     { name = "posting", specifier = ">=2.3.0" },
@@ -638,6 +654,7 @@ dev = [
     { name = "types-html5lib", specifier = ">=1.1.11.20240806" },
     { name = "types-pysftp", specifier = ">=0.2.17.20240106" },
     { name = "types-requests", specifier = ">=2.32.0.20240914" },
+    { name = "validate-pyproject", extras = ["all"], specifier = ">=0.23" },
 ]
 
 [[package]]
@@ -693,6 +710,15 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/8c/e3/7d45f492c2c4a0e8e0fad57d081a7c8a0286cdd86372b070cca1ec0caa1e/executing-2.1.0.tar.gz", hash = "sha256:8ea27ddd260da8150fa5a708269c4a10e76161e2496ec3e587da9e3c0fe4b9ab", size = 977485 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/b5/fd/afcd0496feca3276f509df3dbd5dae726fcc756f1a08d9e25abe1733f962/executing-2.1.0-py2.py3-none-any.whl", hash = "sha256:8d63781349375b5ebccc3142f4b30350c0cd9c79f921cde38be2be4637e98eaf", size = 25805 },
+]
+
+[[package]]
+name = "fastjsonschema"
+version = "2.21.1"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/8b/50/4b769ce1ac4071a1ef6d86b1a3fb56cdc3a37615e8c5519e1af96cdac366/fastjsonschema-2.21.1.tar.gz", hash = "sha256:794d4f0a58f848961ba16af7b9c85a3e88cd360df008c59aac6fc5ae9323b5d4", size = 373939 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/90/2b/0817a2b257fe88725c25589d89aec060581aabf668707a8d03b2e9e0cb2a/fastjsonschema-2.21.1-py3-none-any.whl", hash = "sha256:c9e5b7e908310918cf494a434eeb31384dd84a98b57a30bcb1f535015b554667", size = 23924 },
 ]
 
 [[package]]
@@ -1404,6 +1430,15 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/86/41/19b62b99e7530cfa1d6ccd16199afd9289a12929bef1a03aa4382b22e683/pydantic_settings-2.7.0.tar.gz", hash = "sha256:ac4bfd4a36831a48dbf8b2d9325425b549a0a6f18cea118436d728eb4f1c4d66", size = 79743 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/f9/00/57b4540deb5c3a39ba689bb519a4e03124b24ab8589e618be4aac2c769bd/pydantic_settings-2.7.0-py3-none-any.whl", hash = "sha256:e00c05d5fa6cbbb227c84bd7487c5c1065084119b750df7c8c1a554aed236eb5", size = 29549 },
+]
+
+[[package]]
+name = "pyelftools"
+version = "0.31"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/88/56/0f2d69ed9a0060da009f672ddec8a71c041d098a66f6b1d80264bf6bbdc0/pyelftools-0.31.tar.gz", hash = "sha256:c774416b10310156879443b81187d182d8d9ee499660380e645918b50bc88f99", size = 14108889 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/f8/64/711030d9fe9ccaf6ee3ab1bcf4801c6bb3d0e585af18824a50b016b4f39c/pyelftools-0.31-py3-none-any.whl", hash = "sha256:f52de7b3c7e8c64c8abc04a79a1cf37ac5fb0b8a49809827130b858944840607", size = 180473 },
 ]
 
 [[package]]
@@ -2287,6 +2322,15 @@ wheels = [
 ]
 
 [[package]]
+name = "trove-classifiers"
+version = "2024.10.21.16"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/99/85/92c2667cf221b37648041ce9319427f92fa76cbec634aad844e67e284706/trove_classifiers-2024.10.21.16.tar.gz", hash = "sha256:17cbd055d67d5e9d9de63293a8732943fabc21574e4c7b74edf112b4928cf5f3", size = 16153 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/35/35/5055ab8d215af853d07bbff1a74edf48f91ed308f037380a5ca52dd73348/trove_classifiers-2024.10.21.16-py3-none-any.whl", hash = "sha256:0fb11f1e995a757807a8ef1c03829fbd4998d817319abcef1f33165750f103be", size = 13546 },
+]
+
+[[package]]
 name = "types-html5lib"
 version = "1.1.11.20241018"
 source = { registry = "https://pypi.org/simple" }
@@ -2390,6 +2434,24 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/4b/4d/938bd85e5bf2edeec766267a5015ad969730bb91e31b44021dfe8b22df6c/uvicorn-0.34.0.tar.gz", hash = "sha256:404051050cd7e905de2c9a7e61790943440b3416f49cb409f965d9dcd0fa73e9", size = 76568 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/61/14/33a3a1352cfa71812a3a21e8c9bfb83f60b0011f5e36f2b1399d51928209/uvicorn-0.34.0-py3-none-any.whl", hash = "sha256:023dc038422502fa28a09c7a30bf2b6991512da7dcdb8fd35fe57cfc154126f4", size = 62315 },
+]
+
+[[package]]
+name = "validate-pyproject"
+version = "0.23"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "fastjsonschema" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/5c/07/b24689b11ef23226bdd3eebd8d89e103236f4c91043b71d707612a4c3ad7/validate_pyproject-0.23.tar.gz", hash = "sha256:12b2714bf647265c60e4f24a20674428bd891a8aa168a1be535bb99f8c0af0e3", size = 113397 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/7a/36/45f4bb7275b5afd70b1e4bc8b6bcf0c488cde20e39d72a3c98998ba8a9f5/validate_pyproject-0.23-py3-none-any.whl", hash = "sha256:8c2e678d7d52cff56eb1670a627eaa808fe6334d7a7f15218d12b89642d8a077", size = 52726 },
+]
+
+[package.optional-dependencies]
+all = [
+    { name = "packaging" },
+    { name = "trove-classifiers" },
 ]
 
 [[package]]
