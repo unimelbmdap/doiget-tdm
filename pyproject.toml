@@ -11,6 +11,7 @@ classifiers = [
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
 ]
+license = "MIT"
 requires-python = ">=3.11,<3.13"
 dependencies = [
   "limiter>=0.5.0",
@@ -169,6 +170,10 @@ ignore = [
   "RF102",  # not a fan of isort
   "PC", "PY006",  # not using pre-commit
   "PY007",  # poe not recognised as a task runner
+  "GH200",  # dependeabot
+  "GH210",  # dependeabot
+  "GH211",  # dependeabot
+  "GH212",  # dependeabot
 ]
 
 [tool.pytest.ini_options]
