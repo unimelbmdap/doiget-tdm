@@ -8,6 +8,8 @@ import simdjson
 
 import upath
 
+import rich
+
 import doiget_tdm.fulltext
 import doiget_tdm.source
 import doiget_tdm.metadata
@@ -208,3 +210,33 @@ def add_publisher(publisher: type[T]) -> type[T]:
     registry[instance.member_id] = instance
 
     return publisher
+
+
+def print_publisher_settings() -> None:
+
+    # sort by publisher name
+    publishers = sorted(
+        registry.items(),
+        key=lambda x: get_name_from_instance(instance=x[1]),
+    )
+
+    rich.print("\n[bold underline]Publishers[/bold underline]")
+
+    for (member_id, publisher) in publishers:
+
+        publisher_name = get_name_from_instance(instance=publisher)
+
+        rich.print(f"\n{publisher_name} (Crossref ID: {member_id})")
+
+        if settings := getattr(publisher, "settings", None):
+
+            for (key, value) in settings.model_dump().items():
+                rich.print(f"\t{key}: {value}")
+
+            if hasattr(publisher, "is_configured"):
+
+                rich.print(f"\t[bold]is_configured: {publisher.is_configured}[/bold]")
+
+
+def get_name_from_instance(instance: object) -> str:
+    return type(instance).__name__

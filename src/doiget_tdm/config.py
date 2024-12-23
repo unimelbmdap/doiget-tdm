@@ -130,6 +130,8 @@ class Settings(pydantic_settings.BaseSettings):
 
     def print(self) -> None:
 
+        rich.print("\n[bold underline]Global settings[/bold underline]\n")
+
         settings_dict = {"config_dir": BASE_CONFIG_DIR} | self.dict()
 
         for key, value in settings_dict.items():
@@ -140,7 +142,8 @@ class Settings(pydantic_settings.BaseSettings):
             if key in ["log_level", "file_log_level"]:
                 settings_dict[key] = logging.getLevelName(value)
 
-        rich.print(settings_dict)
+        for (key, value) in settings_dict.items():
+            rich.print(f"\t{key}: {value}")
 
 
 SETTINGS = Settings()

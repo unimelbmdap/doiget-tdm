@@ -13,6 +13,7 @@ import doiget_tdm
 import doiget_tdm.acquire
 import doiget_tdm.status
 import doiget_tdm.paths
+import doiget_tdm.publisher
 
 
 LOGGER = logging.getLogger(__name__)
@@ -153,6 +154,7 @@ def run(args: argparse.Namespace) -> None:
 
 def run_show_config() -> None:
     doiget_tdm.SETTINGS.print()
+    doiget_tdm.publisher.print_publisher_settings()
 
 
 def run_status(args: argparse.Namespace) -> None:
