@@ -160,7 +160,7 @@ class IOP(doiget_tdm.publisher.Publisher):
 
             self._connection.get(
                 remotepath=str(source.link),
-                localpath=str(tmp_path.name),
+                localpath=str(tmp_path),
             )
 
         except paramiko.ssh_exception.SSHException as err:
@@ -178,7 +178,7 @@ class IOP(doiget_tdm.publisher.Publisher):
         data: bytes | None
 
         try:
-            with zipfile.ZipFile(tmp_path.name) as zip_handle:
+            with zipfile.ZipFile(tmp_path) as zip_handle:
 
                 filenames = zip_handle.namelist()
 
