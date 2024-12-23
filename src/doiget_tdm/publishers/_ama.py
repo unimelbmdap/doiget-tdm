@@ -4,8 +4,6 @@ import logging
 import typing
 import json
 
-import pyrate_limiter
-
 import pydantic
 import pydantic_settings
 

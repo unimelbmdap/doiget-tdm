@@ -2,13 +2,18 @@ from __future__ import annotations
 
 import typing
 import logging
-import http
 import json
+import tempfile
+import zipfile
+import pathlib
 
 import pydantic
 import pydantic_settings
 
 import pysftp
+import paramiko
+
+import upath
 
 import simdjson
 
@@ -25,6 +30,7 @@ LOGGER.addHandler(logging.NullHandler())
 
 class Settings(pydantic_settings.BaseSettings):
 
+    valid_hostname: str | None = None
     username: pydantic.SecretStr | None = None
     password: pydantic.SecretStr | None = None
     server_address: str = "iopp-public-transfer-server.cld.iop.org"
@@ -38,7 +44,7 @@ class Settings(pydantic_settings.BaseSettings):
     )
 
 
-# @doiget_tdm.publisher.add_publisher
+@doiget_tdm.publisher.add_publisher
 class IOP(doiget_tdm.publisher.Publisher):
 
     member_id = doiget_tdm.metadata.MemberID(id_="266")
@@ -71,6 +77,9 @@ class IOP(doiget_tdm.publisher.Publisher):
         if not self.is_configured:
             return
 
+        assert self.settings.username is not None
+        assert self.settings.password is not None
+
         if self._connection is None or (
             hasattr(self._connection, "_sftp_live") and not self._connection._sftp_live
         ):
@@ -90,41 +99,102 @@ class IOP(doiget_tdm.publisher.Publisher):
 
     def set_sources(self, fulltext: doiget_tdm.fulltext.FullText) -> None:
 
-        def source_check_func(source: doiget_tdm.source.Source) -> bool:
-            return "api.elsevier.com" in str(source.link)
+        if self._file_list is None:
+            self.load_server_file_list()
 
-        doiget_tdm.publisher.set_sources_from_crossref(
-            fulltext=fulltext,
-            acq_func=self.acquire,
-            encrypt=False,
-            source_check_func=source_check_func,
-        )
+        assert self._file_list is not None
+
+        for format_name in [
+            doiget_tdm.format.FormatName.XML,
+            doiget_tdm.format.FormatName.PDF,
+        ]:
+
+            format_list = self._file_list[format_name.name]
+
+            if not isinstance(format_list, simdjson.Object):
+                raise ValueError()
+
+            try:
+                filename = format_list[str(fulltext.doi)]
+            except KeyError as err:
+                msg = f"No entry in the server file list for {fulltext.doi}"
+                LOGGER.error(msg)
+                raise KeyError(msg) from err
+
+            link = f"{format_name.name}data/{filename}"
+
+            source = doiget_tdm.source.Source(
+                acq_func=self.acquire,
+                link=upath.UPath(link),
+                format_name=format_name,
+                encrypt=False,
+            )
+
+            fulltext.formats[format_name].sources = [source]
 
     def acquire(self, source: doiget_tdm.source.Source) -> bytes:
 
         if isinstance(source.link, typing.Sequence):
             raise ValueError(f"Unexpected link: {source.link}")
 
-        if self.session is None:
-            self.initialise()
+        doiget_tdm.errors.check_hostname(valid_hostname=self.settings.valid_hostname)
 
-        if self.session is None:
-            raise ValueError("Error initialising session")
+        self.initialise()
 
-        response = self.session.get(url=str(source.link))
+        assert self._connection is not None
 
-        els_status = response.headers.get("X-ELS-Status")
+        tmp_file = tempfile.NamedTemporaryFile(delete=False)
+        tmp_file.close()
 
-        if els_status is not None and "warning" in els_status.lower():
-            LOGGER.warning(els_status)
+        tmp_path = pathlib.Path(tmp_file.name)
 
-        if response.status_code == http.HTTPStatus.UNAUTHORIZED:
-            error_info = response.json()
-            error_msg = error_info["error-message"]
-            LOGGER.warning(f"Received the following error from the server: {error_msg}")
-            response.raise_for_status()
+        try:
 
-        return response.content
+            if not self._connection.exists(remotepath=str(source.link)):
+                msg = f"Remote path {source.link} not on server"
+                LOGGER.error(msg)
+                raise doiget_tdm.errors.AcquisitionError(msg)
+
+            self._connection.get(
+                remotepath=str(source.link),
+                localpath=str(tmp_path.name),
+            )
+
+        except paramiko.ssh_exception.SSHException as err:
+            tmp_path.unlink()
+            msg = "Received download error ({err})"
+            LOGGER.error(msg)
+            raise doiget_tdm.errors.AcquisitionError(msg) from err
+
+        data: bytes | None
+
+        try:
+            with zipfile.ZipFile(tmp_path.name) as zip_handle:
+
+                filenames = zip_handle.namelist()
+
+                within_zip_filenames = [
+                    filename
+                    for filename in filenames
+                    if filename.endswith(f".{str(source.link)[:3].lower()}")
+                ]
+
+                if len(within_zip_filenames) != 1:
+                    raise ValueError(f"More filenames than expected: {filenames}")
+
+                (within_zip_filename,) = within_zip_filenames
+
+                data = zip_handle.read(within_zip_filename)
+
+        except Exception as err:
+            tmp_path.unlink()
+            msg = f"Receieved zip file error {err}"
+            LOGGER.error(msg)
+            raise doiget_tdm.errors.AcquisitionError(msg) from err
+
+        tmp_path.unlink()
+
+        return data
 
     def form_server_file_list(self) -> None:
 
@@ -155,6 +225,10 @@ class IOP(doiget_tdm.publisher.Publisher):
                     file_list[file_type][doi] = filename
 
         self.save_server_file_list(file_list=file_list)
+
+        LOGGER.info(
+            f"Saved IOP server file list to {self.server_file_list_path}"
+        )
 
     @staticmethod
     def get_doi_from_filename(filename: str) -> str:
