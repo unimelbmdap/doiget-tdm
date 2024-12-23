@@ -3,6 +3,7 @@ from __future__ import annotations
 import typing
 import logging
 import http
+import json
 
 import pydantic
 import pydantic_settings
@@ -125,69 +126,75 @@ class IOP(doiget_tdm.publisher.Publisher):
 
         return response.content
 
+    def form_server_file_list(self) -> None:
+
+        self.initialise()
+
+        if self._connection is None:
+            raise ValueError()
+
+        LOGGER.info("Forming server file list for IOP")
+
+        file_list: dict[str, dict[str, str]] = {
+            "XML": {},
+            "PDF": {},
+        }
+
+        for file_type in ["XML", "PDF"]:
+
+            dir_name = f"{file_type}data"
+
+            with self._connection.cd(dir_name):
+
+                dir_contents = self._connection.listdir()
+
+                for filename in dir_contents:
+
+                    doi = self.get_doi_from_filename(filename=filename)
+
+                    file_list[file_type][doi] = filename
+
+        self.save_server_file_list(file_list=file_list)
+
     @staticmethod
-    def get_filenames_from_work(
-        work: doiget_tdm.work.Work,
-        format_name: doiget_tdm.format.FormatName,
-    ) -> str:
+    def get_doi_from_filename(filename: str) -> str:
 
-        # 1_0957-4484_30_40_405602_10__1088_1361-6528_ab2d69.zip
+        name = filename.strip(".zip")
 
-        # where:
-        # 1 is a prefix meaning 'JATS+PDF metadata'
-        # 0957-4484 is the journal ISSN
-        # 30 is the volume
-        # 40 is the issue number
-        # 405602 is the article number (or page number)
+        try:
+            i_doi_start = name.index("10__")
+        except ValueError:
 
-        # 10__1088_1361-6528_ab2d69 is the escaped DOI 10.1088/1361-6528/ab2d69
+            underscores = [
+                i_char
+                for (i_char, char) in enumerate(name)
+                if char == "_"
+            ]
 
-        # In the XMLdata directory the naming scheme is identical except that the prefix is 2 rather than 1.
+            name = "10__" + name[underscores[4] + 1:]
 
-        prefix: str
+            i_doi_start = 0
 
-        if format_name is doiget_tdm.format.FormatName.PDF:
-            prefix = "1"
-        elif format_name is doiget_tdm.format.FormatName.XML:
-            prefix = "2"
-        else:
-            msg = f"Unexpected format type ({format_name})"
-            raise ValueError(msg)
+        doi_encoded = name[i_doi_start:]
 
-        volume = work.metadata.volume
-        issue = work.metadata.issue
-        pages = work.metadata.page
+        doi = doi_encoded.replace("__", ".").replace("_", "/")
 
-        page: str
+        return doi
 
-        if pages is None:
-            (*_, page) = str(work.doi).split("/")
-        else:
-            (page, *_) = work.metadata.page.split("-")
+    def save_server_file_list(self, file_list: dict[str, dict[str, str]]) -> None:
 
-        doi = str(work.doi)
+        with self.server_file_list_path.open("w") as handle:
+            json.dump(file_list, handle)
 
-        doi_encoded = (
-            doi
-            .replace(".", "__")
-            .replace("/", "_")
-        )
+    def load_server_file_list(self) -> simdjson.Object:
 
-        issns = work.metadata.issns
+        raw_file_data = self.server_file_list_path.read_bytes()
 
-        filenames = [
-            "_".join(
-                [
-                    prefix,
-                    issn,
-                    volume,
-                    issue,
-                    page,
-                    doi_encoded,
-                ]
-            )
-            + ".zip"
-            for issn in issns
-        ]
+        file_list = simdjson.Parser().parse(raw_file_data)
 
-        return filenames
+        if not isinstance(file_list, simdjson.Object):
+            raise ValueError()
+
+        self._file_list = file_list
+
+        return file_list
