@@ -27,7 +27,7 @@
     * Taylor & Francis
     * Wiley
 * Customise acquisition and add additional publishers.
-* Retrieve article metadata from [Crossref](https://crossref.org).
+* Retrieve article metadata from [Crossref](https://crossref.org), optionally using a Lightning key:value (DOI:metadata) database formed from a Crossref public data export via [`crossref-lmdb`](https://github.com/unimelbmdap/crossref-lmdb).
 
 
 ## Installation

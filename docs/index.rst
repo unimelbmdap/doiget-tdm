@@ -38,7 +38,7 @@ Features
     * Taylor & Francis
     * Wiley
 * Customise acquisition and add additional publishers.
-* Retrieve article metadata from `Crossref <https://crossref.org>`_.
+* Retrieve article metadata from `Crossref <https://crossref.org>`_, optionally using a Lightning key:value (DOI:metadata) database formed from a Crossref public data export via `crossref-lmdb <https://github.com/unimelbmdap/crossref-lmdb>`_.
 
 
 Installation
@@ -82,9 +82,6 @@ Documentation guide
 
 :doc:`/concepts`
     Outlines the conceptual approach taken by ``doiget-tdm``. 
-
-:doc:`/using_the_api`
-    Examples of using the API to interact with ``doiget-tdm`` through Python.
 
 :doc:`/reference/cmd`
     Provides a reference to the ``doiget-tdm`` command-line application and its options.
