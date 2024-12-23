@@ -156,7 +156,14 @@ class IOP(doiget_tdm.publisher.Publisher):
 
         volume = work.metadata.volume
         issue = work.metadata.issue
-        page = work.metadata.page
+        pages = work.metadata.page
+
+        page: str
+
+        if pages is None:
+            (*_, page) = str(work.doi).split("/")
+        else:
+            (page, *_) = work.metadata.page.split("-")
 
         doi = str(work.doi)
 
