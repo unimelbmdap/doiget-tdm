@@ -7,10 +7,11 @@ authors = [
   {name = "Damien Mannion", email = "damien.mannion@unimelb.edu.au"},
 ]
 classifiers = [
-  "Programming Language :: Python",
+  "Programming Language :: Python :: 3",
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
-  "License :: MIT License",
+  "Operating System :: OS Independent",
+  "License :: OSI Approved :: MIT License",
 ]
 license = "MIT"
 requires-python = ">=3.11,<3.13"
@@ -86,6 +87,7 @@ dev-dependencies = [
   "posting>=2.3.0",
   "auditwheel>=6.1.0",
   "validate-pyproject[all]>=0.23",
+  "twine>=6.0.1",
 ]
 
 # until uv gets a task runner
