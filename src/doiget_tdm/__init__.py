@@ -8,7 +8,7 @@ except Exception as err:
 
 import doiget_tdm.log
 
-__version__ = "0.1"
+__version__ = "0.1.0"
 _project_url = "https://github.com/unimelbmdap/doiget-tdm"
 
 doiget_tdm.log.setup_logging()
