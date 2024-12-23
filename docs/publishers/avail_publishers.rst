@@ -7,7 +7,7 @@ American Medical Association (AMA)
 ----------------------------------
 
 ``doiget_tdm_ama_valid_hostname``
-    Full-text requests can only be made from systems matching this hostname.
+    Full-text requests can only be made from systems matching this hostname (optional).
 ``doiget_tdm_ama_api_key``
     The API key provided by AMA.
 
@@ -49,6 +49,25 @@ Frontiers
 
 No configuration required.
 
+IOP
+---
+
+``doiget_tdm_iop_valid_hostname``
+    Full-text requests can only be made from systems matching this hostname (optional).
+``doiget_tdm_iop_username``
+    Username for the IOP sFTP server.
+``doiget_tdm_iop_password``
+    Password for the IOP sFTP server.
+``doiget_tdm_iop_server_address``
+    Address for the IOP sFTP server (optional; default is `iopp-public-transfer-server.cld.iop.org`).
+``doiget_tdm_iop_server_port``
+    Port for the IOP sFTP server (optional; default is ``22``).
+
+.. note::
+    Access must be granted by IOP; see `Text and data mining <https://ioppublishing.org/legal/textanddataminingpolicy/>`__.
+
+.. note::
+    The first full-text request will take a much longer amount of time, as the list of files on the server needs to be downloaded so that the correct server path for a given DOI can be identified.
 
 PeerJ
 -----
@@ -66,13 +85,13 @@ PNAS
 ----
 
 ``doiget_tdm_pnas_valid_hostname``
-    Full-text requests can only be made from systems matching this hostname.
+    Full-text requests can only be made from systems matching this hostname (optional).
 
 Royal Society
 -------------
 
 ``doiget_tdm_royal_society_valid_hostname``
-    Full-text requests can only be made from systems matching this hostname.
+    Full-text requests can only be made from systems matching this hostname (optional).
 
 .. note::
     Access must be granted by the Royal Society; see `Data sharing and mining <https://royalsociety.org/journals/ethics-policies/data-sharing-mining/#data-mining>`_.
@@ -81,7 +100,7 @@ Sage
 ----
 
 ``doiget_tdm_sage_valid_hostname``
-    Full-text requests can only be made from systems matching this hostname.
+    Full-text requests can only be made from systems matching this hostname (optional).
 
 .. note::
     See `Text and Data Mining on Sage Journals  <https://journals.sagepub.com/page/policies/text-and-data-mining>`_.
@@ -91,7 +110,7 @@ Taylor & Francis (Informa)
 --------------------------
 
 ``doiget_tdm_taylor_and_francis_valid_hostname``
-    Full-text requests can only be made from systems matching this hostname.
+    Full-text requests can only be made from systems matching this hostname (optional).
 
 .. note::
     Access must be granted by Taylor & Francis; see `Text and Data Mining <https://taylorandfrancis.com/our-policies/textanddatamining/>`__.
@@ -106,7 +125,7 @@ Springer-Nature
 ``doiget_tdm_springer_nature_api_suffix``
     The final component of the API path, without the leading ``/``.
 ``doiget_tdm_springer_nature_n_requests_per_day``
-    The limit on the number of requests per day; defaults to 500.
+    The limit on the number of requests per day (optional; default is ``500``).
 
 .. note::
     Access must be granted by Springer-Nature; see `Text and data mining at Springer Nature <https://www.springernature.com/gp/researchers/text-and-data-mining>`_.
@@ -115,7 +134,7 @@ Wiley
 -----
 
 ``doiget_tdm_wiley_valid_hostname``
-    Full-text requests can only be made from systems matching this hostname.
+    Full-text requests can only be made from systems matching this hostname (optional).
 ``doiget_tdm_wiley_tdm_client_key``
     The API key provided by Wiley.
 

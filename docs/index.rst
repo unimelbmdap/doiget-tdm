@@ -29,6 +29,7 @@ Features
     * American Psychological Association (APA)
     * Elsevier
     * Frontiers
+    * IOP
     * PeerJ
     * PLoS
     * PNAS
