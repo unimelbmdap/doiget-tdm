@@ -1,8 +1,16 @@
 [project]
 name = "doiget-tdm"
 version = "0.1.0"
-description = "Add your description here"
+description = "A command-line application and Python library for obtaining the metadata and full-text of published journal articles for text data mining (TDM) purposes."
 readme = "README.md"
+authors = [
+  {name = "Damien Mannion", email = "damien.mannion@unimelb.edu.au"},
+]
+classifiers = [
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+]
 requires-python = ">=3.11,<3.13"
 dependencies = [
   "limiter>=0.5.0",
@@ -28,6 +36,11 @@ dependencies = [
   "pyrate-limiter>=2.10.0",
   "py7zr>=0.22.0",
 ]
+
+[project.urls]
+Documentation = "https://unimelbmdap.github.io/doiget-tdm"
+Repository = "https://github.com/unimelbmdap/doiget-tdm"
+Issues = "https://github.com/unimelbmdap/doiget-tdm/issues"
 
 [project.scripts]
 doiget-tdm = "doiget_tdm.cli:main"
