@@ -120,8 +120,8 @@ Mac
 Windows
     ``~\AppData\Local\doiget-tdm\doiget_tdm\config``
 
-A configuration option can be set by creating a file inside the config directory with a name that has the form ``doiget-tdm_${OPTION}`` and the contents are the option setting.
-For example, the ``log_level`` option can be set to ``WARNING`` by creating a file called ``doiget-tdm_log_level`` that contains the text ``WARNING``.
+A configuration option can be set by creating a file inside the config directory with a name that has the form ``doiget_tdm_${OPTION}`` and the contents are the option setting.
+For example, the ``log_level`` option can be set to ``WARNING`` by creating a file called ``doiget_tdm_log_level`` that contains the text ``WARNING``.
 
 Within a ``.env`` file
 ~~~~~~~~~~~~~~~~~~~~~~

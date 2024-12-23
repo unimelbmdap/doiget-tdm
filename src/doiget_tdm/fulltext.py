@@ -7,6 +7,7 @@ import doiget_tdm.doi
 import doiget_tdm.metadata
 import doiget_tdm.format
 import doiget_tdm.publisher
+import doiget_tdm.config
 
 
 LOGGER = logging.getLogger(__name__)
@@ -56,6 +57,15 @@ class FullText:
         }
 
         self._sources_set = False
+
+    @property
+    def exists(self) -> bool:
+
+        for format_name in doiget_tdm.config.SETTINGS.format_preference_order:
+            if self.has_format(fmt=format_name):
+                return True
+
+        return False
 
     def set_sources(self) -> None:
         """

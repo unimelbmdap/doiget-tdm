@@ -86,11 +86,40 @@ Use full-text content
 ---------------------
 
 The acquisition of full-text content will store files within your defined ``data_dir``.
+You can interact with the content using Python or directly in the filesystem.
 
 Accessing within Python
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-If doing further processing using Python, 
+If doing further processing using Python, you can use the ``doiget-tdm`` api.
+For example, for the DOI "10.1371/journal.pbio.1002611":
+
+.. code-block:: python
+
+    import doiget_tdm
+
+    doi = doiget_tdm.DOI(doi="10.1371/journal.pbio.1002611")
+    work = doiget_tdm.Work(doi=doi)
+
+    if work.metadata.exists:
+        # print a summary of the metadata
+        work.metadata.show()
+
+    # there is a local copy of the full-text
+    if work.fulltext.exists:
+        # load the full-text content, as bytes
+        fulltext = work.fulltext.load()
+        fulltext_content = fulltext.data
+        fulltext_format = fulltext.fmt
+
+You can also iterate through all the entries in the data directory:
+
+.. code-block:: python
+
+    import doiget_tdm
+
+    for work in doiget_tdm.iter_unsorted_works():
+        pass
 
 
 Accessing within the filesystem
