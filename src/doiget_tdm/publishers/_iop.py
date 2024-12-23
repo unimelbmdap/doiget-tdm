@@ -116,10 +116,13 @@ class IOP(doiget_tdm.publisher.Publisher):
 
             try:
                 filename = format_list[str(fulltext.doi)]
-            except KeyError as err:
-                msg = f"No entry in the server file list for {fulltext.doi}"
-                LOGGER.error(msg)
-                raise KeyError(msg) from err
+            except KeyError:
+                try:
+                    filename = format_list[str(fulltext.doi).upper()]
+                except KeyError:
+                    msg = f"No entry in the server file list for {fulltext.doi}"
+                    LOGGER.error(msg)
+                    break
 
             link = f"{format_name.name}data/{filename}"
 
@@ -166,6 +169,12 @@ class IOP(doiget_tdm.publisher.Publisher):
             LOGGER.error(msg)
             raise doiget_tdm.errors.AcquisitionError(msg) from err
 
+        except Exception as err:
+            tmp_path.unlink()
+            msg = "Received download error ({err})"
+            LOGGER.error(msg)
+            raise doiget_tdm.errors.AcquisitionError(msg) from err
+
         data: bytes | None
 
         try:
@@ -187,12 +196,12 @@ class IOP(doiget_tdm.publisher.Publisher):
                 data = zip_handle.read(within_zip_filename)
 
         except Exception as err:
-            tmp_path.unlink()
             msg = f"Receieved zip file error {err}"
             LOGGER.error(msg)
             raise doiget_tdm.errors.AcquisitionError(msg) from err
 
-        tmp_path.unlink()
+        finally:
+            tmp_path.unlink()
 
         return data
 
