@@ -50,6 +50,7 @@ doiget-tdm acquire '10.1371/journal.pbio.1002611'
 ```
 
 Read through the [Workflow](https://unimelbmdap.github.io/doiget-tdm/workflow.html) documentat to understand how to use the package in a text data mining project.
+Next, you can read through the [Workflow](https://unimelbmdap.github.io/doiget-tdm/workflow.html) document to understand how to use the package in a text data mining project and the [Concepts](https://unimelbmdap.github.io/doiget-tdm/concepts.html) document to learn more about the approach taken by `doiget-tdm`.
 
 ## Documentation
 
